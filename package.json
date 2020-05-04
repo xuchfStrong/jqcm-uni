@@ -1,0 +1,14 @@
+{
+  "name": "jqcm-uni",
+  "version": "1.4.0",
+  "description": "剑气除魔Helper的uni版本",
+  "author": "xuchangfan",
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "moment": "^2.24.0",
+    "js-rsa": "^1.0.2"
+  },
+  "devDependencies": {
+
+  }
+}
