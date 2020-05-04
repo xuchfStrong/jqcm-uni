@@ -1,0 +1,69 @@
+{
+	"pages": [
+		{
+			"path": "pages/home/home",
+			"style": {
+				"navigationBarTitleText": "剑气除魔火箭辅助"
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/description/description",
+			"style": {
+				"navigationBarTitleText": "购买说明"
+			}
+		},
+		{
+			"path": "pages/gonglue/gonglue",
+			"style": {
+				"navigationBarTitleText": "攻略"
+			}
+		},
+		{
+			"path": "pages/update/update",
+			"style": {
+				"navigationBarTitleText": "更新"
+			}
+		}
+    ],
+	"tabBar": {
+		"color": "#7a7e83",
+		"selectedColor": "#007aff",
+		"backgroundColor": "#ffffff",
+		"list": [{
+		    "pagePath": "pages/home/home",
+		    "text": "首页",
+		    "iconPath": "static/img/home.png",
+		    "selectedIconPath": "static/img/homeHL.png"
+		},
+		{
+		    "pagePath": "pages/description/description",
+		    "text": "购买说明",
+		    "iconPath": "static/img/orders.png",
+		    "selectedIconPath": "static/img/ordersHL.png"
+		},
+		{
+		    "pagePath": "pages/gonglue/gonglue",
+		    "text": "攻略",
+		    "iconPath": "static/img/description.png",
+		    "selectedIconPath": "static/img/descriptionHL.png"
+		},
+		{
+		    "pagePath": "pages/update/update",
+		    "text": "更新",
+		    "iconPath": "static/img/upgrade.png",
+		    "selectedIconPath": "static/img/upgradeHL.png"
+		}]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#007AFF",
+		"backgroundColor": "#FFFFFF"
+	}
+}
