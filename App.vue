@@ -5,10 +5,10 @@
 			const that = this
 			plus.runtime.getProperty(plus.runtime.appid, function() {  
 			    uni.request({  
-			        url: 'http://wwww.huojiangame.com:11658/jqcm/update.php',
+			        url: 'http://www.huojiangame.com:11658/jqcm/update.php',
 			        success: (result) => {  
 			            var data = result.data;
-			            if (data.version > that.$global.jqcmVersion && data.wgtUrl) {  
+			            if (data.version > that.$global.jqcmVersion && data.wgtUrl3) {  
 											// uni.showModal({
 											//     title: "发现新版本",
 											//     content: "确认下载更新",
@@ -21,7 +21,7 @@
 											//     }
 											// })
 			                uni.downloadFile({  
-			                    url: data.wgtUrl,  
+			                    url: data.wgtUrl3,  
 			                    success: (downloadResult) => {  
 			                        if (downloadResult.statusCode === 200) {  
 			                            plus.runtime.install(downloadResult.tempFilePath, {  

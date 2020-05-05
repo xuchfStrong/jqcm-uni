@@ -1,20 +1,21 @@
 <template>
   <view class="content">
     <view class="summary-wrap">
-        <view v-if="hasNewVersion" class="highlight">有新版本，请下载新的版本安装，当前版本为V{{ $global.jqcmVersionName }}</view>
-        <view>更新说明：</view>
+        <!-- <view v-if="hasNewVersion" class="highlight">有新版本，请下载新的版本安装，当前版本为V{{ $global.jqcmVersionName }}</view> -->
+        <view>当前版本为V{{ $global.jqcmVersionName }}</view>
+				<view>更新说明：</view>
         <view class="summary-content">
           <view v-for="(item, index) in utils.updateDescription" :key="index">{{ item }}</view>
         </view>
 
-        <view style="margin-top:10px; color:#1989fa;">
-          <a v-if="$global.jqcmSaleChannel===1" :href="utils.apkDownloadUrl">
+       <view style="margin-top:10px; color:#1989fa;">
+          <a v-if="$global.jqcmSaleChannel===1" :href="utils.apkDownloadUrlNew">
             <text>点击下载辅助APP</text>
           </a>
-          <a v-if="$global.jqcmSaleChannel===2" :href="utils.apkDownloadUrl2">
+          <a v-if="$global.jqcmSaleChannel===2" :href="utils.apkDownloadUrlNew2">
             <text>点击下载辅助APP</text>
           </a>
-          <a v-if="$global.jqcmSaleChannel===3" :href="utils.apkDownloadUrl3">
+          <a v-if="$global.jqcmSaleChannel===3" :href="utils.apkDownloadUrlNew3">
             <text>点击下载辅助APP</text>
           </a>
           <!-- <button type="primary" @tap="downloadImage">下载</button> -->
