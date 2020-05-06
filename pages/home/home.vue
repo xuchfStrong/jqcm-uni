@@ -607,6 +607,7 @@ export default {
 	data() {
 		return {
 			platformName: '',
+			serverName: '',
 			lastServerIndex: 0,
 			allServerindex: 0,
 			utils: {},
@@ -720,13 +721,13 @@ export default {
 		}
 	},
 	computed: {
-		serverName() {
-			let res = ''
-			if (this.serverInfo.last_server_list) {
-				res = this.serverInfo.last_server_list[this.lastServerIndex].text
-			}
-			return res
-		},
+		// serverName() {
+		// 	let res = ''
+		// 	if (this.serverInfo.last_server_list) {
+		// 		res = this.serverInfo.last_server_list[this.lastServerIndex].text
+		// 	}
+		// 	return res
+		// },
 		// 更新时间是否超过2小时
     isPassedTwoHours() {
       const a = moment(new Date())
@@ -844,11 +845,15 @@ export default {
 		// 加载后将存储的数据显示出来
 		initSaveData() {
 			const lastServerIndex = getIndexByValue(this.serverInfo.last_server_list, this.userInfo.server)
-			this.lastServerIndex = lastServerIndex === -1? 0: lastServerIndex
+			if (lastServerIndex !== -1) {
+				this.serverName = this.serverInfo.last_server_list[this.lastServerIndex].text
+				this.lastServerIndex = lastServerIndex
+			}
 		},
 
 		// 选择最后登录服务器
 		changeLastServer: function(e) {
+			this.serverName = this.serverInfo.last_server_list[this.lastServerIndex].text
 			this.userInfo.server = getValueByIndex(this.serverInfo.last_server_list, e.target.value)
 			this.lastServerIndex = e.target.value
 			this.allServerindex = getIndexByValue(this.serverInfo.server_list, this.userInfo.server)
@@ -899,10 +904,18 @@ export default {
         return
 			}
 			if (!this.userInfo.server) {
-				uni.showToast({
-					title: '没有获取到之前挂机的服务器信息，请选择服务器。',
-					duration: 2000,
-					icon: 'none'
+				uni.showModal({
+					title: '提示',
+					content: '请选择服务器',
+					showCancel: false,
+					confirmText: '好的',
+					success: function (res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
 				})
         return
 			}

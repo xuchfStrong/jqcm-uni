@@ -8,7 +8,15 @@
 			        url: 'http://www.huojiangame.com:11658/jqcm/update.php',
 			        success: (result) => {  
 			            var data = result.data;
-			            if (data.version > that.$global.jqcmVersion && data.wgtUrl3) {  
+									var wgtUrl = ''
+									if (that.$global.jqcmVersion === 1) {
+										wgtUrl = data.wgtUrl1
+									} else if (that.$global.jqcmVersion === 2) {
+										wgtUrl = data.wgtUrl2
+									} else if (that.$global.jqcmVersion === 3) {
+										wgtUrl = data.wgtUrl3
+									} 
+			            if (data.version > that.$global.jqcmVersion && wgtUrl) {  
 											// uni.showModal({
 											//     title: "发现新版本",
 											//     content: "确认下载更新",
@@ -21,7 +29,7 @@
 											//     }
 											// })
 			                uni.downloadFile({  
-			                    url: data.wgtUrl3,  
+			                    url: wgtUrl,  
 			                    success: (downloadResult) => {  
 			                        if (downloadResult.statusCode === 200) {  
 			                            plus.runtime.install(downloadResult.tempFilePath, {  

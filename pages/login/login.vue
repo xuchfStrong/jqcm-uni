@@ -119,6 +119,10 @@ export default {
 		
 		// 在辅助服务端检查用户状态
 		handleCheckUserStatus() {
+			if (!this.userInfo.loginType) {
+				this.$toast("请选择平台")
+				return
+			}
 			const param = {
 				uname_md5: CryptoJS.MD5(this.userInfo.usernamePlatForm).toString(), // 用户名
 				pwd_md5: CryptoJS.MD5(this.userInfo.passwordPlatForm).toString(), // 密码
@@ -505,9 +509,13 @@ export default {
 		
 		// 选择平台
 		changePlatform: function(e) {
-			this.platformName = this.remoteOptions.platform[e.target.value].text
-			this.platformIndex = e.target.value
-			this.userInfo.loginType = getValueByIndex(this.remoteOptions.platform, e.target.value)
+			if (e.target.value !== -1) {
+				this.platformIndex = e.target.value
+			} else {
+				this.platformIndex = 0
+			}
+			this.platformName = this.remoteOptions.platform[this.platformIndex].text
+			this.userInfo.loginType = getValueByIndex(this.remoteOptions.platform, this.platformIndex)
 		},
 
 		// 加载后将存储的数据显示出来
