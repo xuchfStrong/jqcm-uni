@@ -29,6 +29,12 @@
 			"style": {
 				"navigationBarTitleText": "更新"
 			}
+		},
+		{
+			"path": "pages/transfer/transfer",
+			"style": {
+				"navigationBarTitleText": "辅助帐号转移"
+			}
 		}
     ],
 	"tabBar": {

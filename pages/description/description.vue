@@ -86,6 +86,7 @@ export default {
   }
   .collapse-content {
     padding: 10rpx 30rpx;
+    user-select: text;
   }
   .item-name {
     padding-bottom: 20rpx;

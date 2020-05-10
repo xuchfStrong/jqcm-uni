@@ -40,6 +40,7 @@ export default {
   }
   .collapse-content {
     padding: 10rpx 30rpx;
+    user-select: text;
   }
   .item-wrap {
     color: #969799;

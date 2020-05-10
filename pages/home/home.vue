@@ -27,9 +27,11 @@
 		</view>
 		<view v-else class="btn-center">
 			<view>
+				<button type="primary" plain="true" size="mini" @tap="transferTime">转移辅助</button>
+				<text style="width: 10upx; display: inline-block;"></text>
 				<button type="primary" plain="true" size="mini" @tap="loginSwitch">切换账号</button>
 				<text style="width: 10upx; display: inline-block;"></text>
-				<button type="primary" size="mini" @tap="handleGetServerList">更新服务器</button>
+				<button type="primary" plain="true" size="mini" @tap="handleGetServerList">更新服务器</button>
 			</view>
 		</view>
 
@@ -69,7 +71,7 @@
 		</view>
 		<view>
 			<text>续费请提供此ID：</text>
-			<text>{{ loginInfo.userId }}</text>
+			<text class="content-wrap">{{ loginInfo.userId }}</text>
 		</view>
 		<view>
 			<text>云挂机状态：</text>
@@ -179,7 +181,7 @@
 				<text>{{ roleInfo.xianmengjianshe_times }}</text>
 			</view>
 			<view class="attr-flex-item">
-				<text>仙斗秘境：</text>
+				<text>仙盟秘境：</text>
 				<text>{{ roleInfo.xianmengmijing_times }}</text>
 			</view>
 			<view class="attr-flex-item">
@@ -776,6 +778,12 @@ export default {
 			})
 		},
 
+		transferTime() {
+			uni.navigateTo({
+			    url: '../transfer/transfer'
+			})
+		},
+
 		handleGetUtils() {
       getUtils().then(res => {
 				this.utils = res
@@ -874,21 +882,25 @@ export default {
         handleGetServerConfig(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()
+					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 2) { // TapTap平台
         handleGetServerConfigTapTap(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()
+					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 12) { // 无尽修炼
         handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()
+					this.$toast("服务器更新成功")
 				})
       } else { // 其他平台
         handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()
+					this.$toast("服务器更新成功")
 				})
       }
 		},
@@ -1491,5 +1503,8 @@ export default {
   color: red;
   margin-top: 10upx;
   white-space: pre-line;
+}
+.content-wrap {
+	user-select: text;
 }
 </style>
