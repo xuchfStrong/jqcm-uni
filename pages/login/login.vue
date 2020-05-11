@@ -257,7 +257,7 @@ export default {
         } else {
           this.flag.showServer = false
 					uni.showToast({
-						title: res.data.msg,
+						title: res.reason,
 						duration: 2000,
 						icon: 'none'
 					})

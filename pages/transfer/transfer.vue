@@ -24,7 +24,13 @@
 		</view>
 
 		<view class="btn-center">
-		    <button type="primary" class="primary" size="mini" @tap="handleSubmit">提交</button>
+		    <button type="primary" class="primary" size="mini" :disabled="disabledBtn" @tap="handleSubmit">提交</button>
+		</view>
+
+		<view v-if="transferSuccess" class="result-wrap content">
+			<view class="success-title">{{ result.message }}</view>
+			<view class="item-wrap">原帐号：{{ result.oldAccount }}</view>
+			<view class="item-wrap">新帐号：{{ result.newAccount }}</view>
 		</view>
 
 		<view>
@@ -37,8 +43,10 @@
 </template>
 
 <script>
+import CryptoJS from 'crypto-js'
 import mInput from '../../components/m-input.vue'
 import transfer from './transfer.json'
+import { transferTime } from '@/api/game'
 export default {
 	components:{
 		mInput
@@ -46,6 +54,9 @@ export default {
 	data() {
 		return {
 			transfer: transfer,
+			disabledBtn: false,
+			transferSuccess: false,
+			result: '',
 			transferInfo: {
 				oldUserId: '',
 				oldPassword: '',
@@ -58,9 +69,80 @@ export default {
 	onLoad() {
 
 	},
-	method: {
+	methods: {
 		handleSubmit() {
-
+			if (!this.transferInfo.oldUserId ||
+				!this.transferInfo.oldPassword ||
+				!this.transferInfo.oldServerId ||
+				!this.transferInfo.newUserId ||
+				!this.transferInfo.newServerId) {
+				this.$toast('输入信息不全')
+				return
+			}
+			this.disabledBtn = true
+			const params = {
+				from_id: this.transferInfo.oldUserId,
+				from_server: this.transferInfo.oldServerId,
+				from_pwd_md5: CryptoJS.MD5(this.transferInfo.oldPassword),
+				to_id: this.transferInfo.newUserId,
+				to_server: this.transferInfo.newServerId
+			}
+			transferTime(params).then(res => {
+				this.disabledBtn = false
+				const code = res.code
+				const message = res.message
+				switch (code) {
+					case 200:
+						this.$toast('转移成功')
+						this.result = res
+						this.transferSuccess = true
+						break
+					case 401:
+						uni.showModal({
+							title: '转移失败',
+							content: message,
+						})
+						break
+					case 402:
+						uni.showModal({
+							title: '转移失败',
+							content: message,
+						})
+						break
+					case 403:
+						uni.showModal({
+							title: '转移失败',
+							content: message,
+						})
+						break
+					case 404:
+						uni.showModal({
+							title: '转移失败',
+							content: message,
+						})
+						break
+					case 405:
+						uni.showModal({
+							title: '转移失败',
+							content: message,
+						})
+						break
+					case 406:
+						uni.showModal({
+							title: '转移失败',
+							content: message,
+						})
+						break
+					case 407:
+						uni.showModal({
+							title: '转移失败',
+							content: message,
+						})
+						break
+				}
+			}).catch(() => {
+				this.disabledBtn = false
+			})
 		}
 	}
 }
@@ -91,5 +173,13 @@ export default {
 	align-items: center;
 	justify-content: center;
 	margin: 20upx 0;
+}
+.result-wrap {
+	margin-bottom: 40upx;
+}
+.success-title {
+	color: #0B9422;
+	/* font-size: 36px; */
+	font-weight: 600;
 }
 </style>

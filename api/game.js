@@ -73,3 +73,12 @@ export function getUtils(params) {
     {params}
   )
 }
+
+// 转移时间
+// 修改配置信息
+export function transferTime(data) {
+  return httpForm.post(
+    'http://www.huojiangame.com:11658/jqcm/transfer_time.php',
+    data
+  )
+}

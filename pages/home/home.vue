@@ -392,7 +392,7 @@
 							</view>
 					</view>
 					<view class="flex-item-two">
-						<view class="uni-list-cell-db">自动魔族入侵BOSS1</view>
+						<view class="uni-list-cell-db">魔族入侵1</view>
 		        <switch :checked="!!configInfo.boss_id1" @change="changeSwitchBOSS1"/>
 					</view>
 		    </view>
@@ -406,7 +406,7 @@
 							</view>
 					</view>
 					<view class="flex-item-two">
-						<view class="uni-list-cell-db">自动魔族入侵BOSS2</view>
+						<view class="uni-list-cell-db">魔族入侵2</view>
 		        <switch :checked="!!configInfo.boss_id2" @change="changeSwitchBOSS2"/>
 					</view>
 		    </view>
