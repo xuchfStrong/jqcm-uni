@@ -3,23 +3,23 @@
 		<view class="input-group">
 		    <view class="input-row border">
 		        <text class="title-lang">原辅助ID：</text>
-		        <m-input class="m-input" type="text" :disabled="false"  clearable focus v-model="transferInfo.oldUserId" placeholder="请输入原辅助ID"></m-input>
+		        <m-input class="m-input" type="text" :disabled="false"  clearable focus v-model="transferInfo.oldUserId" placeholder="请输入辅助续费ID"></m-input>
 		    </view>
 		    <view class="input-row border">
 		        <text class="title-lang">原辅助密码：</text>
-		        <m-input type="password" displayable v-model="transferInfo.oldPassword" placeholder="请输入原辅助密码"></m-input>
+		        <m-input type="password" displayable v-model="transferInfo.oldPassword" placeholder="请输入登录辅助的密码"></m-input>
 		    </view>
 				<view class="input-row border">
-		        <text class="title-lang">原服务器ID：</text>
-		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.oldServerId" placeholder="请输入原服务器ID"></m-input>
+		        <text class="title-lang">原区服ID：</text>
+		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.oldServerId" placeholder="请输入原区服ID"></m-input>
 		    </view>
 				<view class="input-row border">
 		        <text class="title-lang">新辅助ID：</text>
-		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.newUserId" placeholder="请输入新辅助ID"></m-input>
+		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.newUserId" placeholder="请输入辅助续费ID"></m-input>
 		    </view>
 				<view class="input-row border">
-		        <text class="title-lang">新服务器ID：</text>
-		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.newServerId" placeholder="请输入新服务器ID"></m-input>
+		        <text class="title-lang">新区服ID：</text>
+		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.newServerId" placeholder="请输入新区服ID"></m-input>
 		    </view>
 		</view>
 
@@ -91,54 +91,15 @@ export default {
 				this.disabledBtn = false
 				const code = res.code
 				const message = res.message
-				switch (code) {
-					case 200:
-						this.$toast('转移成功')
-						this.result = res
-						this.transferSuccess = true
-						break
-					case 401:
-						uni.showModal({
-							title: '转移失败',
-							content: message,
-						})
-						break
-					case 402:
-						uni.showModal({
-							title: '转移失败',
-							content: message,
-						})
-						break
-					case 403:
-						uni.showModal({
-							title: '转移失败',
-							content: message,
-						})
-						break
-					case 404:
-						uni.showModal({
-							title: '转移失败',
-							content: message,
-						})
-						break
-					case 405:
-						uni.showModal({
-							title: '转移失败',
-							content: message,
-						})
-						break
-					case 406:
-						uni.showModal({
-							title: '转移失败',
-							content: message,
-						})
-						break
-					case 407:
-						uni.showModal({
-							title: '转移失败',
-							content: message,
-						})
-						break
+				if (code === 200) {
+					this.$toast('转移成功')
+					this.result = res
+					this.transferSuccess = true
+				} else {
+					uni.showModal({
+						title: '转移失败',
+						content: message,
+					})
 				}
 			}).catch(() => {
 				this.disabledBtn = false

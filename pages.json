@@ -27,7 +27,8 @@
 		{
 			"path": "pages/update/update",
 			"style": {
-				"navigationBarTitleText": "更新"
+				"navigationBarTitleText": "更新",
+				"enablePullDownRefresh": true
 			}
 		},
 		{

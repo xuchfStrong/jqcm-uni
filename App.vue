@@ -9,14 +9,18 @@
 			        success: (result) => {  
 			            var data = result.data;
 									var wgtUrl = ''
-									if (that.$global.jqcmVersion === 1) {
+									var pkgUrl = ''
+									if (that.$global.jqcmSaleChannel === 1) {
 										wgtUrl = data.wgtUrl1
-									} else if (that.$global.jqcmVersion === 2) {
+										pkgUrl = data.pkgUrl1
+									} else if (that.$global.jqcmSaleChannel === 2) {
 										wgtUrl = data.wgtUrl2
-									} else if (that.$global.jqcmVersion === 3) {
+										pkgUrl = data.pkgUrl2
+									} else if (that.$global.jqcmSaleChannel === 3) {
 										wgtUrl = data.wgtUrl3
+										pkgUrl = data.pkgUrl3
 									} 
-			            if (data.version > that.$global.jqcmVersion && wgtUrl) {  
+			            if (data.version > that.$global.jqcmVersion && wgtUrl && data.updateType ===1 ) {  // 热更新
 											// uni.showModal({
 											//     title: "发现新版本",
 											//     content: "确认下载更新",
@@ -55,7 +59,19 @@
 			                        }
 			                    }  
 			                }); 
-			            }  
+									}
+									if (data.version > that.$global.jqcmVersion && pkgUrl && data.updateType === 2 ) { //整包更新
+										uni.showModal({ //提醒用户更新  
+											title: "更新提示",  
+											content: data.note,  
+											success: (res) => {  
+												if (res.confirm) {  
+													plus.runtime.openURL(pkgUrl);  
+												}  
+											}  
+										})  
+									}
+									  
 			        }  
 			    });  
 			});  

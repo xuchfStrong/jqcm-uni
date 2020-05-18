@@ -243,7 +243,7 @@
 		        <switch :checked="!!configInfo.is_shenglingwan" @change="changeSwitchBoolean('is_shenglingwan')"/>
 		    </view>
 		    <view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动魔帝</view>
+		        <view class="uni-list-cell-db">自动魔君</view>
 		        <switch :checked="!!configInfo.is_modi" @change="changeSwitchBoolean('is_modi')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
@@ -251,23 +251,23 @@
 		        <switch :checked="!!configInfo.is_richang" @change="changeSwitchBoolean('is_richang')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">日常购买-灵币</view>
+		        <view class="uni-list-cell-db">日常副本购买-灵币</view>
 		        <switch :checked="!!configInfo.is_goumai_richang_lingbi" @change="changeSwitchBoolean('is_goumai_richang_lingbi')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">日常购买-精炼石</view>
+		        <view class="uni-list-cell-db">日常副本购买-精炼石</view>
 		        <switch :checked="!!configInfo.is_goumai_richang_jinglian" @change="changeSwitchBoolean('is_goumai_richang_jinglian')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">日常购买-进阶丹</view>
+		        <view class="uni-list-cell-db">日常副本购买-进阶丹</view>
 		        <switch :checked="!!configInfo.is_goumai_richang_jinjie" @change="changeSwitchBoolean('is_goumai_richang_jinjie')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">日常购买-升星丹</view>
+		        <view class="uni-list-cell-db">日常副本购买-升星丹</view>
 		        <switch :checked="!!configInfo.is_goumai_richang_shengxing" @change="changeSwitchBoolean('is_goumai_richang_shengxing')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">日常购买-注灵石</view>
+		        <view class="uni-list-cell-db">日常副本购买-注灵石</view>
 		        <switch :checked="!!configInfo.is_goumai_richang_zhuling" @change="changeSwitchBoolean('is_goumai_richang_zhuling')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
@@ -1441,6 +1441,7 @@ export default {
 }
 .attr-flex-item {
 	flex: 1;
+	flex-basis: auto;
 	width: 33.3%;
 	/* 加入这两个后每个item的宽度就生效了 */
 	min-width: 33.3%;
@@ -1448,6 +1449,7 @@ export default {
 }
 .flex-lixian-item {
 	flex: 1;
+	flex-basis: auto;
 	width: 65%;
 	min-width: 65%;
 	max-width: 65%;
@@ -1455,6 +1457,7 @@ export default {
 .list-cell {
 	display: flex;
 	flex: 1;
+	flex-basis: auto;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
@@ -1470,6 +1473,7 @@ export default {
 }
 .radio-flex-item {
 	flex: 1;
+	flex-basis: auto;
 	width: 32%;
 	/* 加入这两个后每个item的宽度就生效了 */
 	min-width: 32%;
