@@ -133,10 +133,10 @@ export default {
 			                  }  
 			              }); 
                 }
-                if (data.test.version > that.$global.jqcmVersion && pkgUrl && data.updateType === 2 ) { //整包更新
+                if (data.test.version > that.$global.jqcmVersion && pkgUrl && data.tesst.updateType === 2 ) { //整包更新
 									uni.showModal({ //提醒用户更新  
 										title: "更新提示",  
-										content: data.note,  
+										content: data.test.note,  
 										success: (res) => {  
 											if (res.confirm) {  
 												plus.runtime.openURL(pkgUrl);  
