@@ -104,6 +104,32 @@ export function handleGetServerConfigWJXL(channelId, userId) {
   })
 }
 
+// 获取无尽修炼2服务器列表和最后登录服务器
+export function handleGetServerConfigWJXL2(channelId, userId) {
+  return new Promise((reslove, reject) => {
+    const param = {
+      v: '1.1.54',
+      game_id: 8,
+      channelId: 6041,
+      channel: 'biguo',
+      user_name: userId
+    }
+    const reslove1 = reslove
+    const reject1 = reject
+    getServerConfigWJXL(param).then(res => {
+      const serverInfo = {}
+      if (res.server_list) {
+        serverInfo.client_ip = res.client_ip
+        serverInfo.last_server_list = formatLastServerList(res.last_server_list)
+        serverInfo.server_list = formatServerList(res.server_list)
+      }
+      reslove1(serverInfo)
+    }).catch(err => {
+      reject1(err)
+    })
+  })
+}
+
 // 将服务器信息格式化，将增加text和value属性用于下拉列表显示
 function formatServerList(serverList) {
   const list = serverList.map(item => {

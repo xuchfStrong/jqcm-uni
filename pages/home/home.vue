@@ -38,6 +38,7 @@
 		<text v-if="utils.showContact&&$global.jqcmSaleChannel===1" class="waring-wrap">{{ utils.contact }}</text>
 		<text v-if="utils.showContact2&&$global.jqcmSaleChannel===2" class="waring-wrap">{{ utils.contact2 }}</text>
 		<text v-if="utils.showContact3&&$global.jqcmSaleChannel===3" class="waring-wrap">{{ utils.contact3 }}</text>
+		<text v-if="utils.showContact4&&$global.jqcmSaleChannel===4" class="waring-wrap">{{ utils.contact4 }}</text>
 		
 		
 		<view class="uni-divider">
@@ -83,7 +84,7 @@
 				<button v-if="configInfo.on_off" type="warn" size="mini" @tap="handleStopguaji">停止云挂机</button>
 				<button v-else type="primary" size="mini" @tap="handleStartguaji">开启云挂机</button>
 				<text style="width: 10upx; display: inline-block;"></text>
-				<button type="primary" size="mini" @tap="handleGuajiStatus">获取最新数据</button>
+				<button :loading="statusLoading" :disabled="statusLoading" type="primary" size="mini" @tap="handleGuajiStatus">获取最新数据</button>
 			</view>
 		</view>
 		
@@ -618,6 +619,7 @@ export default {
 			},
 			index: 0,
 			current: 0,
+			statusLoading: false,
 			yunguaji: false,
 			options:options,
 			configInfo: Object.assign({}, configInfoDefault),
@@ -934,9 +936,11 @@ export default {
       const param = {
         userid: this.loginInfo.userId,
         server_id: this.userInfo.server
-      }
+			}
+			this.statusLoading = true
       getRoleInfo(param).then(res => { // 查询角色信息
-        const code = res.code
+				const code = res.code
+				this.statusLoading = false
         switch (code) {
           case 200:
             this.roleInfo = res.data

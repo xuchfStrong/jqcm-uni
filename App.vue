@@ -19,7 +19,10 @@
 									} else if (that.$global.jqcmSaleChannel === 3) {
 										wgtUrl = data.wgtUrl3
 										pkgUrl = data.pkgUrl3
-									} 
+									} else if (that.$global.jqcmSaleChannel === 4) {
+										wgtUrl = data.wgtUrl4
+										pkgUrl = data.pkgUrl4
+									}
 			            if (data.version > that.$global.jqcmVersion && wgtUrl && data.updateType ===1 ) {  // 热更新
 											// uni.showModal({
 											//     title: "发现新版本",

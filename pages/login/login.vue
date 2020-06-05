@@ -38,7 +38,8 @@ import { http } from '@/utils/request.js'
 import save from '@/utils/save'
 import { loginFirstStep, loginSecondStep, loginThirdStep } from '@/api/login'
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
-import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL } from '@/utils/server'
+import { loginFirstStepWJXL2, loginThirdStepWJXL2 } from '@/api/login'
+import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2 } from '@/utils/server'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
 import { genRandomNumber, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
 import service from '../../service.js';
@@ -52,7 +53,6 @@ export default {
 	},
 	data() {
 		return {
-			array: ['中国', '美国', '巴西', '日本'],
 			platformIndex: 0,
 			platformName: '',
 			account: '',
@@ -138,6 +138,8 @@ export default {
 						this.handleLoginFirstStepTapTap() // TapTap平台
 					} else if (this.userInfo.loginType === 12) {
 						this.handleLoginFirstStep() // 无尽修炼
+					} else if (this.userInfo.loginType === 14) {
+						this.handleLoginFirstStepWJXL2() // 无尽修炼2
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -160,6 +162,8 @@ export default {
 						this.handleLoginFirstStepTapTap() // TapTap平台
 					} else if (this.userInfo.loginType === 12) {
 						this.handleLoginFirstStep() // 无尽修炼
+					} else if (this.userInfo.loginType === 14) {
+						this.handleLoginFirstStepWJXL2() // 无尽修炼2
 					} else {
 						uni.showToast({
 							title: '登录失败，请使用登陆助手提取账号密码后再登录。',
@@ -265,7 +269,59 @@ export default {
       }).catch(err => {
         console.log(err)
       })
-    },
+		},
+		
+		// 无尽修炼2登录第一步
+		handleLoginFirstStepWJXL2() {
+		  if (!this.userInfo.usernamePlatForm || !this.userInfo.passwordPlatForm) {
+				uni.showToast({
+					title: '请输入用户名和密码',
+					duration: 2000,
+					icon: 'none'
+				})
+		    return
+		  }
+		  const timeStamp = Date.parse(new Date()) / 1000
+		  const key = '3c6e72643280b10219ea43b9d06c30c6'
+		  this.userInfo.udid = genRandomNumber(15)
+		  const param = {
+		    device_type: this.userInfo.deviceType,
+		    account: this.userInfo.usernamePlatForm, // 用户名
+		    password: this.userInfo.passwordPlatForm, // 密码
+		    sign: CryptoJS.MD5(key + 'WX' + this.userInfo.site + 'WX' + timeStamp + timeStamp).toString(),
+		    time: timeStamp,
+		    mac: this.userInfo.mac || genMac(),
+		    site: this.userInfo.site,
+		    sessionid: this.userInfo.sessionid,
+		    version: '6.0.1',
+		    channelid: '',
+		    uid: this.userInfo.uid,
+		    adid: this.userInfo.adid || genRandomNumber(17),
+		    udid: this.userInfo.udid,
+		    aid: this.userInfo.aid || genUUID(),
+		    openuidi: this.userInfo.udid
+		  }
+		  this.userInfo.mac = param.mac
+		  this.userInfo.adid = param.adid
+		  this.userInfo.aid = param.aid
+			loginFirstStepWJXL2(param).then(res => {
+		    if (res.result === 0) {
+		      this.userInfo.nickname = res.data.nickname
+					this.loginInfo.sessionid = res.data.sessionid
+					this.loginInfo.userId = res.data.uid
+		      this.handleLoginSecondStep()
+		    } else {
+		      this.flag.showServer = false
+					uni.showToast({
+							title: res.data.msg,
+							duration: 2000,
+							icon: 'none'
+					})
+		    }
+		  }).catch(err => {
+		    console.log(err)
+		  })
+		},
 
 		// 登录第二步，获取usertoken
 		handleLoginSecondStep() {
@@ -287,6 +343,8 @@ export default {
 				channelId = 6008
 			} else if (this.userInfo.loginType === 12) { // 无尽修炼
 				channelId = 6030
+			}else if (this.userInfo.loginType === 14) { // 无尽修炼2
+				channelId = 6041
 			}
 			const arr = [6, channelId, str1, this.userInfo.aid, timeStamp, '1.2', 'cG3dKvBJ10mTGrHf5IOzQLH1dn']
 			const singStr = arr.join('#')
@@ -323,6 +381,11 @@ export default {
 						handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStep()
+						})
+					} else if (this.userInfo.loginType === 14) { // 无尽修炼2
+						handleGetServerConfigWJXL2(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.handleLoginThirdStepWJXL2()
 						})
 					}
 				}
@@ -396,6 +459,23 @@ export default {
         channelId: this.loginInfo.channelId
       }
       loginThirdStepTapTap(param).then(res => {
+        this.loginInfo.token = res.token
+        this.loginInfo.time = res.time
+        this.loginInfo.pfId = res.pfId
+        this.handleAddUser()
+      }).catch(err => {
+        console.log(err)
+      })
+		},
+		
+		// 登录第三步
+    handleLoginThirdStepWJXL2() {
+      const param = {
+        userId: this.loginInfo.userId,
+        token: this.loginInfo.token,
+        channelId: this.loginInfo.channelId
+      }
+      loginThirdStepWJXL2(param).then(res => {
         this.loginInfo.token = res.token
         this.loginInfo.time = res.time
         this.loginInfo.pfId = res.pfId

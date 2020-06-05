@@ -23,6 +23,9 @@
           <a v-if="$global.jqcmSaleChannel===3" :href="utils.apkDownloadUrlNew3">
             <text>点击下载辅助APP</text>
           </a>
+          <a v-if="$global.jqcmSaleChannel===4" :href="utils.apkDownloadUrlNew4">
+            <text>点击下载辅助APP</text>
+          </a>
           <!-- <button type="primary" @tap="downloadImage">下载</button> -->
         </view>
       </view>

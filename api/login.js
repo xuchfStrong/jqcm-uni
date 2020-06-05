@@ -24,7 +24,24 @@ export function loginThirdStep(params) {
   )
 }
 
-// 无尽修炼登录第三步
+// 无尽修炼2登录一步
+export function loginFirstStepWJXL2(data) {
+  return http.post(
+    // 'http://center.youxirs.com/api/login',
+    'http://106.54.36.248:9080/jqcm_login_wjxl2/api/login',
+    data
+  )
+}
+
+// 无尽修炼2登录第三步
+export function loginThirdStepWJXL2(params) {
+  return http.get(
+    'http://106.53.178.160:83/game/biguo/index_hlyx.php',
+    {params}
+  )
+}
+
+// 无尽修炼1登录第三步
 export function loginThirdStepWJXL(params) {
   return http.get(
     'http://106.53.178.160:83/game/biguo/index_ml.php',

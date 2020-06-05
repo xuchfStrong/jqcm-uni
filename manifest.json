@@ -2,8 +2,8 @@
     "name" : "剑气除魔火箭辅助",
     "appid" : "__UNI__5AE1708",
     "description" : "",
-    "versionName" : "1.4.3",
-    "versionCode" : 143,
+    "versionName" : "1.4.4",
+    "versionCode" : 144,
     "transformPx" : false,
     "app-plus" : {
         "nvueCompiler" : "uni-app",
@@ -73,16 +73,50 @@
                 }
             }
         },
-        "nvueLaunchMode" : "fast"
+        "nvueLaunchMode" : "fast",
+        "uniStatistics" : {
+            "enable" : true
+        }
     },
     "quickapp" : {},
     "mp-weixin" : {
         "appid" : "",
         "setting" : {
             "urlCheck" : true
+        },
+        "uniStatistics" : {
+            "enable" : true
         }
     },
     "compatible" : {
         "ignoreVersion" : true
+    },
+    "h5" : {
+        "uniStatistics" : {
+            "enable" : true
+        }
+    },
+    "uniStatistics" : {
+        "enable" : true
+    },
+    "mp-alipay" : {
+        "uniStatistics" : {
+            "enable" : true
+        }
+    },
+    "mp-baidu" : {
+        "uniStatistics" : {
+            "enable" : true
+        }
+    },
+    "mp-qq" : {
+        "uniStatistics" : {
+            "enable" : true
+        }
+    },
+    "mp-toutiao" : {
+        "uniStatistics" : {
+            "enable" : true
+        }
     }
 }
