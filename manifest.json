@@ -76,7 +76,10 @@
         "nvueLaunchMode" : "fast",
         "uniStatistics" : {
             "enable" : true
-        }
+        },
+		"compatible" : {
+		    "ignoreVersion" : true
+		}
     },
     "quickapp" : {},
     "mp-weixin" : {
@@ -87,9 +90,6 @@
         "uniStatistics" : {
             "enable" : true
         }
-    },
-    "compatible" : {
-        "ignoreVersion" : true
     },
     "h5" : {
         "uniStatistics" : {
