@@ -28,6 +28,19 @@
 		<view class="btn-row">
 		    <button type="primary" class="primary" @tap="handleCheckUserStatus">登录</button>
 		</view>
+
+		<view style="margin-top:10px; color:#1989fa; text-align: center;">
+      <a :href="utils.zhushouUrl">
+        <text>点击下载登录助手</text>
+      </a>
+    </view>
+
+		<view>
+			<view class="content">
+				<view class="sub-title">登录说明:</view>
+				<view v-for="(item,index) in loginDescription.description" :key="index" class="item-wrap">{{ item }}</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -36,9 +49,17 @@ import moment from 'moment'
 import CryptoJS from 'crypto-js'
 import { http } from '@/utils/request.js'
 import save from '@/utils/save'
-import { loginFirstStep, loginSecondStep, loginThirdStep } from '@/api/login'
+import loginDescription from './loginDescription.json'
+// #ifdef H5
+import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2 } from '@/api/login'
+// #endif
+// #ifdef APP-PLUS
+import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2 } from '@/api/loginApp'
+// #endif
+import { getUtils } from '@/api/game'
+import { loginThirdStep } from '@/api/login'
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
-import { loginFirstStepWJXL2, loginThirdStepWJXL2 } from '@/api/login'
+import { loginThirdStepWJXL2 } from '@/api/login'
 import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2 } from '@/utils/server'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
 import { genRandomNumber, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
@@ -53,6 +74,7 @@ export default {
 	},
 	data() {
 		return {
+			loginDescription: loginDescription,
 			platformIndex: 0,
 			platformName: '',
 			account: '',
@@ -61,6 +83,7 @@ export default {
 			options:options,
 			remoteOptions: {},
 			configInfo: '',
+			utils: '',
 			flag: {
 			    loginFlag: false,
 			    logoutFlag: false,
@@ -103,6 +126,7 @@ export default {
 	},
 	onLoad() {
 		this.handleGetRemoteOptions()
+		this.handleGetUtils()
 	},
 	methods: {
 		// 获取远程选项
@@ -116,6 +140,15 @@ export default {
 				console.log(err)
 			})
 		},
+
+		// 获取Utils
+		handleGetUtils() {
+      getUtils().then(res => {
+        this.utils = res
+      }).catch(err => {
+        console.log(err)
+      })
+    },
 		
 		// 在辅助服务端检查用户状态
 		handleCheckUserStatus() {
@@ -649,5 +682,16 @@ export default {
 	width: 32%;
 	min-width: 32%;
 	max-width: 32%;
+}
+.content {
+  padding: 10rpx 30rpx;
+	user-select: text;
+}
+.sub-title {
+	font-weight: 600;
+}
+.item-wrap {
+  color: #969799;
+  padding-bottom: 20rpx;
 }
 </style>

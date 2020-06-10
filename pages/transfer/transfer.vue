@@ -11,7 +11,7 @@
 		    </view>
 				<view class="input-row border">
 		        <text class="title-lang">原区服ID：</text>
-		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.oldServerId" placeholder="请输入原区服ID"></m-input>
+		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.oldServerId" placeholder="请输入原区服ID,如481,60019"></m-input>
 		    </view>
 				<view class="input-row border">
 		        <text class="title-lang">新辅助ID：</text>
@@ -19,7 +19,7 @@
 		    </view>
 				<view class="input-row border">
 		        <text class="title-lang">新区服ID：</text>
-		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.newServerId" placeholder="请输入新区服ID"></m-input>
+		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.newServerId" placeholder="请输入新区服ID,如801,70010"></m-input>
 		    </view>
 		</view>
 
