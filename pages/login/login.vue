@@ -166,13 +166,73 @@ export default {
 					// 获取用户信息
 					this.loginInfo.userId = res.userid
 					if (this.userInfo.loginType === 1) { // 官方平台
+						// #ifdef APP-PLUS
 						this.handleLoginFirstStep() // 去服务端校验
+						// #endif
+						// #ifdef H5
+						handleGetServerConfig(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+						// #endif
 					} else if (this.userInfo.loginType === 2) {
+						// #ifdef APP-PLUS
 						this.handleLoginFirstStepTapTap() // TapTap平台
+						// #endif
+						// #ifdef H5
+						handleGetServerConfigTapTap(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+						// #endif
 					} else if (this.userInfo.loginType === 12) {
+						// #ifdef APP-PLUS
 						this.handleLoginFirstStep() // 无尽修炼
+						// #endif
+						// #ifdef H5
+						handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+						// #endif
 					} else if (this.userInfo.loginType === 14) {
+						// #ifdef APP-PLUS
 						this.handleLoginFirstStepWJXL2() // 无尽修炼2
+						// #endif
+						// #ifdef H5
+						handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+						// #endif
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码

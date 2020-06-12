@@ -50,10 +50,10 @@
 			<text>平台：</text>
 			<text>{{ this.platformName }}</text>
 		</view>
-		<view>
+		<!-- <view>
 			<text>账号：</text>
 			<text>{{ userInfo.usernamePlatForm }}</text>
-		</view>
+		</view> -->
 		<view>
 			<text>角色名：</text>
 			<text>{{ roleInfo.role_name }}</text>
@@ -523,7 +523,7 @@ import {mapState,mapMutations} from 'vuex'
 import { getValueByIndex, getIndexByValue } from '@/utils/index'
 import { startGuaji, stopGuaji } from '@/api/game'
 import { getRoleInfo, getConfigInfo, changeConfigInfo, getUtils, getRemoteOptions } from '@/api/game'
-import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL } from '@/utils/server'
+import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2 } from '@/utils/server'
 import options from '@/utils/options.json'
 import { jingjieMap, weimianMap, vipMap } from './mapData.js'
 import mInput from '../../components/m-input.vue'
@@ -894,6 +894,12 @@ export default {
 				})
       } else if (this.userInfo.loginType === 12) { // 无尽修炼
         handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.saveLoginInfo()
+					this.$toast("服务器更新成功")
+				})
+      } else if (this.userInfo.loginType === 14) { // 无尽修炼2
+        handleGetServerConfigWJXL2(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()
 					this.$toast("服务器更新成功")

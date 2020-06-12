@@ -8,29 +8,15 @@ export function loginFirstStep(data) {
   )
 }
 
-// 登录一步,在app上不需要代理
-export function loginFirstStepApp(data) {
-  return http.post(
-    'http://center.wscbwh.cn/api/login',
-    data
-  )
-}
-
 // 登录二步获取用户token
 export function loginSecondStep(params) {
   return http.get(
     'http://106.54.36.248:9080/jqcm_usertoken/user/v1/token',
+    // 'http://192.168.0.170:9080/jqcm_usertoken/user/v1/token',
     {params}
   )
 }
 
-// 登录二步获取用户token,在app上不需要代理
-export function loginSecondStepApp(params) {
-  return http.get(
-    'http://ufo.66hjh.com/user/v1/token',
-    {params}
-  )
-}
 
 // 登录第三步
 export function loginThirdStep(params) {
@@ -44,14 +30,6 @@ export function loginThirdStep(params) {
 export function loginFirstStepWJXL2(data) {
   return http.post(
     'http://106.54.36.248:9080/jqcm_login_wjxl2/api/login',
-    data
-  )
-}
-
-// 无尽修炼2登录一步,在app上不需要代理
-export function loginFirstStepWJXL2App(data) {
-  return http.post(
-    'http://center.youxirs.com/api/login',
     data
   )
 }
