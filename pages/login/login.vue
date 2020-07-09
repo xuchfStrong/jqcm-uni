@@ -60,7 +60,7 @@ import { getUtils } from '@/api/game'
 import { loginThirdStep } from '@/api/login'
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
 import { loginThirdStepWJXL2 } from '@/api/login'
-import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2 } from '@/utils/server'
+import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2, handleGetServerConfigDJJH } from '@/utils/server'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
 import { genRandomNumber, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
 import service from '../../service.js';
@@ -233,9 +233,43 @@ export default {
 							icon: 'none'
 						})
 						// #endif
+					} else if (this.userInfo.loginType === 15) { // 单机江湖-渠道服
+						// #ifdef APP-PLUS
+						this.handleLoginFirstStepDJJH()
+						// #endif
+						// #ifdef H5
+						handleGetServerConfigDJJH(6044, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+						// #endif
+					} else if (this.userInfo.loginType === 16) { // 单机江湖-无尽1
+						// #ifdef APP-PLUS
+						this.handleLoginFirstStepDJJH()
+						// #endif
+						// #ifdef H5
+						handleGetServerConfigDJJH(6046, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+						// #endif
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
-						handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
+						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
 							this.serverInfo = serverInfo
 							this.flag.showServer = true
 							this.saveLoginInfo()
@@ -257,6 +291,8 @@ export default {
 						this.handleLoginFirstStep() // 无尽修炼
 					} else if (this.userInfo.loginType === 14) {
 						this.handleLoginFirstStepWJXL2() // 无尽修炼2
+					} else if (this.userInfo.loginType === 15) {
+						this.handleLoginFirstStepDJJH() // 单机江湖
 					} else {
 						uni.showToast({
 							title: '登录失败，请使用登陆助手提取账号密码后再登录。',
@@ -416,21 +452,61 @@ export default {
 		  })
 		},
 
+		// 单机江湖登录第一步
+		handleLoginFirstStepDJJH() {
+		  if (!this.userInfo.usernamePlatForm || !this.userInfo.passwordPlatForm) {
+				uni.showToast({
+					title: '请输入用户名和密码',
+					duration: 2000,
+					icon: 'none'
+				})
+		    return
+		  }
+		  const timeStamp = Date.parse(new Date()) / 1000
+		  const key = 'd42b5fca3c3ce4328c302bb9ffe06443'
+		  this.userInfo.udid = genRandomNumber(15)
+		  const param = {
+		    device_type: this.userInfo.deviceType,
+		    account: this.userInfo.usernamePlatForm, // 用户名
+		    password: this.userInfo.passwordPlatForm, // 密码
+		    sign: CryptoJS.MD5(key + 'WX' + 'jqcmwjxl_android' + 'WX' + timeStamp + timeStamp).toString(),
+		    time: timeStamp,
+		    mac: this.userInfo.mac || genMac(),
+		    site: 'jqcmwjxl_android',
+		    sessionid: this.userInfo.sessionid,
+		    version: '6.0.1',
+		    channelid: '',
+		    uid: this.userInfo.uid,
+		    adid: this.userInfo.adid || genRandomNumber(17),
+		    udid: this.userInfo.udid,
+		    aid: this.userInfo.aid || genUUID(),
+		    openuidi: this.userInfo.udid
+		  }
+		  this.userInfo.mac = param.mac
+		  this.userInfo.adid = param.adid
+		  this.userInfo.aid = param.aid
+			loginFirstStep(param).then(res => {
+		    if (res.result === 0) {
+		      this.userInfo.nickname = res.data.nickname
+					this.loginInfo.sessionid = res.data.sessionid
+					this.loginInfo.userId = res.data.uid
+		      this.handleLoginSecondStep()
+		    } else {
+		      this.flag.showServer = false
+					uni.showToast({
+							title: res.data.msg,
+							duration: 2000,
+							icon: 'none'
+					})
+		    }
+		  }).catch(err => {
+		    console.log(err)
+		  })
+		},
+
 		// 登录第二步，获取usertoken
 		handleLoginSecondStep() {
-			const timeStamp = Date.parse(new Date()) / 1000
-			const signObj = {
-				uid: this.loginInfo.userId,
-				sessionid: this.loginInfo.sessionid,
-				data: {
-					site: 'jqcm_data',
-					channel: '116',
-					uid: this.loginInfo.userId,
-					sessionid: this.loginInfo.sessionid,
-					userName: this.userInfo.usernamePlatForm
-				}
-			}
-			const str1 = JSON.stringify(signObj)
+			let site = 'jqcm_data'
 			let channelId = ''
 			if (this.userInfo.loginType === 1) { // 官方平台
 				channelId = 6008
@@ -438,7 +514,26 @@ export default {
 				channelId = 6030
 			}else if (this.userInfo.loginType === 14) { // 无尽修炼2
 				channelId = 6041
+			}else if (this.userInfo.loginType === 15) { // 单机江湖-渠道服
+				channelId = 6044
+				site = 'jqcmwjxl_data'
+			}else if (this.userInfo.loginType === 16) { // 单机江湖-无尽1
+				channelId = 6046
+				site = 'jqcmwjxl_data'
 			}
+			const timeStamp = Date.parse(new Date()) / 1000
+			const signObj = {
+				uid: this.loginInfo.userId,
+				sessionid: this.loginInfo.sessionid,
+				data: {
+					site: site,
+					channel: '116',
+					uid: this.loginInfo.userId,
+					sessionid: this.loginInfo.sessionid,
+					userName: this.userInfo.usernamePlatForm
+				}
+			}
+			const str1 = JSON.stringify(signObj)
 			const arr = [6, channelId, str1, this.userInfo.aid, timeStamp, '1.2', 'cG3dKvBJ10mTGrHf5IOzQLH1dn']
 			const singStr = arr.join('#')
 			const param = {
@@ -452,7 +547,7 @@ export default {
 					uid: this.loginInfo.userId,
 					sessionid: this.loginInfo.sessionid,
 					data: {
-						site: 'jqcm_data',
+						site: site,
 						channel: '116',
 						uid: this.loginInfo.userId,
 						sessionid: this.loginInfo.sessionid,
@@ -479,6 +574,16 @@ export default {
 						handleGetServerConfigWJXL2(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStepWJXL2()
+						})
+					} else if (this.userInfo.loginType === 15) { // 单机江湖-渠道服
+						handleGetServerConfigDJJH(6044, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.handleLoginThirdStep()
+						})
+					} else if (this.userInfo.loginType === 16) { // 单机江湖-无尽1
+						handleGetServerConfigDJJH(6046, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.handleLoginThirdStep()
 						})
 					}
 				}

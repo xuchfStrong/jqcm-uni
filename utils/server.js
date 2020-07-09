@@ -78,6 +78,32 @@ export function handleGetServerConfigOther(channelId, userId) {
   })
 }
 
+// 获取单机江湖服务器列表和最后登录服务器
+export function handleGetServerConfigDJJH(channelId, userId) {
+  return new Promise((reslove, reject) => {
+    const param = {
+      v: '1.1.54',
+      game_id: 6,
+      channelId: channelId,
+      channel: 'biguo',
+      user_name: userId
+    }
+    const reslove1 = reslove
+    const reject1 = reject
+    getServerConfigQudao(param).then(res => {
+      const serverInfo = {}
+      if (res.server_list) {
+        serverInfo.client_ip = res.client_ip
+        serverInfo.last_server_list = formatLastServerList(res.last_server_list)
+        serverInfo.server_list = formatServerList(res.server_list)
+      }
+      reslove1(serverInfo)
+    }).catch(err => {
+      reject1(err)
+    })
+  })
+}
+
 // 获取无尽修炼服务器列表和最后登录服务器
 export function handleGetServerConfigWJXL(channelId, userId) {
   return new Promise((reslove, reject) => {

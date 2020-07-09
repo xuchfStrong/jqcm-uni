@@ -68,7 +68,9 @@
       {"value": 1,"text": "抢非同盟蓝色紫色"},
       {"value": 2,"text": "抢非同盟紫色"},
       {"value": 3,"text": "抢所有蓝色紫色"},
-      {"value": 4,"text": "抢所有紫色"}
+      {"value": 4,"text": "抢所有紫色"},
+      {"value": 5,"text": "抢非同盟绿蓝紫"},
+      {"value": 6,"text": "抢所有绿蓝紫"}
   ],
   "moyuleixing": [
     {"value":0,"text":"关闭自动打魔域"},

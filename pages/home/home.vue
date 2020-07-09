@@ -272,6 +272,14 @@
 		        <switch :checked="!!configInfo.is_goumai_richang_zhuling" @change="changeSwitchBoolean('is_goumai_richang_zhuling')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">自动魔族入侵</view>
+		        <switch :checked="!!configInfo.is_mozuruqin" @change="changeSwitchBoolean('is_mozuruqin')"/>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">自动换高收入位面</view>
+		        <switch :checked="!!configInfo.is_change_weimian" @change="changeSwitchBoolean('is_change_weimian')"/>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">自动仙斗</view>
 		        <switch :checked="!!configInfo.is_xiandou" @change="changeSwitchBoolean('is_xiandou')"/>
 		    </view>
@@ -384,7 +392,7 @@
 					</view>
 		    </view>
 
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
 									<picker @change="changePickerBOSS1" :value="configInfo.boss_id1" class="background-picker" range-key="text" :range="options.boss_id1">
@@ -410,7 +418,7 @@
 						<view class="uni-list-cell-db">魔族入侵2</view>
 		        <switch :checked="!!configInfo.boss_id2" @change="changeSwitchBOSS2"/>
 					</view>
-		    </view>
+		    </view> -->
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
@@ -439,6 +447,34 @@
 		        <switch :checked="!!configInfo.shenshou_id2" @change="changeSwitchLHSS2"/>
 					</view>
 		    </view>
+
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerLHSS3" :value="configInfo.shenshou_id3" class="background-picker" range-key="text" :range="remoteOptions.shenshou">
+											<view class="uni-input">{{remoteOptions.shenshou.length > 0? remoteOptions.shenshou[configInfo.shenshou_id3].text : ''}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">炼化神兽3</view>
+		        <switch :checked="!!configInfo.shenshou_id3" @change="changeSwitchLHSS3"/>
+					</view>
+		    </view>
+
+				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerLHSS4" :value="configInfo.shenshou_id4" class="background-picker" range-key="text" :range="remoteOptions.shenshou">
+											<view class="uni-input">{{remoteOptions.shenshou.length > 0? remoteOptions.shenshou[configInfo.shenshou_id4].text : ''}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">炼化神兽4</view>
+		        <switch :checked="!!configInfo.shenshou_id4" @change="changeSwitchLHSS4"/>
+					</view>
+		    </view> -->
 		</view>
 
 		<view class="uni-divider">
@@ -523,7 +559,12 @@ import {mapState,mapMutations} from 'vuex'
 import { getValueByIndex, getIndexByValue } from '@/utils/index'
 import { startGuaji, stopGuaji } from '@/api/game'
 import { getRoleInfo, getConfigInfo, changeConfigInfo, getUtils, getRemoteOptions } from '@/api/game'
-import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2 } from '@/utils/server'
+import { handleGetServerConfig, 
+		handleGetServerConfigTapTap, 
+		handleGetServerConfigOther, 
+		handleGetServerConfigWJXL, 
+		handleGetServerConfigWJXL2, 
+		handleGetServerConfigDJJH } from '@/utils/server'
 import options from '@/utils/options.json'
 import { jingjieMap, weimianMap, vipMap } from './mapData.js'
 import mInput from '../../components/m-input.vue'
@@ -533,7 +574,9 @@ const configInfoDefault = {
   is_xiandou: 0,
   is_shenglingwan: 0,
   is_modi: 1,
-  is_liandan: 0,
+	is_liandan: 0,
+	is_mozuruqin: 1,
+	is_change_weimian: 1,
   is_xianmengmijing: 0,
   is_liandanlianqixiulian: 0,
   is_use_dianfeng: 0,
@@ -545,11 +588,13 @@ const configInfoDefault = {
   yijigongjileixing: 0,
   moyuleixing: 0,
   boss_id1: 0,
-  boss_id2: 0,
+	boss_id2: 0,
   on_off: '',
   gongfagoumai: '',
 	shenshou_id1: 0,
 	shenshou_id2: 0,
+	shenshou_id3: 0,
+	shenshou_id4: 0,
   is_goumai_tiaozhan: 0,
 	is_goumai_lianhua: 0,
 	is_goumai_richang_lingbi: 0,
@@ -652,7 +697,6 @@ export default {
         moyuleixing: false,
         boss_id1: false,
         boss_id2: false,
-        shenshou_id1: false,
         gongfagoumai: false
 
       },
@@ -904,7 +948,19 @@ export default {
 					this.saveLoginInfo()
 					this.$toast("服务器更新成功")
 				})
-      } else { // 其他平台
+      } else if (this.userInfo.loginType === 15) { // 单机江湖-渠道服
+        handleGetServerConfigDJJH(6044, this.loginInfo.userId).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.saveLoginInfo()
+					this.$toast("服务器更新成功")
+				})
+      }  else if (this.userInfo.loginType === 16) { // 单机江湖-无尽1
+        handleGetServerConfigDJJH(6046, this.loginInfo.userId).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.saveLoginInfo()
+					this.$toast("服务器更新成功")
+				})
+      }   else { // 其他平台
         handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()
@@ -998,7 +1054,9 @@ export default {
         switch (code) {
           case 200:
             this.isClickLilianbeishu = false
-            this.configInfo = res.data
+						this.configInfo = res.data
+						if (!this.configInfo.shenshou_id3) this.$set(this.configInfo, 'shenshou_id3', 0)
+						if (!this.configInfo.shenshou_id4) this.$set(this.configInfo, 'shenshou_id4', 0)
             this.calsIsExpired(res.data.end_time)
 						this.calcGongfagoumai(String(res.data.gongfagoumai))
 						this.calcGongfaIndex()
@@ -1083,6 +1141,14 @@ export default {
 			const index = e.target.value
 			this.configInfo.shenshou_id2 = index
 		},
+		changePickerLHSS3(e) {
+			const index = e.target.value
+			this.configInfo.shenshou_id3 = index
+		},
+		changePickerLHSS4(e) {
+			const index = e.target.value
+			this.configInfo.shenshou_id4 = index
+		},
 
 		// 修改下拉选项后面的开关
 		changeSwitchLilian(e) {
@@ -1161,6 +1227,22 @@ export default {
 			const checked = e.target.value
 			if (!checked) {
 				this.configInfo.shenshou_id2 = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchLHSS3(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.shenshou_id3 = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchLHSS4(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.shenshou_id4 = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}
