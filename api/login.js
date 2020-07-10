@@ -26,6 +26,15 @@ export function loginThirdStep(params) {
   )
 }
 
+// 单机江湖无尽修炼1登录第三步
+export function loginThirdStepDDJHWJXL1(params) {
+  return http.get(
+    'http://106.53.178.160:83/game/biguo/index_ml.php',
+    {params}
+  )
+}
+
+
 // 无尽修炼2登录一步
 export function loginFirstStepWJXL2(data) {
   return http.post(

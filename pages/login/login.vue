@@ -57,9 +57,8 @@ import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2 } from '@/api/logi
 import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2 } from '@/api/loginApp'
 // #endif
 import { getUtils } from '@/api/game'
-import { loginThirdStep } from '@/api/login'
+import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2 } from '@/api/login'
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
-import { loginThirdStepWJXL2 } from '@/api/login'
 import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2, handleGetServerConfigDJJH } from '@/utils/server'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
 import { genRandomNumber, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
@@ -292,10 +291,12 @@ export default {
 					} else if (this.userInfo.loginType === 14) {
 						this.handleLoginFirstStepWJXL2() // 无尽修炼2
 					} else if (this.userInfo.loginType === 15) {
-						this.handleLoginFirstStepDJJH() // 单机江湖
-					} else {
+						this.handleLoginFirstStepDJJH() // 单机江湖-渠道服
+					} else if (this.userInfo.loginType === 16) {
+						this.handleLoginFirstStepDJJH() // 单机江湖-无尽1
+					}  else {
 						uni.showToast({
-							title: '登录失败，请使用登陆助手提取账号密码后再登录。',
+							title: '登录失败。',
 							duration: 2000,
 							icon: 'none'
 						})
@@ -583,7 +584,7 @@ export default {
 					} else if (this.userInfo.loginType === 16) { // 单机江湖-无尽1
 						handleGetServerConfigDJJH(6046, this.loginInfo.userId).then(serverInfo => {
 							this.serverInfo = serverInfo
-							this.handleLoginThirdStep()
+							this.handleLoginThirdStepDJJHWJXL1()
 						})
 					}
 				}
@@ -592,7 +593,7 @@ export default {
 			})
 		},
 
-		// TapTap登录第二步，获取usertoken
+	// TapTap登录第二步，获取usertoken
     handleLoginSecondStepTapTap() {
 			console.log('in taptap 2')
       const timeStamp = Date.parse(new Date()) / 1000
@@ -632,7 +633,7 @@ export default {
       })
 		},
 		
-		// 登录第三步
+	// 登录第三步
     handleLoginThirdStep() {
       const param = {
         userId: this.loginInfo.userId,
@@ -647,7 +648,8 @@ export default {
       }).catch(err => {
         console.log(err)
       })
-    },
+	},
+	
 
     // TapTap登录第三步
     handleLoginThirdStepTapTap() {
@@ -666,7 +668,7 @@ export default {
       })
 		},
 		
-		// 登录第三步
+	// 登录第三步
     handleLoginThirdStepWJXL2() {
       const param = {
         userId: this.loginInfo.userId,
@@ -674,6 +676,23 @@ export default {
         channelId: this.loginInfo.channelId
       }
       loginThirdStepWJXL2(param).then(res => {
+        this.loginInfo.token = res.token
+        this.loginInfo.time = res.time
+        this.loginInfo.pfId = res.pfId
+        this.handleAddUser()
+      }).catch(err => {
+        console.log(err)
+      })
+	},
+	
+	// 登录第三步-单机江湖无尽修炼1
+    handleLoginThirdStepDJJHWJXL1() {
+      const param = {
+        userId: this.loginInfo.userId,
+        token: this.loginInfo.token,
+        channelId: this.loginInfo.channelId
+      }
+      loginThirdStepDDJHWJXL1(param).then(res => {
         this.loginInfo.token = res.token
         this.loginInfo.time = res.time
         this.loginInfo.pfId = res.pfId
