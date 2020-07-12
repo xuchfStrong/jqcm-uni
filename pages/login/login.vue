@@ -59,7 +59,13 @@ import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2 } from '@/api/logi
 import { getUtils } from '@/api/game'
 import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2 } from '@/api/login'
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
-import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2, handleGetServerConfigDJJH } from '@/utils/server'
+import { handleGetServerConfig,
+		handleGetServerConfigTapTap,
+		handleGetServerConfigOther,
+		handleGetServerConfigWJXL,
+		handleGetServerConfigWJXL2,
+		handleGetServerConfigDJJH,
+		handleGetServerConfigDJJHWJXL} from '@/utils/server'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
 import { genRandomNumber, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
 import service from '../../service.js';
@@ -254,7 +260,7 @@ export default {
 						this.handleLoginFirstStepDJJH()
 						// #endif
 						// #ifdef H5
-						handleGetServerConfigDJJH(6046, this.loginInfo.userId).then(serverInfo => {
+						handleGetServerConfigDJJHWJXL(6046, this.loginInfo.userId).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.flag.showServer = true
 							this.saveLoginInfo()
@@ -582,7 +588,7 @@ export default {
 							this.handleLoginThirdStep()
 						})
 					} else if (this.userInfo.loginType === 16) { // 单机江湖-无尽1
-						handleGetServerConfigDJJH(6046, this.loginInfo.userId).then(serverInfo => {
+						handleGetServerConfigDJJHWJXL(6046, this.loginInfo.userId).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStepDJJHWJXL1()
 						})

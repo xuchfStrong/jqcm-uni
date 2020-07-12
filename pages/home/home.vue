@@ -564,7 +564,8 @@ import { handleGetServerConfig,
 		handleGetServerConfigOther, 
 		handleGetServerConfigWJXL, 
 		handleGetServerConfigWJXL2, 
-		handleGetServerConfigDJJH } from '@/utils/server'
+		handleGetServerConfigDJJH,
+		handleGetServerConfigDJJHWJXL } from '@/utils/server'
 import options from '@/utils/options.json'
 import { jingjieMap, weimianMap, vipMap } from './mapData.js'
 import mInput from '../../components/m-input.vue'
@@ -955,7 +956,7 @@ export default {
 					this.$toast("服务器更新成功")
 				})
       }  else if (this.userInfo.loginType === 16) { // 单机江湖-无尽1
-        handleGetServerConfigDJJH(6046, this.loginInfo.userId).then(serverInfo => {
+        handleGetServerConfigDJJHWJXL(6046, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()
 					this.$toast("服务器更新成功")
