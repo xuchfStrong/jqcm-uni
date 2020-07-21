@@ -173,8 +173,8 @@
   ],
   "julingzhen_huoxi": [
     {"value":0, "text":"关闭自动聚灵阵火袭"},
-    {"value":1, "text":"火袭蓝色"},
-    {"value":2, "text":"火袭紫色"},
+    {"value":1, "text":"火袭蓝色紫色橙色"},
+    {"value":2, "text":"火袭紫色橙色"},
     {"value":3, "text":"火袭橙色"}
   ],
   "julingzhen_jianzao": [

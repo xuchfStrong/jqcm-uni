@@ -468,6 +468,20 @@
 					</view>
 		    </view>
 
+				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerLHSS4" :value="configInfo.shenshou_id4" class="background-picker" range-key="text" :range="remoteOptions.shenshou">
+											<view class="uni-input">{{remoteOptions.shenshou.length > 0? remoteOptions.shenshou[configInfo.shenshou_id4].text : ''}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">炼化神兽4</view>
+		        <switch :checked="!!configInfo.shenshou_id4" @change="changeSwitchLHSS4"/>
+					</view>
+		    </view> -->
+
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
@@ -482,7 +496,7 @@
 					</view>
 		    </view>
 
-				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
 									<picker @change="changePickerJlzFire" :value="configInfo.julingzhen_huoxi" class="background-picker" range-key="text" :range="options.julingzhen_huoxi">
@@ -494,21 +508,8 @@
 						<view class="uni-list-cell-db">聚灵阵火袭</view>
 		        <switch :checked="!!configInfo.julingzhen_huoxi" @change="changeSwitchJlzFire"/>
 					</view>
-		    </view> -->
+		    </view>
 
-				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changePickerLHSS4" :value="configInfo.shenshou_id4" class="background-picker" range-key="text" :range="remoteOptions.shenshou">
-											<view class="uni-input">{{remoteOptions.shenshou.length > 0? remoteOptions.shenshou[configInfo.shenshou_id4].text : ''}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">炼化神兽4</view>
-		        <switch :checked="!!configInfo.shenshou_id4" @change="changeSwitchLHSS4"/>
-					</view>
-		    </view> -->
 		</view>
 
 		<view class="uni-divider">
