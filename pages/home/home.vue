@@ -198,6 +198,12 @@
 				<text>{{ roleInfo.shenshou_lianhua_times }}</text>
 			</view>
 			<view class="attr-flex-item">
+				<text>聚灵阵建造：</text>
+				<text>{{ roleInfo.jlz_jianzao_times }}</text>
+			</view>
+			<view class="attr-flex-item">
+				<text>聚灵阵火袭：</text>
+				<text>{{ roleInfo.jlz_fireTimes }}</text>
 			</view>
 		</view>
 
@@ -462,6 +468,34 @@
 					</view>
 		    </view>
 
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerJlzJianzao" :value="configInfo.julingzhen_jianzao" class="background-picker" range-key="text" :range="options.julingzhen_jianzao">
+											<view class="uni-input">{{options.julingzhen_jianzao[configInfo.julingzhen_jianzao].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">聚灵阵建造</view>
+		        <switch :checked="!!configInfo.julingzhen_jianzao" @change="changeSwitchJlzJianzao"/>
+					</view>
+		    </view>
+
+				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerJlzFire" :value="configInfo.julingzhen_huoxi" class="background-picker" range-key="text" :range="options.julingzhen_huoxi">
+											<view class="uni-input">{{options.julingzhen_huoxi[configInfo.julingzhen_huoxi].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">聚灵阵火袭</view>
+		        <switch :checked="!!configInfo.julingzhen_huoxi" @change="changeSwitchJlzFire"/>
+					</view>
+		    </view> -->
+
 				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
@@ -603,7 +637,9 @@ const configInfoDefault = {
   is_goumai_richang_jinjie: 0,
   is_goumai_richang_shengxing: 0,
 	is_goumai_richang_zhuling: 0,
-	fuzhu_vip: 0
+	fuzhu_vip: 0,
+	julingzhen_huoxi: 0,
+	julingzhen_jianzao: 0
 }
 
 const gongfaObjDefault = {
@@ -727,7 +763,9 @@ export default {
 				xiuwei: '',
         lingbi: '',
         shenshou_tiaozhan_times: '',
-        shenshou_lianhua_times: ''
+				shenshou_lianhua_times: '',
+				jlz_jianzao_times: '',
+				jlz_fireTimess: ''
       },
 			userInfo: {
 			  usernamePlatForm: '', // 平台的用户名
@@ -1058,6 +1096,8 @@ export default {
 						this.configInfo = res.data
 						if (!this.configInfo.shenshou_id3) this.$set(this.configInfo, 'shenshou_id3', 0)
 						if (!this.configInfo.shenshou_id4) this.$set(this.configInfo, 'shenshou_id4', 0)
+						if (!this.configInfo.julingzhen_jianzao) this.$set(this.configInfo, 'julingzhen_jianzao', 0)
+						if (!this.configInfo.julingzhen_huoxi) this.$set(this.configInfo, 'julingzhen_huoxi', 0)
             this.calsIsExpired(res.data.end_time)
 						this.calcGongfagoumai(String(res.data.gongfagoumai))
 						this.calcGongfaIndex()
@@ -1149,6 +1189,14 @@ export default {
 		changePickerLHSS4(e) {
 			const index = e.target.value
 			this.configInfo.shenshou_id4 = index
+		},
+		changePickerJlzJianzao(e) {
+			const index = e.target.value
+			this.configInfo.julingzhen_jianzao = index
+		},
+		changePickerJlzFire(e) {
+			const index = e.target.value
+			this.configInfo.julingzhen_huoxi = index
 		},
 
 		// 修改下拉选项后面的开关
@@ -1248,6 +1296,23 @@ export default {
 				this.$toast('请选择左侧列表中选项')
 			}
 		},
+		changeSwitchJlzJianzao(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.julingzhen_jianzao = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchJlzFire(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.julingzhen_huoxi = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+
 
 		// 改变功法相关的picker
 		changeGongji(e) {

@@ -170,5 +170,22 @@
     {"value":10, "text":"夜天狼-lv.2"},
     {"value":11, "text":"赤炎虎-lv.2"},
     {"value":12, "text":"疾风狮-lv.2"}
+  ],
+  "julingzhen_huoxi": [
+    {"value":0, "text":"关闭自动聚灵阵火袭"},
+    {"value":1, "text":"火袭蓝色"},
+    {"value":2, "text":"火袭紫色"},
+    {"value":3, "text":"火袭橙色"}
+  ],
+  "julingzhen_jianzao": [
+    {"value":0, "text":"关闭自动聚灵阵建造"},
+    {"value":1, "text":"建造蓝色"},
+    {"value":2, "text":"建造紫色"},
+    {"value":3, "text":"建造橙色"},
+    {"value":4, "text":"建造红色"},
+    {"value":5, "text":"蓝色买满+建造"},
+    {"value":6, "text":"紫色买满+建造"},
+    {"value":7, "text":"橙色买满+建造"},
+    {"value":8, "text":"红色买满+建造"}
   ]
 }
