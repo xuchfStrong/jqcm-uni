@@ -310,8 +310,16 @@
 		        <switch :checked="!!configInfo.is_goumai_tiaozhan" @change="changeSwitchBoolean('is_goumai_tiaozhan')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">神兽山炼化次数买满</view>
+		        <view class="uni-list-cell-db">神兽山炼化次数逐次购买</view>
 		        <switch :checked="!!configInfo.is_goumai_lianhua" @change="changeSwitchBoolean('is_goumai_lianhua')"/>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">22点之后刷新完神兽次数</view>
+		        <switch :checked="!!configInfo.is_auto_shenshou" @change="changeSwitchBoolean('is_auto_shenshou')"/>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">自动炼制低级法宝</view>
+		        <switch :checked="!!configInfo.is_auto_lianqi" @change="changeSwitchBoolean('is_auto_lianqi')"/>
 		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
@@ -510,6 +518,20 @@
 					</view>
 		    </view>
 
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerXianluzhengba" :value="configInfo.xianluzhengba_index" class="background-picker" range-key="text" :range="options.xianluzhengba_index">
+											<view class="uni-input">{{options.xianluzhengba_index[configInfo.xianluzhengba_index].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">自动仙路争霸</view>
+		        <switch :checked="!!configInfo.xianluzhengba_index" @change="changeSwitchXianluzhengba"/>
+					</view>
+		    </view>
+
 		</view>
 
 		<view class="uni-divider">
@@ -640,7 +662,10 @@ const configInfoDefault = {
 	is_goumai_richang_zhuling: 0,
 	fuzhu_vip: 0,
 	julingzhen_huoxi: 0,
-	julingzhen_jianzao: 0
+	julingzhen_jianzao: 0,
+	is_auto_shenshou: 0, // 22点之后刷新完神兽次数
+	is_auto_lianqi: 0, // 自动炼制低级法宝
+	xianluzhengba_index: 0, // 仙路争霸打xx名之后
 }
 
 const gongfaObjDefault = {
@@ -1094,11 +1119,14 @@ export default {
         switch (code) {
           case 200:
             this.isClickLilianbeishu = false
-						this.configInfo = res.data
-						if (!this.configInfo.shenshou_id3) this.$set(this.configInfo, 'shenshou_id3', 0)
-						if (!this.configInfo.shenshou_id4) this.$set(this.configInfo, 'shenshou_id4', 0)
-						if (!this.configInfo.julingzhen_jianzao) this.$set(this.configInfo, 'julingzhen_jianzao', 0)
-						if (!this.configInfo.julingzhen_huoxi) this.$set(this.configInfo, 'julingzhen_huoxi', 0)
+						this.configInfo = this.correctSetting(res.data)
+						// if (!this.configInfo.shenshou_id3) this.$set(this.configInfo, 'shenshou_id3', 0)
+						// if (!this.configInfo.shenshou_id4) this.$set(this.configInfo, 'shenshou_id4', 0)
+						// if (!this.configInfo.julingzhen_jianzao) this.$set(this.configInfo, 'julingzhen_jianzao', 0)
+						// if (!this.configInfo.julingzhen_huoxi) this.$set(this.configInfo, 'julingzhen_huoxi', 0)
+						// if (!this.configInfo.is_auto_shenshou) this.$set(this.configInfo, 'is_auto_shenshou', 0)
+						// if (!this.configInfo.is_auto_lianqi) this.$set(this.configInfo, 'is_auto_lianqi', 0)
+						// if (!this.configInfo.xianluzhengba_index) this.$set(this.configInfo, 'xianluzhengba_index', 0)
             this.calsIsExpired(res.data.end_time)
 						this.calcGongfagoumai(String(res.data.gongfagoumai))
 						this.calcGongfaIndex()
@@ -1124,6 +1152,17 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+		},
+
+		// 将后台没返回的设置想设置默认值
+		correctSetting(resConfig) {
+			const configInfoTmp = Object.assign({}, configInfoDefault)
+			for (const key in configInfoTmp) {
+				if (!resConfig[key]) {
+					resConfig[key] = configInfoTmp[key]
+				}
+			}
+			return resConfig
 		},
 
 		// 根据后台返回的功法数据计算功法index
@@ -1198,6 +1237,10 @@ export default {
 		changePickerJlzFire(e) {
 			const index = e.target.value
 			this.configInfo.julingzhen_huoxi = index
+		},
+		changePickerXianluzhengba(e) {
+			const index = e.target.value
+			this.configInfo.xianluzhengba_index = index
 		},
 
 		// 修改下拉选项后面的开关
@@ -1309,6 +1352,14 @@ export default {
 			const checked = e.target.value
 			if (!checked) {
 				this.configInfo.julingzhen_huoxi = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchXianluzhengba(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.xianluzhengba_index = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}

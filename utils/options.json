@@ -61,7 +61,8 @@
       {"value": 1,"text": "免费刷新1次"},
       {"value": 2,"text": "仙缘刷新到蓝色及以上"},
       {"value": 3,"text": "仙缘刷新到紫色及以上"},
-      {"value": 4,"text": "200仙缘直接开采橙色"}
+      {"value": 4,"text": "200仙缘直接开采橙色"},
+      {"value": 5,"text": "刷新到橙色"}
   ],
   "yijigongjileixing": [
       {"value": 0,"text": "关闭自动抢遗迹"},
@@ -187,5 +188,16 @@
     {"value":6, "text":"紫色买满+建造"},
     {"value":7, "text":"橙色买满+建造"},
     {"value":8, "text":"红色买满+建造"}
+  ],
+  "xianluzhengba_index": [
+    {"value":0, "text":"关闭自动仙路争霸"},
+    {"value":1, "text":"挑战第1位及以后"},
+    {"value":2, "text":"挑战第2位及以后"},
+    {"value":3, "text":"挑战第3位及以后"},
+    {"value":4, "text":"挑战第4位及以后"},
+    {"value":5, "text":"挑战第5位及以后"},
+    {"value":6, "text":"挑战第6位及以后"},
+    {"value":7, "text":"挑战第7位及以后"},
+    {"value":8, "text":"挑战第8位"}
   ]
 }
