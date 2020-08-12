@@ -22,6 +22,9 @@
 									} else if (that.$global.jqcmSaleChannel === 4) {
 										wgtUrl = data.wgtUrl4
 										pkgUrl = data.pkgUrl4
+									} else if (that.$global.jqcmSaleChannel === 6) {
+										wgtUrl = data.wgtUrl6
+										pkgUrl = data.pkgUrl6
 									}
 			            if (data.version > that.$global.jqcmVersion && wgtUrl && data.updateType ===1 ) {  // 热更新
 											// uni.showModal({

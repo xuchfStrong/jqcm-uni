@@ -23,3 +23,11 @@ export function loginFirstStepWJXL2(data) {
     data
   )
 }
+
+// 剑气除魔登录第一步
+export function loginFirstStepShendao(params) {
+  return http.get(
+    'http://api.1017sy.cn/index.php',
+    {params}
+  )
+}

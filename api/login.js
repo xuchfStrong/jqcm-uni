@@ -17,6 +17,14 @@ export function loginSecondStep(params) {
   )
 }
 
+// 剑气除魔登录第一步
+export function loginFirstStepShendao(params) {
+  return http.get(
+    'http://api.1017sy.cn/index.php',
+    {params}
+  )
+}
+
 
 // 登录第三步
 export function loginThirdStep(params) {
@@ -55,6 +63,14 @@ export function loginThirdStepWJXL2(params) {
 export function loginThirdStepWJXL(params) {
   return http.get(
     'http://106.53.178.160:83/game/biguo/index_ml.php',
+    {params}
+  )
+}
+
+// 剑气除魔登录第三步
+export function loginThirdStepShendao(params) {
+  return http.get(
+    'http://106.53.178.160:83/game/biguo/index_lw.php',
     {params}
   )
 }

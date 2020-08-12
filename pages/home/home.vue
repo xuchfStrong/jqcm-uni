@@ -39,6 +39,7 @@
 		<text v-if="utils.showContact2&&$global.jqcmSaleChannel===2" class="waring-wrap">{{ utils.contact2 }}</text>
 		<text v-if="utils.showContact3&&$global.jqcmSaleChannel===3" class="waring-wrap">{{ utils.contact3 }}</text>
 		<text v-if="utils.showContact4&&$global.jqcmSaleChannel===4" class="waring-wrap">{{ utils.contact4 }}</text>
+		<text v-if="utils.showContact6&&$global.jqcmSaleChannel===6" class="waring-wrap">{{ utils.contact6 }}</text>
 		
 		
 		<view class="uni-divider">
@@ -313,14 +314,14 @@
 		        <view class="uni-list-cell-db">神兽山炼化次数逐次购买</view>
 		        <switch :checked="!!configInfo.is_goumai_lianhua" @change="changeSwitchBoolean('is_goumai_lianhua')"/>
 		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
+				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">22点之后刷新完神兽次数</view>
 		        <switch :checked="!!configInfo.is_auto_shenshou" @change="changeSwitchBoolean('is_auto_shenshou')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">自动炼制低级法宝</view>
 		        <switch :checked="!!configInfo.is_auto_lianqi" @change="changeSwitchBoolean('is_auto_lianqi')"/>
-		    </view>
+		    </view> -->
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
@@ -518,7 +519,7 @@
 					</view>
 		    </view>
 
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
 									<picker @change="changePickerXianluzhengba" :value="configInfo.xianluzhengba_index" class="background-picker" range-key="text" :range="options.xianluzhengba_index">
@@ -530,7 +531,7 @@
 						<view class="uni-list-cell-db">自动仙路争霸</view>
 		        <switch :checked="!!configInfo.xianluzhengba_index" @change="changeSwitchXianluzhengba"/>
 					</view>
-		    </view>
+		    </view> -->
 
 		</view>
 
@@ -1002,7 +1003,7 @@ export default {
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 12) { // 无尽修炼
-        handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+        handleGetServerConfigWJXL(6030, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()
 					this.$toast("服务器更新成功")
@@ -1021,6 +1022,12 @@ export default {
 				})
       }  else if (this.userInfo.loginType === 16) { // 单机江湖-无尽1
         handleGetServerConfigDJJHWJXL(6046, this.loginInfo.userId).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.saveLoginInfo()
+					this.$toast("服务器更新成功")
+				})
+			}  else if (this.userInfo.loginType === 17) { // 剑气除魔
+        handleGetServerConfigWJXL(6084, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()
 					this.$toast("服务器更新成功")

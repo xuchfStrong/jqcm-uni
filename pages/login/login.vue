@@ -7,7 +7,7 @@
 					选择平台：
 				</view>
 				<view class="uni-list-cell-db">
-					<picker @change="changePlatform" :disabled="false" range-key="text" :value="platformIndex" :range="remoteOptions.platform">
+					<picker @change="changePlatform" :disabled="false" range-key="text" :value="platformIndex" :range="platformList">
 						<view class="uni-input">{{platformName}}</view>
 					</picker>
 				</view>
@@ -51,13 +51,13 @@ import { http } from '@/utils/request.js'
 import save from '@/utils/save'
 import loginDescription from './loginDescription.json'
 // #ifdef H5
-import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2 } from '@/api/login'
+import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2, loginFirstStepShendao } from '@/api/login'
 // #endif
 // #ifdef APP-PLUS
-import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2 } from '@/api/loginApp'
+import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2, loginFirstStepShendao } from '@/api/loginApp'
 // #endif
 import { getUtils } from '@/api/game'
-import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2 } from '@/api/login'
+import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThirdStepShendao } from '@/api/login'
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -87,6 +87,7 @@ export default {
 			current: 0,
 			options:options,
 			remoteOptions: {},
+			platformList: [], // 平台信息
 			configInfo: '',
 			utils: '',
 			flag: {
@@ -139,6 +140,11 @@ export default {
 			getRemoteOptions()
 			.then(res => {
 				this.remoteOptions = res
+				if (this.$global.jqcmSaleChannel===6) {
+					this.platformList = res.platformShendao
+				} else {
+					this.platformList = res.platform
+				}
 				this.loadLoginInfo()
 			})
 			.catch(err => {
@@ -272,6 +278,23 @@ export default {
 							icon: 'none'
 						})
 						// #endif
+					}  else if (this.userInfo.loginType === 17) { // 剑气除魔
+						// #ifdef APP-PLUS
+						this.handleLoginFirstStepShendao()
+						// #endif
+						// #ifdef H5
+						handleGetServerConfigWJXL(6084, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+						// #endif
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -300,6 +323,8 @@ export default {
 						this.handleLoginFirstStepDJJH() // 单机江湖-渠道服
 					} else if (this.userInfo.loginType === 16) {
 						this.handleLoginFirstStepDJJH() // 单机江湖-无尽1
+					} else if (this.userInfo.loginType === 17) {
+						this.handleLoginFirstStepShendao() // 剑气除魔
 					}  else {
 						uni.showToast({
 							title: '登录失败。',
@@ -511,12 +536,60 @@ export default {
 		  })
 		},
 
+		// 剑气除魔登录第一步
+		handleLoginFirstStepShendao() {
+			if (!this.userInfo.usernamePlatForm || !this.userInfo.passwordPlatForm) {
+				uni.showToast({
+					title: '请输入用户名和密码',
+					duration: 2000,
+					icon: 'none'
+				})
+		    return
+		  }
+			const params = {
+				r: 'auth/authorize',
+				UnallowToke: true,
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm,
+				game_id: 1407,
+				package_id: 'sd_jd_15'
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepShendao(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.sessionid = res.result.access_token
+					this.loginInfo.userId = res.result.user_id
+					this.handleLoginSecondStepShendao()
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: res.message,
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
 		// 登录第二步，获取usertoken
 		handleLoginSecondStep() {
 			let site = 'jqcm_data'
 			let channelId = ''
+			let version = '1.4'
+			let signObj = {
+				uid: this.loginInfo.userId,
+				sessionid: this.loginInfo.sessionid,
+				data: {
+					site: site,
+					channel: '116',
+					uid: this.loginInfo.userId,
+					sessionid: this.loginInfo.sessionid,
+					userName: this.userInfo.usernamePlatForm
+				}
+			}
 			if (this.userInfo.loginType === 1) { // 官方平台
 				channelId = 6008
+				version = '1.2'
 			} else if (this.userInfo.loginType === 12) { // 无尽修炼
 				channelId = 6030
 			}else if (this.userInfo.loginType === 14) { // 无尽修炼2
@@ -529,19 +602,8 @@ export default {
 				site = 'jqcmwjxl_data'
 			}
 			const timeStamp = Date.parse(new Date()) / 1000
-			const signObj = {
-				uid: this.loginInfo.userId,
-				sessionid: this.loginInfo.sessionid,
-				data: {
-					site: site,
-					channel: '116',
-					uid: this.loginInfo.userId,
-					sessionid: this.loginInfo.sessionid,
-					userName: this.userInfo.usernamePlatForm
-				}
-			}
 			const str1 = JSON.stringify(signObj)
-			const arr = [6, channelId, str1, this.userInfo.aid, timeStamp, '1.2', 'cG3dKvBJ10mTGrHf5IOzQLH1dn']
+			const arr = [6, channelId, str1, this.userInfo.aid, timeStamp, version, 'cG3dKvBJ10mTGrHf5IOzQLH1dn']
 			const singStr = arr.join('#')
 			const param = {
 				appId: 6,
@@ -549,7 +611,7 @@ export default {
 				deviceId: this.userInfo.aid,
 				sign: CryptoJS.MD5(singStr).toString(),
 				ts: timeStamp,
-				version: '1.2',
+				version: version,
 				data: {
 					uid: this.loginInfo.userId,
 					sessionid: this.loginInfo.sessionid,
@@ -573,7 +635,7 @@ export default {
 							this.handleLoginThirdStep()
 						})
 					} else if (this.userInfo.loginType === 12) { // 无尽修炼
-						handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+						handleGetServerConfigWJXL(6030, this.loginInfo.userId).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStep()
 						})
@@ -638,6 +700,43 @@ export default {
         console.log(err)
       })
 		},
+
+		// 剑气除魔登录第二步，获取usertoken
+    handleLoginSecondStepShendao() {
+			let appId = 6
+			let channelId = 6084
+			let version = '1.4'
+      const timeStamp = Date.parse(new Date()) / 1000
+      const signObj = {
+        userId: this.loginInfo.userId,
+        token: this.loginInfo.sessionid
+      }
+      const str1 = JSON.stringify(signObj)
+      const arr = [appId, channelId, str1, this.userInfo.aid, timeStamp, version, 'cG3dKvBJ10mTGrHf5IOzQLH1dn']
+      const singStr = arr.join('#')
+      const param = {
+        appId: appId,
+        channelId: channelId,
+        deviceId: this.userInfo.aid,
+        sign: CryptoJS.MD5(singStr).toString(),
+        ts: timeStamp,
+        version: version,
+        data: signObj
+			}
+      loginSecondStep(param).then(res => {
+        if (res.code === 1) {
+          this.loginInfo.userId = res.data.userId // 这里获取的userId是为了获取服务器信息
+          this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					handleGetServerConfigWJXL(6084, this.loginInfo.userId).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleLoginThirdStep()
+					})
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+		},
 		
 	// 登录第三步
     handleLoginThirdStep() {
@@ -693,6 +792,23 @@ export default {
 	
 	// 登录第三步-单机江湖无尽修炼1
     handleLoginThirdStepDJJHWJXL1() {
+      const param = {
+        userId: this.loginInfo.userId,
+        token: this.loginInfo.token,
+        channelId: this.loginInfo.channelId
+      }
+      loginThirdStepDDJHWJXL1(param).then(res => {
+        this.loginInfo.token = res.token
+        this.loginInfo.time = res.time
+        this.loginInfo.pfId = res.pfId
+        this.handleAddUser()
+      }).catch(err => {
+        console.log(err)
+      })
+		},
+		
+		// 登录第三步-剑气除魔
+    handleLoginThirdStepShendao() {
       const param = {
         userId: this.loginInfo.userId,
         token: this.loginInfo.token,
@@ -817,16 +933,16 @@ export default {
 			} else {
 				this.platformIndex = 0
 			}
-			this.platformName = this.remoteOptions.platform[this.platformIndex].text
-			this.userInfo.loginType = getValueByIndex(this.remoteOptions.platform, this.platformIndex)
+			this.platformName = this.platformList[this.platformIndex].text
+			this.userInfo.loginType = getValueByIndex(this.platformList, this.platformIndex)
 		},
 
 		// 加载后将存储的数据显示出来
 		initSaveData() {
-			this.platformIndex = getIndexByValue(this.remoteOptions.platform, this.userInfo.loginType)
+			this.platformIndex = getIndexByValue(this.platformList, this.userInfo.loginType)
 			console.log( this.platformIndex)
 			if (this.platformIndex !== -1) {
-				this.platformName = this.remoteOptions.platform[this.platformIndex].text
+				this.platformName = this.platformList[this.platformIndex].text
 			}
 		}
 	}
