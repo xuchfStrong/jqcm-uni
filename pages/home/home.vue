@@ -973,9 +973,9 @@ export default {
 
 		// 选择最后登录服务器
 		changeLastServer: function(e) {
+			this.lastServerIndex = e.target.value
 			this.serverName = this.serverInfo.last_server_list[this.lastServerIndex].text
 			this.userInfo.server = getValueByIndex(this.serverInfo.last_server_list, e.target.value)
-			this.lastServerIndex = e.target.value
 			this.allServerindex = getIndexByValue(this.serverInfo.server_list, this.userInfo.server)
 			this.saveLoginInfo()
 			this.handleGuajiStatus()

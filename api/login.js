@@ -17,6 +17,14 @@ export function loginSecondStep(params) {
   )
 }
 
+// 通过自己写的proxy登录二步获取用户token
+export function loginSecondStepByProxy(params) {
+  return http.get(
+    'http://192.144.211.81:11658/jqcm_proxy.php',
+    {params}
+  )
+}
+
 // 剑气除魔登录第一步
 export function loginFirstStepShendao(params) {
   return http.get(

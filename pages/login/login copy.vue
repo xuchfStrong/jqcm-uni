@@ -51,7 +51,7 @@ import { http } from '@/utils/request.js'
 import save from '@/utils/save'
 import loginDescription from './loginDescription.json'
 // #ifdef H5
-import { loginFirstStep, loginSecondStep,loginSecondStepByProxy, loginFirstStepWJXL2, loginFirstStepShendao } from '@/api/login'
+import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2, loginFirstStepShendao } from '@/api/login'
 // #endif
 // #ifdef APP-PLUS
 import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2, loginFirstStepShendao } from '@/api/loginApp'
@@ -232,18 +232,17 @@ export default {
 						this.handleLoginFirstStepWJXL2() // 无尽修炼2
 						// #endif
 						// #ifdef H5
-						this.handleLoginFirstStepWJXL2() // 无尽修炼2
-						// handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
-						// 	this.serverInfo = serverInfo
-						// 	this.flag.showServer = true
-						// 	this.saveLoginInfo()
-						// 	this.toMain()
-						// })
-						// uni.showToast({
-						// 	title: '登录成功，请选择服务器后，点击开始挂机。',
-						// 	duration: 2000,
-						// 	icon: 'none'
-						// })
+						handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 						// #endif
 					} else if (this.userInfo.loginType === 15) { // 单机江湖-渠道服
 						// #ifdef APP-PLUS
@@ -419,7 +418,7 @@ export default {
         if (res.code === 0) {
           this.loginInfo.uid = res.id
           this.loginInfo.token = res.accessToken
-          this.handleLoginSecondStep()
+          this.handleLoginSecondStepTapTap()
         } else {
           this.flag.showServer = false
 					uni.showToast({
@@ -552,15 +551,15 @@ export default {
 				UnallowToke: true,
 				username: this.userInfo.usernamePlatForm,
 				password: this.userInfo.passwordPlatForm,
-				game_id: 1408,
-				package_id: 'sd_gdt_31'
+				game_id: 1407,
+				package_id: 'sd_jd_15'
 			}
 			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
 			loginFirstStepShendao(params).then(res => {
 				if (res.code === 1) {
 					this.loginInfo.sessionid = res.result.access_token
 					this.loginInfo.userId = res.result.user_id
-					this.handleLoginSecondStep()
+					this.handleLoginSecondStepShendao()
 				} else {
 					this.flag.showServer = false
 					uni.showToast({
@@ -586,7 +585,7 @@ export default {
     },
 
 		// 登录第二步，获取usertoken
-		async handleLoginSecondStep() {
+		handleLoginSecondStep() {
 			let site = 'jqcm_data'
 			let channelId = ''
 			let version = '1.4'
@@ -604,30 +603,16 @@ export default {
 			if (this.userInfo.loginType === 1) { // 官方平台
 				channelId = 6008
 				version = '1.2'
-			} else if (this.userInfo.loginType === 2) { // TapTap
-				channelId = 6002
-				version = '1.2'
-				signObj = {
-					uid: this.loginInfo.uid,
-					token: this.loginInfo.token,
-					uname: this.userInfo.usernamePlatForm
-				}
 			} else if (this.userInfo.loginType === 12) { // 无尽修炼
 				channelId = 6030
-			} else if (this.userInfo.loginType === 14) { // 无尽修炼2
+			}else if (this.userInfo.loginType === 14) { // 无尽修炼2
 				channelId = 6041
-			} else if (this.userInfo.loginType === 15) { // 单机江湖-渠道服
+			}else if (this.userInfo.loginType === 15) { // 单机江湖-渠道服
 				channelId = 6044
 				site = 'jqcmwjxl_data'
-			} else if (this.userInfo.loginType === 16) { // 单机江湖-无尽1
+			}else if (this.userInfo.loginType === 16) { // 单机江湖-无尽1
 				channelId = 6046
 				site = 'jqcmwjxl_data'
-			} else if (this.userInfo.loginType === 17) { // 剑气除魔
-				channelId = 6084
-				signObj = {
-					userId: this.loginInfo.userId,
-					token: this.loginInfo.sessionid
-				}
 			}
 			const timeStamp = Date.parse(new Date()) / 1000
 			const str1 = JSON.stringify(signObj)
@@ -640,20 +625,9 @@ export default {
 				sign: CryptoJS.MD5(singStr).toString(),
 				ts: timeStamp,
 				version: version,
-				data: str1
+				data: signObj
 			}
-			try {
-				// #ifdef APP-PLUS
-				const res = await loginSecondStep(param)
-				// #endif
-				// #ifdef H5
-				const uriParams = this.parseParams(param)
-				const getTokenUrl = `http://ufo.66hjh.com/user/v1/token?${uriParams}`
-				const paramProxy = {
-					url: getTokenUrl
-				}
-				const res = await loginSecondStepByProxy(paramProxy)
-				// #endif
+			loginSecondStep(param).then(res => {
 				if (res.code === 1) {
 					this.loginInfo.userId = res.data.userId // 这里获取的userId是为了获取服务器信息
 					this.loginInfo.token = res.data.token
@@ -663,12 +637,7 @@ export default {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStep()
 						})
-					} else if (this.userInfo.loginType === 2) { // TapTap
-						handleGetServerConfigTapTap(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
-							this.serverInfo = serverInfo
-							this.handleLoginThirdStepTapTap()
-						})
-					}  else if (this.userInfo.loginType === 12) { // 无尽修炼
+					} else if (this.userInfo.loginType === 12) { // 无尽修炼
 						handleGetServerConfigWJXL(6030, this.loginInfo.userId).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStep()
@@ -688,18 +657,89 @@ export default {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStepDJJHWJXL1()
 						})
-					} else if (this.userInfo.loginType === 17) { // 剑气除魔
-						handleGetServerConfigWJXL(6084, this.loginInfo.userId).then(serverInfo => {
-							this.serverInfo = serverInfo
-							this.handleLoginThirdStep()
-						})
 					}
 				}
-			} catch(e) {
-				console.error(e)
-			}
+			}).catch(err => {
+				console.log(err)
+			})
 		},
 
+	// TapTap登录第二步，获取usertoken
+    handleLoginSecondStepTapTap() {
+			console.log('in taptap 2')
+      const timeStamp = Date.parse(new Date()) / 1000
+      const signObj = {
+        uid: this.loginInfo.uid,
+        token: this.loginInfo.token,
+        uname: this.userInfo.usernamePlatForm
+      }
+      const str1 = JSON.stringify(signObj)
+      const arr = [6, 6002, str1, this.userInfo.aid, timeStamp, '1.2', 'cG3dKvBJ10mTGrHf5IOzQLH1dn']
+      const singStr = arr.join('#')
+      const param = {
+        appId: 6,
+        channelId: 6002,
+        deviceId: this.userInfo.aid,
+        sign: CryptoJS.MD5(singStr).toString(),
+        ts: timeStamp,
+        version: '1.2',
+        data: {
+          uid: this.loginInfo.uid,
+          token: this.loginInfo.token,
+          uname: this.userInfo.usernamePlatForm
+        }
+      }
+      loginSecondStep(param).then(res => {
+        if (res.code === 1) {
+          this.loginInfo.userId = res.data.userId // 这里获取的userId是为了获取服务器信息
+          this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					handleGetServerConfigTapTap(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleLoginThirdStepTapTap()
+					})
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+		},
+
+		// 剑气除魔登录第二步，获取usertoken
+    handleLoginSecondStepShendao() {
+			let appId = 6
+			let channelId = 6084
+			let version = '1.4'
+      const timeStamp = Date.parse(new Date()) / 1000
+      const signObj = {
+        userId: this.loginInfo.userId,
+        token: this.loginInfo.sessionid
+      }
+      const str1 = JSON.stringify(signObj)
+      const arr = [appId, channelId, str1, this.userInfo.aid, timeStamp, version, 'cG3dKvBJ10mTGrHf5IOzQLH1dn']
+      const singStr = arr.join('#')
+      const param = {
+        appId: appId,
+        channelId: channelId,
+        deviceId: this.userInfo.aid,
+        sign: CryptoJS.MD5(singStr).toString(),
+        ts: timeStamp,
+        version: version,
+        data: signObj
+			}
+      loginSecondStep(param).then(res => {
+        if (res.code === 1) {
+          this.loginInfo.userId = res.data.userId // 这里获取的userId是为了获取服务器信息
+          this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					handleGetServerConfigWJXL(6084, this.loginInfo.userId).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleLoginThirdStep()
+					})
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+		},
 		
 	// 登录第三步
     handleLoginThirdStep() {
