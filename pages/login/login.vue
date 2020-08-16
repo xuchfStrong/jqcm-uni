@@ -232,18 +232,17 @@ export default {
 						this.handleLoginFirstStepWJXL2() // 无尽修炼2
 						// #endif
 						// #ifdef H5
-						this.handleLoginFirstStepWJXL2() // 无尽修炼2
-						// handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
-						// 	this.serverInfo = serverInfo
-						// 	this.flag.showServer = true
-						// 	this.saveLoginInfo()
-						// 	this.toMain()
-						// })
-						// uni.showToast({
-						// 	title: '登录成功，请选择服务器后，点击开始挂机。',
-						// 	duration: 2000,
-						// 	icon: 'none'
-						// })
+						handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 						// #endif
 					} else if (this.userInfo.loginType === 15) { // 单机江湖-渠道服
 						// #ifdef APP-PLUS

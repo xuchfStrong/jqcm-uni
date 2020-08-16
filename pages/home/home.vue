@@ -1162,14 +1162,14 @@ export default {
 		},
 
 		// 将后台没返回的设置想设置默认值
-		correctSetting(resConfig) {
-			const configInfoTmp = Object.assign({}, configInfoDefault)
-			for (const key in configInfoTmp) {
-				if (!resConfig[key]) {
-					resConfig[key] = configInfoTmp[key]
-				}
-			}
-			return resConfig
+		correctSetting(configInfoBackend) {
+			const configInfo = Object.assign({}, configInfoDefault)
+      for (const key in configInfo) {
+        if (configInfoBackend.hasOwnProperty(key)) {
+          configInfo[key] = configInfoBackend[key]
+        }
+      }
+      return configInfo
 		},
 
 		// 根据后台返回的功法数据计算功法index
