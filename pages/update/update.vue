@@ -29,6 +29,9 @@
           <a v-if="$global.jqcmSaleChannel===6" :href="utils.apkDownloadUrlNew6">
             <text>点击下载辅助APP</text>
           </a>
+          <a v-if="$global.jqcmSaleChannel===7" :href="utils.apkDownloadUrlNew7">
+            <text>点击下载辅助APP</text>
+          </a>
           <!-- <button type="primary" @tap="downloadImage">下载</button> -->
         </view>
       </view>
@@ -102,7 +105,7 @@ export default {
 			const that = this
 			plus.runtime.getProperty(plus.runtime.appid, function() {  
 			    uni.request({  
-			        url: 'http://www.huojiangame.com:11658/jqcm/update.php',
+			        url: 'http://jqcm.huojiangame.com:11658/jqcm/update.php',
 			        success: (result) => {  
 			          var data = result.data;
                 var wgtUrl = data.test.wgtUrl

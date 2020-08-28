@@ -62,7 +62,8 @@
       {"value": 2,"text": "仙缘刷新到蓝色及以上"},
       {"value": 3,"text": "仙缘刷新到紫色及以上"},
       {"value": 4,"text": "200仙缘直接开采橙色"},
-      {"value": 5,"text": "刷新到橙色"}
+      {"value": 5,"text": "刷新到橙色(最多刷50次)"},
+      {"value": 6,"text": "[慎选]刷新到橙色(直到出为止)"}
   ],
   "yijigongjileixing": [
       {"value": 0,"text": "关闭自动抢遗迹"},

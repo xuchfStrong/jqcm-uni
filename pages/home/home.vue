@@ -35,11 +35,13 @@
 			</view>
 		</view>
 
+		<text v-if="utils.showCommon" class="waring-wrap">{{ utils.common }}</text>
 		<text v-if="utils.showContact&&$global.jqcmSaleChannel===1" class="waring-wrap">{{ utils.contact }}</text>
 		<text v-if="utils.showContact2&&$global.jqcmSaleChannel===2" class="waring-wrap">{{ utils.contact2 }}</text>
 		<text v-if="utils.showContact3&&$global.jqcmSaleChannel===3" class="waring-wrap">{{ utils.contact3 }}</text>
 		<text v-if="utils.showContact4&&$global.jqcmSaleChannel===4" class="waring-wrap">{{ utils.contact4 }}</text>
 		<text v-if="utils.showContact6&&$global.jqcmSaleChannel===6" class="waring-wrap">{{ utils.contact6 }}</text>
+		<text v-if="utils.showContact7&&$global.jqcmSaleChannel===7" class="waring-wrap">{{ utils.contact7 }}</text>
 		
 		
 		<view class="uni-divider">
@@ -314,14 +316,14 @@
 		        <view class="uni-list-cell-db">神兽山炼化次数逐次购买</view>
 		        <switch :checked="!!configInfo.is_goumai_lianhua" @change="changeSwitchBoolean('is_goumai_lianhua')"/>
 		    </view>
-				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
+				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">22点之后刷新完神兽次数</view>
 		        <switch :checked="!!configInfo.is_auto_shenshou" @change="changeSwitchBoolean('is_auto_shenshou')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">自动炼制低级法宝</view>
 		        <switch :checked="!!configInfo.is_auto_lianqi" @change="changeSwitchBoolean('is_auto_lianqi')"/>
-		    </view> -->
+		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">

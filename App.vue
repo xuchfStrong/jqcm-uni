@@ -5,7 +5,7 @@
 			const that = this
 			plus.runtime.getProperty(plus.runtime.appid, function() {  
 			    uni.request({  
-			        url: 'http://www.huojiangame.com:11658/jqcm/update.php',
+			        url: 'http://jqcm.huojiangame.com:11658/jqcm/update.php',
 			        success: (result) => {  
 			            var data = result.data;
 									var wgtUrl = ''
@@ -25,6 +25,9 @@
 									} else if (that.$global.jqcmSaleChannel === 6) {
 										wgtUrl = data.wgtUrl6
 										pkgUrl = data.pkgUrl6
+									} else if (that.$global.jqcmSaleChannel === 7) {
+										wgtUrl = data.wgtUrl7
+										pkgUrl = data.pkgUrl7
 									}
 			            if (data.version > that.$global.jqcmVersion && wgtUrl && data.updateType ===1 ) {  // 热更新
 											// uni.showModal({

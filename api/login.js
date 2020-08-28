@@ -3,7 +3,7 @@ import { http, httpForm } from '@/utils/request.js'
 // 登录一步
 export function loginFirstStep(data) {
   return http.post(
-    'http://106.54.36.248:9080/jqcm_login/api/login',
+    'http://120.53.14.241:9080/jqcm_login/api/login',
     data
   )
 }
@@ -11,8 +11,7 @@ export function loginFirstStep(data) {
 // 登录二步获取用户token
 export function loginSecondStep(params) {
   return http.get(
-    'http://106.54.36.248:9080/jqcm_usertoken/user/v1/token',
-    // 'http://192.168.0.170:9080/jqcm_usertoken/user/v1/token',
+    'http://120.53.14.241:9080/jqcm_usertoken/user/v1/token',
     {params}
   )
 }
@@ -54,7 +53,7 @@ export function loginThirdStepDDJHWJXL1(params) {
 // 无尽修炼2登录一步
 export function loginFirstStepWJXL2(data) {
   return http.post(
-    'http://106.54.36.248:9080/jqcm_login_wjxl2/api/login',
+    'http://120.53.14.241:9080/jqcm_login_wjxl2/api/login',
     data
   )
 }
@@ -110,14 +109,14 @@ export function loginThirdStepTapTap(params) {
 // 新用户登录，添加到辅助后台
 export function addUser(data) {
   return httpForm.post(
-    'http://www.huojiangame.com:11658/jqcm/add_user.php',
+    'http://jqcm.huojiangame.com:11658/jqcm/add_user.php',
     data
   )
 }
 
 export function checkUserStatus(params) {
   return http.get(
-    'http://www.huojiangame.com:11658/jqcm/check_user.php',
+    'http://jqcm.huojiangame.com:11658/jqcm/check_user.php',
     {params}
   )
 }
@@ -148,7 +147,7 @@ export function getServerConfigWJXL(params) {
 // 获取远端选项信息
 export function getRemoteOptions(params) {
   return http.get(
-    'http://www.huojiangame.com:11658/jqcm/options.php',
+    'http://jqcm.huojiangame.com:11658/jqcm/options.php',
     {params}
   )
 }
