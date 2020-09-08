@@ -1069,9 +1069,12 @@ export default {
 				})
         return
 			}
+			const dateNow = new Date()
+			const ts = dateNow.getTime()
       const param = {
         userid: this.loginInfo.userId,
-        server_id: this.userInfo.server
+				server_id: this.userInfo.server,
+				_t: ts
 			}
 			this.statusLoading = true
       getRoleInfo(param).then(res => { // 查询角色信息

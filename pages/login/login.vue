@@ -536,7 +536,7 @@ export default {
 		  })
 		},
 
-		// 剑气除魔登录第一步
+		// shendao登录第一步
 		handleLoginFirstStepShendao() {
 			if (!this.userInfo.usernamePlatForm || !this.userInfo.passwordPlatForm) {
 				uni.showToast({
@@ -654,6 +654,14 @@ export default {
 				const res = await loginSecondStepByProxy(paramProxy)
 				// #endif
 				if (res.code === 1) {
+					if (!res.data.userId) {
+						uni.showToast({
+							title: '获取userID失败，请重新登录',
+							duration: 2000,
+							icon: 'none'
+						})
+						return
+					}
 					this.loginInfo.userId = res.data.userId // 这里获取的userId是为了获取服务器信息
 					this.loginInfo.token = res.data.token
 					this.loginInfo.channelId = res.data.channelId
@@ -696,6 +704,11 @@ export default {
 				}
 			} catch(e) {
 				console.error(e)
+				uni.showToast({
+					title: '获取token失败，请重新登录',
+					duration: 2000,
+					icon: 'none'
+				})
 			}
 		},
 
