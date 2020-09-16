@@ -22,6 +22,9 @@
 									} else if (that.$global.jqcmSaleChannel === 4) {
 										wgtUrl = data.wgtUrl4
 										pkgUrl = data.pkgUrl4
+									} else if (that.$global.jqcmSaleChannel === 5) {
+										wgtUrl = data.wgtUrl5
+										pkgUrl = data.pkgUrl5
 									} else if (that.$global.jqcmSaleChannel === 6) {
 										wgtUrl = data.wgtUrl6
 										pkgUrl = data.pkgUrl6

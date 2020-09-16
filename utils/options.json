@@ -200,5 +200,17 @@
     {"value":6, "text":"挑战第6位及以后"},
     {"value":7, "text":"挑战第7位及以后"},
     {"value":8, "text":"挑战第8位"}
+  ],
+  "daolvxiulian_index": [
+    {"value":0, "text":"关闭道侣修炼任务"},
+    {"value":1, "text":"装备升阶石x10"},
+    {"value":2, "text":"道侣进阶丹x10(消耗10灵力)"},
+    {"value":3, "text":"20装备神炼石(消耗15灵力)"}
+  ],
+  "daolvliwu_index": [
+    {"value":0, "text":"关闭道侣赠送礼物"},
+    {"value":1, "text":"道侣普通送礼(288万灵币)"},
+    {"value":2, "text":"道侣高级送礼(100仙缘)"},
+    {"value":3, "text":"道侣壕气送礼(288仙缘)"}
   ]
 }

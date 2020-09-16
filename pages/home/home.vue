@@ -40,6 +40,7 @@
 		<text v-if="utils.showContact2&&$global.jqcmSaleChannel===2" class="waring-wrap">{{ utils.contact2 }}</text>
 		<text v-if="utils.showContact3&&$global.jqcmSaleChannel===3" class="waring-wrap">{{ utils.contact3 }}</text>
 		<text v-if="utils.showContact4&&$global.jqcmSaleChannel===4" class="waring-wrap">{{ utils.contact4 }}</text>
+		<text v-if="utils.showContact5&&$global.jqcmSaleChannel===5" class="waring-wrap">{{ utils.contact5 }}</text>
 		<text v-if="utils.showContact6&&$global.jqcmSaleChannel===6" class="waring-wrap">{{ utils.contact6 }}</text>
 		<text v-if="utils.showContact7&&$global.jqcmSaleChannel===7" class="waring-wrap">{{ utils.contact7 }}</text>
 		
@@ -324,6 +325,14 @@
 		        <view class="uni-list-cell-db">自动炼制低级法宝</view>
 		        <switch :checked="!!configInfo.is_auto_lianqi" @change="changeSwitchBoolean('is_auto_lianqi')"/>
 		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">仙缘购买道侣修炼任务次数</view>
+		        <switch :checked="!!configInfo.is_goumai_daolvxiulian" @change="changeSwitchBoolean('is_goumai_daolvxiulian')"/>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">仙缘购买道侣游历四方次数</view>
+		        <switch :checked="!!configInfo.is_goumai_daolvyouli" @change="changeSwitchBoolean('is_goumai_daolvyouli')"/>
+		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
@@ -535,6 +544,34 @@
 					</view>
 		    </view> -->
 
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerDaolvxiulian" :value="configInfo.daolvxiulian_index" class="background-picker" range-key="text" :range="options.daolvxiulian_index">
+											<view class="uni-input">{{options.daolvxiulian_index[configInfo.daolvxiulian_index].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">道侣修炼任务</view>
+		        <switch :checked="!!configInfo.daolvxiulian_index" @change="changeSwitchDaolvxiulian"/>
+					</view>
+		    </view>
+
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerDaolvliwu" :value="configInfo.daolvliwu_index" class="background-picker" range-key="text" :range="options.daolvliwu_index">
+											<view class="uni-input">{{options.daolvliwu_index[configInfo.daolvliwu_index].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">道侣赠送礼物</view>
+		        <switch :checked="!!configInfo.daolvliwu_index" @change="changeSwitchDaolvliwu"/>
+					</view>
+		    </view>
+
 		</view>
 
 		<view class="uni-divider">
@@ -669,6 +706,10 @@ const configInfoDefault = {
 	is_auto_shenshou: 0, // 22点之后刷新完神兽次数
 	is_auto_lianqi: 0, // 自动炼制低级法宝
 	xianluzhengba_index: 0, // 仙路争霸打xx名之后
+	is_goumai_daolvxiulian: 0, // 仙缘购买道侣修炼任务次数
+	is_goumai_daolvyouli: 0, // 仙缘购买道侣游历四方次数
+	daolvxiulian_index: 0, // 关闭道侣修炼任务
+	daolvliwu_index: 0 // 关闭道侣赠送礼物
 }
 
 const gongfaObjDefault = {
@@ -1254,6 +1295,14 @@ export default {
 			const index = e.target.value
 			this.configInfo.xianluzhengba_index = index
 		},
+		changePickerDaolvxiulian(e) {
+			const index = e.target.value
+			this.configInfo.daolvxiulian_index = index
+		},
+		changePickerDaolvliwu(e) {
+			const index = e.target.value
+			this.configInfo.daolvliwu_index = index
+		},
 
 		// 修改下拉选项后面的开关
 		changeSwitchLilian(e) {
@@ -1372,6 +1421,22 @@ export default {
 			const checked = e.target.value
 			if (!checked) {
 				this.configInfo.xianluzhengba_index = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchDaolvxiulian(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.daolvxiulian_index = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchDaolvliwu(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.daolvliwu_index = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}
