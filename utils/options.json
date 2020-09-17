@@ -203,9 +203,8 @@
   ],
   "daolvxiulian_index": [
     {"value":0, "text":"关闭道侣修炼任务"},
-    {"value":1, "text":"装备升阶石x10"},
-    {"value":2, "text":"道侣进阶丹x10(消耗10灵力)"},
-    {"value":3, "text":"20装备神炼石(消耗15灵力)"}
+    {"value":1, "text":"装备升阶石x10,道侣进阶丹x10(消耗10灵力)"},
+    {"value":2, "text":"20装备神炼石(消耗15灵力)"}
   ],
   "daolvliwu_index": [
     {"value":0, "text":"关闭道侣赠送礼物"},
