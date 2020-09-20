@@ -333,6 +333,11 @@
 		        <view class="uni-list-cell-db">仙缘购买道侣游历四方次数</view>
 		        <switch :checked="!!configInfo.is_goumai_daolvyouli" @change="changeSwitchBoolean('is_goumai_daolvyouli')"/>
 		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">自动道侣拜访</view>
+		        <switch :checked="!!configInfo.is_daolv_baifang" @change="changeSwitchBoolean('is_daolv_baifang')"/>
+		    </view>
+
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
@@ -708,6 +713,7 @@ const configInfoDefault = {
 	xianluzhengba_index: 0, // 仙路争霸打xx名之后
 	is_goumai_daolvxiulian: 0, // 仙缘购买道侣修炼任务次数
 	is_goumai_daolvyouli: 0, // 仙缘购买道侣游历四方次数
+	is_daolv_baifang: 0, // 是否自动道侣拜访
 	daolvxiulian_index: 0, // 关闭道侣修炼任务
 	daolvliwu_index: 0 // 关闭道侣赠送礼物
 }
