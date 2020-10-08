@@ -131,9 +131,7 @@ export function handleGetServerConfigDJJHWJXL(channelId, userId) {
 }
 
 // 获取无尽修炼服务器列表和最后登录服务器
-export function handleGetServerConfigWJXL(channelId, userId) {
-  let game_id = 7
-  if (channelId === 6084) game_id = 11
+export function handleGetServerConfigWJXL(channelId, userId, game_id) {
   return new Promise((reslove, reject) => {
     const param = {
       v: '1.1.54',

@@ -74,10 +74,18 @@ export function loginThirdStepWJXL(params) {
   )
 }
 
-// 剑气除魔登录第三步
+// 神道登录第三步
 export function loginThirdStepShendao(params) {
   return http.get(
     'http://106.53.178.160:83/game/biguo/index_lw.php',
+    {params}
+  )
+}
+
+// 道友渡劫不登录第三步
+export function loginThirdStepDYDJB(params) {
+  return http.get(
+    'http://106.53.178.160:83/game/biguo/index_ww.php',
     {params}
   )
 }
@@ -105,6 +113,26 @@ export function loginThirdStepTapTap(params) {
     {params}
   )
 }
+
+// 道友渡劫不登录第一步
+export function loginFirstStepDYDJB(data, header) {
+  return httpForm.post(
+    // 'http://www.fzsyouxi.com/api/authorizations',
+    'http://120.53.14.241:9080/jqcm_login_dydjb/api/authorizations',
+    data,
+    {header}
+  )
+}
+
+// 道友渡劫不登录第二步
+export function loginSecondStepDYDJB(params, header) {
+  return http.get(
+    // 'http://www.fzsyouxi.com/api/user',
+    'http://120.53.14.241:9080/jqcm_login_dydjb/api/user',
+    {params, header}
+  )
+}
+
 
 // 新用户登录，添加到辅助后台
 export function addUser(data) {

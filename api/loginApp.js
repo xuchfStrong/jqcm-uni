@@ -24,10 +24,27 @@ export function loginFirstStepWJXL2(data) {
   )
 }
 
-// 剑气除魔登录第一步
+// 神道登录第一步
 export function loginFirstStepShendao(params) {
   return http.get(
     'http://api.1017sy.cn/index.php',
     {params}
+  )
+}
+
+// 道友渡劫不登录第一步
+export function loginFirstStepDYDJB(data, header) {
+  return httpForm.post(
+    'http://www.fzsyouxi.com/api/authorizations',
+    data,
+    {header}
+  )
+}
+
+// 道友渡劫不登录第二步
+export function loginSecondStepDYDJB(params, header) {
+  return http.get(
+    'http://www.fzsyouxi.com/api/user',
+    {params, header}
   )
 }

@@ -51,13 +51,13 @@ import { http } from '@/utils/request.js'
 import save from '@/utils/save'
 import loginDescription from './loginDescription.json'
 // #ifdef H5
-import { loginFirstStep, loginSecondStep,loginSecondStepByProxy, loginFirstStepWJXL2, loginFirstStepShendao } from '@/api/login'
+import { loginFirstStep, loginSecondStep,loginSecondStepByProxy, loginFirstStepWJXL2, loginFirstStepShendao, loginFirstStepDYDJB, loginSecondStepDYDJB } from '@/api/login'
 // #endif
 // #ifdef APP-PLUS
-import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2, loginFirstStepShendao } from '@/api/loginApp'
+import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2, loginFirstStepShendao, loginFirstStepDYDJB, loginSecondStepDYDJB } from '@/api/loginApp'
 // #endif
 import { getUtils } from '@/api/game'
-import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThirdStepShendao } from '@/api/login'
+import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThirdStepShendao, loginThirdStepDYDJB } from '@/api/login'
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -119,6 +119,7 @@ export default {
 				userId: '',
 				uid: '', // 渠道登录的时候uid和userId不同
 				token: '',
+				token_type: '',
 				channelId: '',
 				pfId: '',
 				time: ''
@@ -215,7 +216,7 @@ export default {
 						this.handleLoginFirstStep() // 无尽修炼
 						// #endif
 						// #ifdef H5
-						handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+						handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId, 7).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.flag.showServer = true
 							this.saveLoginInfo()
@@ -232,7 +233,7 @@ export default {
 						this.handleLoginFirstStepWJXL2() // 无尽修炼2
 						// #endif
 						// #ifdef H5
-						handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+						handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId, 8).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.flag.showServer = true
 							this.saveLoginInfo()
@@ -278,12 +279,29 @@ export default {
 							icon: 'none'
 						})
 						// #endif
-					}  else if (this.userInfo.loginType === 17) { // 剑气除魔
+					}  else if (this.userInfo.loginType === 17) { // 神道
 						// #ifdef APP-PLUS
 						this.handleLoginFirstStepShendao()
 						// #endif
 						// #ifdef H5
-						handleGetServerConfigWJXL(6084, this.loginInfo.userId).then(serverInfo => {
+						handleGetServerConfigWJXL(6084, this.loginInfo.userId, 11).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+						// #endif
+					}  else if (this.userInfo.loginType === 18) { // 道友渡劫不
+						// #ifdef APP-PLUS
+						this.handleLoginFirstStepDYDJB()
+						// #endif
+						// #ifdef H5
+						handleGetServerConfigWJXL(6109, this.loginInfo.userId, 16).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.flag.showServer = true
 							this.saveLoginInfo()
@@ -324,7 +342,9 @@ export default {
 					} else if (this.userInfo.loginType === 16) {
 						this.handleLoginFirstStepDJJH() // 单机江湖-无尽1
 					} else if (this.userInfo.loginType === 17) {
-						this.handleLoginFirstStepShendao() // 剑气除魔
+						this.handleLoginFirstStepShendao() // 神道
+					} else if (this.userInfo.loginType === 18) {
+						this.handleLoginFirstStepDYDJB() // 道友渡劫不
 					}  else {
 						uni.showToast({
 							title: '登录失败。',
@@ -571,6 +591,91 @@ export default {
 			})
 		},
 
+		// 道友渡劫不登录第一步
+		handleLoginFirstStepDYDJB() {
+			if (!this.userInfo.usernamePlatForm || !this.userInfo.passwordPlatForm) {
+				uni.showToast({
+					title: '请输入用户名和密码',
+					duration: 2000,
+					icon: 'none'
+				})
+		    return
+			}
+			const md5Pwd = CryptoJS.MD5(this.userInfo.passwordPlatForm).toString()
+			const params = {
+				package_id: 38,
+				name: this.userInfo.usernamePlatForm,
+				password: md5Pwd
+			}
+			const md5Str = this.userInfo.usernamePlatForm + "38" + md5Pwd
+			const md5Key = '.0b5d6f6f7b1ecbf7ceeaddbc81c11ebb'
+			const md5Sign = CryptoJS.MD5(md5Str + md5Key).toString()
+			const signLoginObj = {
+				package_id: 38,
+				name: this.userInfo.usernamePlatForm,
+				password: md5Pwd,
+				md5_sign: md5Sign
+			}
+			const signLogin = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(JSON.stringify(signLoginObj)))
+			const header = {
+				sign: signLogin,
+				sdkversion: '2.0',
+				processid: 0,
+				deviceType: 'ANDROID',
+				version: '1.4',
+				actionid: 0,
+				channel: 'ZH_CN',
+				product: 'SDK_ZH_CN'
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepDYDJB(params, header).then(res => {
+				if (res.code === 200) {
+          this.loginInfo.token_type = res.data.token_type
+          this.loginInfo.token = res.data.access_token
+          this.handleLoginSecondStepDYDJB()
+        } else {
+          this.flag.showServer = false
+					uni.showToast({
+						title: res.message,
+						duration: 2000,
+						icon: 'none'
+					})
+        }
+			}).catch(err => {
+        console.log(err)
+      })
+		},
+
+		// 道友渡劫不登录第二步
+		handleLoginSecondStepDYDJB() {
+			const params = {}
+			const header = {
+				sdkversion: '2.0',
+				processid: 0,
+				deviceType: 'ANDROID',
+				version: '1.4',
+				actionid: 0,
+				channel: 'ZH_CN',
+				product: 'SDK_ZH_CN',
+				Authorization: this.loginInfo.token_type + ' ' + this.loginInfo.token
+			}
+			loginSecondStepDYDJB(params, header).then(res => {
+				if (res.code === 200) {
+          this.loginInfo.userId = res.data.id
+          this.handleLoginSecondStep()
+        } else {
+          this.flag.showServer = false
+					uni.showToast({
+						title: res.message,
+						duration: 2000,
+						icon: 'none'
+					})
+        }
+			}).catch(err => {
+        console.log(err)
+      })
+		},
+
 		/* url参数处理*/
     parseParams(data) {
       const paramsArr = []
@@ -587,6 +692,7 @@ export default {
 		// 登录第二步，获取usertoken
 		async handleLoginSecondStep() {
 			let site = 'jqcm_data'
+			let appId = 6
 			let channelId = ''
 			let version = '1.4'
 			let signObj = {
@@ -621,19 +727,26 @@ export default {
 			} else if (this.userInfo.loginType === 16) { // 单机江湖-无尽1
 				channelId = 6046
 				site = 'jqcmwjxl_data'
-			} else if (this.userInfo.loginType === 17) { // 剑气除魔
+			} else if (this.userInfo.loginType === 17) { // 神道
 				channelId = 6084
 				signObj = {
 					userId: this.loginInfo.userId,
 					token: this.loginInfo.sessionid
 				}
+			} else if (this.userInfo.loginType === 18) { // 道友渡劫不
+				channelId = 6109
+				signObj = {
+					userId: this.loginInfo.userId,
+					token: this.loginInfo.token
+				}
 			}
 			const timeStamp = Date.parse(new Date()) / 1000
 			const str1 = JSON.stringify(signObj)
-			const arr = [6, channelId, str1, this.userInfo.aid, timeStamp, version, 'cG3dKvBJ10mTGrHf5IOzQLH1dn']
+			console.log('this.userInfo.aid', this.userInfo.aid)
+			const arr = [appId, channelId, str1, this.userInfo.aid, timeStamp, version, 'cG3dKvBJ10mTGrHf5IOzQLH1dn']
 			const singStr = arr.join('#')
 			const param = {
-				appId: 6,
+				appId: appId,
 				channelId: channelId,
 				deviceId: this.userInfo.aid,
 				sign: CryptoJS.MD5(singStr).toString(),
@@ -641,6 +754,7 @@ export default {
 				version: version,
 				data: str1
 			}
+			console.log('param',param)
 			try {
 				// #ifdef APP-PLUS
 				const res = await loginSecondStep(param)
@@ -676,7 +790,7 @@ export default {
 							this.handleLoginThirdStepTapTap()
 						})
 					}  else if (this.userInfo.loginType === 12) { // 无尽修炼
-						handleGetServerConfigWJXL(6030, this.loginInfo.userId).then(serverInfo => {
+						handleGetServerConfigWJXL(6030, this.loginInfo.userId, 7).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStep()
 						})
@@ -695,12 +809,23 @@ export default {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStepDJJHWJXL1()
 						})
-					} else if (this.userInfo.loginType === 17) { // 剑气除魔
-						handleGetServerConfigWJXL(6084, this.loginInfo.userId).then(serverInfo => {
+					} else if (this.userInfo.loginType === 17) { // 神道
+						handleGetServerConfigWJXL(6084, this.loginInfo.userId, 11).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStep()
 						})
+					} else if (this.userInfo.loginType === 18) { // 道友渡劫不
+						handleGetServerConfigWJXL(6109, this.loginInfo.userId, 16).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.handleLoginThirdStepDYDJB()
+						})
 					}
+				} else {
+					uni.showToast({
+						title: res.msg,
+						duration: 2000,
+						icon: 'none'
+					})
 				}
 			} catch(e) {
 				console.error(e)
@@ -782,7 +907,7 @@ export default {
       })
 		},
 		
-		// 登录第三步-剑气除魔
+		// 登录第三步-神道
     handleLoginThirdStepShendao() {
       const param = {
         userId: this.loginInfo.userId,
@@ -790,6 +915,23 @@ export default {
         channelId: this.loginInfo.channelId
       }
       loginThirdStepDDJHWJXL1(param).then(res => {
+        this.loginInfo.token = res.token
+        this.loginInfo.time = res.time
+        this.loginInfo.pfId = res.pfId
+        this.handleAddUser()
+      }).catch(err => {
+        console.log(err)
+      })
+		},
+		
+		// 登录第三步-道友渡劫不
+    handleLoginThirdStepDYDJB() {
+      const param = {
+        userId: this.loginInfo.userId,
+        token: this.loginInfo.token,
+        channelId: this.loginInfo.channelId
+      }
+      loginThirdStepDYDJB(param).then(res => {
         this.loginInfo.token = res.token
         this.loginInfo.time = res.time
         this.loginInfo.pfId = res.pfId

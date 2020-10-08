@@ -577,6 +577,20 @@
 					</view>
 		    </view>
 
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerBuyJinglianshi" :value="configInfo.goumai_jinglian_index" class="background-picker" range-key="text" :range="options.goumai_jinglian_index">
+											<view class="uni-input">{{options.goumai_jinglian_index[configInfo.goumai_jinglian_index].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">自动购买精炼石</view>
+		        <switch :checked="!!configInfo.goumai_jinglian_index" @change="changeSwitchBuyJinglianshi"/>
+					</view>
+		    </view>
+
 		</view>
 
 		<view class="uni-divider">
@@ -715,7 +729,8 @@ const configInfoDefault = {
 	is_goumai_daolvyouli: 0, // 仙缘购买道侣游历四方次数
 	is_daolv_baifang: 0, // 是否自动道侣拜访
 	daolvxiulian_index: 0, // 关闭道侣修炼任务
-	daolvliwu_index: 0 // 关闭道侣赠送礼物
+	daolvliwu_index: 0, // 关闭道侣赠送礼物
+	goumai_jinglian_index: 0 // 自动购买精炼石
 }
 
 const gongfaObjDefault = {
@@ -1052,7 +1067,7 @@ export default {
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 12) { // 无尽修炼
-        handleGetServerConfigWJXL(6030, this.loginInfo.userId).then(serverInfo => {
+        handleGetServerConfigWJXL(6030, this.loginInfo.userId, 7).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()
 					this.$toast("服务器更新成功")
@@ -1075,13 +1090,19 @@ export default {
 					this.saveLoginInfo()
 					this.$toast("服务器更新成功")
 				})
-			}  else if (this.userInfo.loginType === 17) { // 剑气除魔
-        handleGetServerConfigWJXL(6084, this.loginInfo.userId).then(serverInfo => {
+			}  else if (this.userInfo.loginType === 17) { // 神道
+        handleGetServerConfigWJXL(6084, this.loginInfo.userId, 11).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()
 					this.$toast("服务器更新成功")
 				})
-      }   else { // 其他平台
+      }  else if (this.userInfo.loginType === 18) { // 道友渡劫不
+        handleGetServerConfigWJXL(6109, this.loginInfo.userId, 16).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.saveLoginInfo()
+					this.$toast("服务器更新成功")
+				})
+      }  else { // 其他平台
         handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()
@@ -1309,6 +1330,10 @@ export default {
 			const index = e.target.value
 			this.configInfo.daolvliwu_index = index
 		},
+		changePickerBuyJinglianshi(e) {
+			const index = e.target.value
+			this.configInfo.goumai_jinglian_index = index
+		},
 
 		// 修改下拉选项后面的开关
 		changeSwitchLilian(e) {
@@ -1443,6 +1468,14 @@ export default {
 			const checked = e.target.value
 			if (!checked) {
 				this.configInfo.daolvliwu_index = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchBuyJinglianshi(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.goumai_jinglian_index = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}
