@@ -1,4 +1,4 @@
-import { http } from '@/utils/request.js'
+import { http, httpForm } from '@/utils/request.js'
 
 // 登录一步,在app上不需要代理
 export function loginFirstStep(data) {
@@ -34,6 +34,7 @@ export function loginFirstStepShendao(params) {
 
 // 道友渡劫不登录第一步
 export function loginFirstStepDYDJB(data, header) {
+  console.log('道友渡劫不3')
   return httpForm.post(
     'http://www.fzsyouxi.com/api/authorizations',
     data,
