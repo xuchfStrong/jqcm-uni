@@ -681,7 +681,8 @@ import { handleGetServerConfig,
 		handleGetServerConfigWJXL, 
 		handleGetServerConfigWJXL2, 
 		handleGetServerConfigDJJH,
-		handleGetServerConfigDJJHWJXL } from '@/utils/server'
+		handleGetServerConfigDJJHWJXL,
+		handleGetServerConfigXianfanzhuan } from '@/utils/server'
 import options from '@/utils/options.json'
 import { jingjieMap, weimianMap, vipMap } from './mapData.js'
 import mInput from '../../components/m-input.vue'
@@ -1098,6 +1099,12 @@ export default {
 				})
       }  else if (this.userInfo.loginType === 18) { // 道友渡劫不
         handleGetServerConfigWJXL(6109, this.loginInfo.userId, 16).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.saveLoginInfo()
+					this.$toast("服务器更新成功")
+				})
+      }  else if (this.userInfo.loginType === 19) { // 仙凡传
+        handleGetServerConfigXianfanzhuan(6090, this.loginInfo.userId, 10).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()
 					this.$toast("服务器更新成功")

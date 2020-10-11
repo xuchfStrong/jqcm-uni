@@ -82,14 +82,6 @@ export function loginThirdStepShendao(params) {
   )
 }
 
-// 道友渡劫不登录第三步
-export function loginThirdStepDYDJB(params) {
-  return http.get(
-    'http://106.53.178.160:83/game/biguo/index_ww.php',
-    {params}
-  )
-}
-
 // TapTap登录第一步
 export function loginFirstStepTapTap(data) {
   return httpForm.post(
@@ -133,6 +125,30 @@ export function loginSecondStepDYDJB(params, header) {
   )
 }
 
+// 道友渡劫不登录第三步
+export function loginThirdStepDYDJB(params) {
+  return http.get(
+    'http://106.53.178.160:83/game/biguo/index_ww.php',
+    {params}
+  )
+}
+
+
+// 仙凡传登录第一步
+export function loginFirstStepXianfanzhuan(data) {
+  return httpForm.post(
+    'https://api.cxgame.net/VGXup/on0af',
+    data
+  )
+}
+
+// 仙凡传登录第三步
+export function loginThirdStepXianfanzhuan(params) {
+  return http.get(
+    'https://dzzapi.8866net.com/game/biguo/index_xcx.php',
+    {params}
+  )
+}
 
 // 新用户登录，添加到辅助后台
 export function addUser(data) {
@@ -168,6 +184,14 @@ export function getServerConfigQudao(params) {
 export function getServerConfigWJXL(params) {
   return http.get(
     'http://dzztest.8866net.com:83/www/api/server_config_ml.php',
+    {params}
+  )
+}
+
+// 获取仙凡传服务器列表
+export function getServerConfigXianfanzhuan(params) {
+  return http.get(
+    'https://dzzapi.8866net.com/www/api/server_config_xcx.php',
     {params}
   )
 }

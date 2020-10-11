@@ -57,7 +57,7 @@ import { loginFirstStep, loginSecondStep,loginSecondStepByProxy, loginFirstStepW
 import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2, loginFirstStepShendao, loginFirstStepDYDJB, loginSecondStepDYDJB } from '@/api/loginApp'
 // #endif
 import { getUtils } from '@/api/game'
-import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThirdStepShendao, loginThirdStepDYDJB } from '@/api/login'
+import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThirdStepShendao, loginThirdStepDYDJB, loginFirstStepXianfanzhuan, loginThirdStepXianfanzhuan } from '@/api/login'
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -65,9 +65,11 @@ import { handleGetServerConfig,
 		handleGetServerConfigWJXL,
 		handleGetServerConfigWJXL2,
 		handleGetServerConfigDJJH,
-		handleGetServerConfigDJJHWJXL} from '@/utils/server'
+		handleGetServerConfigDJJHWJXL,
+		handleGetServerConfigXianfanzhuan} from '@/utils/server'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
 import { genRandomNumber, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
+import { encryptByDESModeCBC, decryptByDESModeCBC } from '@/utils/encrypt'
 import service from '../../service.js';
 import {mapState,mapMutations} from 'vuex'
 import options from '@/utils/options.json'
@@ -279,7 +281,7 @@ export default {
 							icon: 'none'
 						})
 						// #endif
-					}  else if (this.userInfo.loginType === 17) { // 神道
+					} else if (this.userInfo.loginType === 17) { // 神道
 						// #ifdef APP-PLUS
 						this.handleLoginFirstStepShendao()
 						// #endif
@@ -296,12 +298,29 @@ export default {
 							icon: 'none'
 						})
 						// #endif
-					}  else if (this.userInfo.loginType === 18) { // 道友渡劫不
+					} else if (this.userInfo.loginType === 18) { // 道友渡劫不
 						// #ifdef APP-PLUS
 						this.handleLoginFirstStepDYDJB()
 						// #endif
 						// #ifdef H5
 						handleGetServerConfigWJXL(6109, this.loginInfo.userId, 16).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+						// #endif
+					} else if (this.userInfo.loginType === 19) { // 仙凡传
+						// #ifdef APP-PLUS
+						this.handleLoginFirstStepXianfanzhuan()
+						// #endif
+						// #ifdef H5
+						handleGetServerConfigXianfanzhuan(6090, this.loginInfo.userId, 10).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.flag.showServer = true
 							this.saveLoginInfo()
@@ -345,7 +364,9 @@ export default {
 						this.handleLoginFirstStepShendao() // 神道
 					} else if (this.userInfo.loginType === 18) {
 						this.handleLoginFirstStepDYDJB() // 道友渡劫不
-					}  else {
+					} else if (this.userInfo.loginType === 19) {
+						this.handleLoginFirstStepXianfanzhuan() // 仙凡传
+					} else {
 						uni.showToast({
 							title: '登录失败。',
 							duration: 2000,
@@ -355,6 +376,7 @@ export default {
 				}
 			})
 		},
+
 		// 登录第一步
 		handleLoginFirstStep() {
 		  if (!this.userInfo.usernamePlatForm || !this.userInfo.passwordPlatForm) {
@@ -676,6 +698,72 @@ export default {
       })
 		},
 
+		// 仙凡传登录第一步
+		handleLoginFirstStepXianfanzhuan() {
+		  if (!this.userInfo.usernamePlatForm || !this.userInfo.passwordPlatForm) {
+				uni.showToast({
+					title: '请输入用户名和密码',
+					duration: 2000,
+					icon: 'none'
+				})
+		    return
+		  }
+		  this.userInfo.udid = genRandomNumber(15)
+		  const loginData = {
+				imei: '',
+				androidid: '',
+				imsi: '',
+				uuid: this.userInfo.aid || genUUID(),
+				os: 1,
+				gamekey: 'vQhKJMvaYEHwmvFb',
+				fenbaoid: '',
+				gamepkgname: 'com.cxgame.xfz',
+				gamepkgversion: '0.0.1',
+				gamebuildversion: '0.0.1',
+				osversion: '9',
+				carrier: '中国电信',
+				devicemodel: 'HUAWEI LYA-AL00',
+				screensize: '1080x2145',
+				scene: 'unknown',
+				mac_address: this.userInfo.mac || genMac(),
+				sdkversion: '1.0.0',
+				batterylevel: '94%',
+				batterystate: 'charging',
+				netstate: '4G',
+				game_key: 'vQhKJMvaYEHwmvFb',
+				sdk_type: 'js-h5',
+				login_type: '1',
+				account: this.userInfo.usernamePlatForm, // 用户名
+				password: this.userInfo.passwordPlatForm, // 密码
+				agree_agreement: false
+			}
+			const DESKey = 'f9drs5uy'
+			const param = {
+				data: encryptByDESModeCBC(JSON.stringify(loginData), DESKey)
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepXianfanzhuan(param).then(res => {
+		    if (res.code === 200) {
+					const data = decryptByDESModeCBC(res.data, DESKey)
+					console.log('decryptByDESModeCBC', data)
+					const dataObj = JSON.parse(data)
+					this.loginInfo.userId = dataObj.uid
+					this.loginInfo.token = dataObj.token
+		      this.handleLoginSecondStep()
+		    } else {
+		      this.flag.showServer = false
+					uni.showToast({
+							title: res.message,
+							duration: 2000,
+							icon: 'none'
+					})
+		    }
+		  }).catch(err => {
+		    console.log(err)
+		  })
+		},
+
+
 		/* url参数处理*/
     parseParams(data) {
       const paramsArr = []
@@ -739,10 +827,16 @@ export default {
 					userId: this.loginInfo.userId,
 					token: this.loginInfo.token
 				}
+			} else if (this.userInfo.loginType === 19) { // 仙凡传
+				channelId = 6090
+				version = '1.0'
+				signObj = {
+					uid: this.loginInfo.userId,
+					token: this.loginInfo.token
+				}
 			}
 			const timeStamp = Date.parse(new Date()) / 1000
 			const str1 = JSON.stringify(signObj)
-			console.log('this.userInfo.aid', this.userInfo.aid)
 			const arr = [appId, channelId, str1, this.userInfo.aid, timeStamp, version, 'cG3dKvBJ10mTGrHf5IOzQLH1dn']
 			const singStr = arr.join('#')
 			const param = {
@@ -754,7 +848,6 @@ export default {
 				version: version,
 				data: str1
 			}
-			console.log('param',param)
 			try {
 				// #ifdef APP-PLUS
 				const res = await loginSecondStep(param)
@@ -818,6 +911,11 @@ export default {
 						handleGetServerConfigWJXL(6109, this.loginInfo.userId, 16).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStepDYDJB()
+						})
+					} else if (this.userInfo.loginType === 19) { // 仙凡传
+						handleGetServerConfigXianfanzhuan(6090, this.loginInfo.userId, 10).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.handleLoginThirdStepXianfanzhuan()
 						})
 					}
 				} else {
@@ -932,6 +1030,24 @@ export default {
         channelId: this.loginInfo.channelId
       }
       loginThirdStepDYDJB(param).then(res => {
+        this.loginInfo.token = res.token
+        this.loginInfo.time = res.time
+        this.loginInfo.pfId = res.pfId
+        this.handleAddUser()
+      }).catch(err => {
+        console.log(err)
+      })
+		},
+		
+		// 登录第三步-仙凡传
+    handleLoginThirdStepXianfanzhuan() {
+      const param = {
+        userId: this.loginInfo.userId,
+        token: this.loginInfo.token,
+				channelId: this.loginInfo.channelId,
+				version: '1.0'
+      }
+      loginThirdStepXianfanzhuan(param).then(res => {
         this.loginInfo.token = res.token
         this.loginInfo.time = res.time
         this.loginInfo.pfId = res.pfId
