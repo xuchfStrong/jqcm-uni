@@ -735,7 +735,6 @@ const configInfoDefault = {
 }
 
 const gongfaObjDefault = {
-  options: '10', // 10表示关闭
   gongji: '10', // 购买攻击
   shengming: '10', // 购买生命
   wufang: '10', // 购买物防
@@ -1103,7 +1102,7 @@ export default {
 					this.saveLoginInfo()
 					this.$toast("服务器更新成功")
 				})
-      }  else if (this.userInfo.loginType === 19) { // 仙凡传
+      }  else if ([19,20].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录
         handleGetServerConfigXianfanzhuan(6090, this.loginInfo.userId, 10).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()

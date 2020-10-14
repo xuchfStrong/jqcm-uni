@@ -315,7 +315,7 @@ export default {
 							icon: 'none'
 						})
 						// #endif
-					} else if (this.userInfo.loginType === 19) { // 仙凡传
+					} else if ([19,20].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录
 						// #ifdef APP-PLUS
 						this.handleLoginFirstStepXianfanzhuan()
 						// #endif
@@ -364,8 +364,8 @@ export default {
 						this.handleLoginFirstStepShendao() // 神道
 					} else if (this.userInfo.loginType === 18) {
 						this.handleLoginFirstStepDYDJB() // 道友渡劫不
-					} else if (this.userInfo.loginType === 19) {
-						this.handleLoginFirstStepXianfanzhuan() // 仙凡传
+					} else if ([19,20].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录
+						this.handleLoginFirstStepXianfanzhuan()
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -709,7 +709,7 @@ export default {
 		    return
 		  }
 		  this.userInfo.udid = genRandomNumber(15)
-		  const loginData = {
+		  let loginData = {
 				imei: '',
 				androidid: '',
 				imsi: '',
@@ -737,6 +737,37 @@ export default {
 				password: this.userInfo.passwordPlatForm, // 密码
 				agree_agreement: false
 			}
+			if (this.userInfo.loginType == 20) { // 蛮荒异世录
+				loginData = {
+					idfa: 'unknown',
+					idfv: 'unknown',
+					devicename: 'unknown',
+					uuid: this.userInfo.aid || genUUID(),
+					os: 0,
+					gamekey: 'mYuyiprgumiVhEYL',
+					fenbaoid: '',
+					gamepkgname: 'browser',
+					gamepkgversion: '1.0.0',
+					gamebuildversion: '1.0.0',
+					osversion: '12.4.7',
+					carrier: 'unknown',
+					devicemodel: 'unknown',
+					screensize: '736x414',
+					scene: 'unknown',
+					mac_address: this.userInfo.mac || genMac(),
+					sdkversion: '1.0.0',
+					batterylevel: 'unknown',
+					batterystate: 'unknown',
+					netstate: '未知',
+					localInfo: '',
+					game_key: 'mYuyiprgumiVhEYL',
+					sdk_type: 'js-h5',
+					login_type: 1,
+					account: this.userInfo.usernamePlatForm, // 用户名
+					password: this.userInfo.passwordPlatForm, // 密码
+					agree_agreement: false
+				}
+			}
 			const DESKey = 'f9drs5uy'
 			const param = {
 				data: encryptByDESModeCBC(JSON.stringify(loginData), DESKey)
@@ -745,7 +776,6 @@ export default {
 			loginFirstStepXianfanzhuan(param).then(res => {
 		    if (res.code === 200) {
 					const data = decryptByDESModeCBC(res.data, DESKey)
-					console.log('decryptByDESModeCBC', data)
 					const dataObj = JSON.parse(data)
 					this.loginInfo.userId = dataObj.uid
 					this.loginInfo.token = dataObj.token
@@ -827,7 +857,7 @@ export default {
 					userId: this.loginInfo.userId,
 					token: this.loginInfo.token
 				}
-			} else if (this.userInfo.loginType === 19) { // 仙凡传
+			} else if ([19,20].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录
 				channelId = 6090
 				version = '1.0'
 				signObj = {
@@ -912,7 +942,7 @@ export default {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStepDYDJB()
 						})
-					} else if (this.userInfo.loginType === 19) { // 仙凡传
+					} else if ([19,20].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录
 						handleGetServerConfigXianfanzhuan(6090, this.loginInfo.userId, 10).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStepXianfanzhuan()
@@ -1173,7 +1203,6 @@ export default {
 		// 加载后将存储的数据显示出来
 		initSaveData() {
 			this.platformIndex = getIndexByValue(this.platformList, this.userInfo.loginType)
-			console.log( this.platformIndex)
 			if (this.platformIndex !== -1) {
 				this.platformName = this.platformList[this.platformIndex].text
 			}
