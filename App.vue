@@ -4,35 +4,29 @@
 			// #ifdef APP-PLUS  
 			const that = this
 			plus.runtime.getProperty(plus.runtime.appid, function() {  
+					const jqcmSaleChannel = plus.runtime.channel
 			    uni.request({  
 			        url: 'http://jqcm.huojiangame.com:11658/jqcm/update.php',
 			        success: (result) => {  
 			            var data = result.data;
 									var wgtUrl = ''
 									var pkgUrl = ''
-									if (that.$global.jqcmSaleChannel === 1) {
-										wgtUrl = data.wgtUrl1
+									wgtUrl = data.wgtUrl
+									if (jqcmSaleChannel === '1') {
 										pkgUrl = data.pkgUrl1
-									} else if (that.$global.jqcmSaleChannel === 2) {
-										wgtUrl = data.wgtUrl2
+									} else if (jqcmSaleChannel === '2') {
 										pkgUrl = data.pkgUrl2
-									} else if (that.$global.jqcmSaleChannel === 3) {
-										wgtUrl = data.wgtUrl3
+									} else if (jqcmSaleChannel === '3') {
 										pkgUrl = data.pkgUrl3
-									} else if (that.$global.jqcmSaleChannel === 4) {
-										wgtUrl = data.wgtUrl4
+									} else if (jqcmSaleChannel === '4') {
 										pkgUrl = data.pkgUrl4
-									} else if (that.$global.jqcmSaleChannel === 5) {
-										wgtUrl = data.wgtUrl5
+									} else if (jqcmSaleChannel === '5') {
 										pkgUrl = data.pkgUrl5
-									} else if (that.$global.jqcmSaleChannel === 6) {
-										wgtUrl = data.wgtUrl6
+									} else if (jqcmSaleChannel === '6') {
 										pkgUrl = data.pkgUrl6
-									} else if (that.$global.jqcmSaleChannel === 7) {
-										wgtUrl = data.wgtUrl7
+									} else if (jqcmSaleChannel === '7') {
 										pkgUrl = data.pkgUrl7
-									} else if (that.$global.jqcmSaleChannel === 8) {
-										wgtUrl = data.wgtUrl8
+									} else if (jqcmSaleChannel === '8') {
 										pkgUrl = data.pkgUrl8
 									}
 			            if (data.version > that.$global.jqcmVersion && wgtUrl && data.updateType ===1 ) {  // 热更新
@@ -93,6 +87,10 @@
 			// #endif
 		},
 		onShow: function() {
+			// plus.runtime.getProperty(plus.runtime.appid,(wgtinfo)=>{
+			// 	console.log(JSON.stringify(wgtinfo));
+			// 	console.log(wgtinfo.version);//应用版本号
+			// })
 			// console.log('App Show');
 		},
 		onHide: function() {

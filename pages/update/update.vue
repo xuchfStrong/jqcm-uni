@@ -14,28 +14,28 @@
         </view>
 
        <view style="margin-top:10px; color:#1989fa;">
-          <a v-if="$global.jqcmSaleChannel===1" :href="utils.apkDownloadUrlNew">
+          <a v-if="jqcmSaleChannel==='1'" :href="utils.apkDownloadUrlNew">
             <text>点击下载辅助APP</text>
           </a>
-          <a v-if="$global.jqcmSaleChannel===2" :href="utils.apkDownloadUrlNew2">
+          <a v-if="jqcmSaleChannel==='2'" :href="utils.apkDownloadUrlNew2">
             <text>点击下载辅助APP</text>
           </a>
-          <a v-if="$global.jqcmSaleChannel===3" :href="utils.apkDownloadUrlNew3">
+          <a v-if="jqcmSaleChannel==='3'" :href="utils.apkDownloadUrlNew3">
             <text>点击下载辅助APP</text>
           </a>
-          <a v-if="$global.jqcmSaleChannel===4" :href="utils.apkDownloadUrlNew4">
+          <a v-if="jqcmSaleChannel==='4'" :href="utils.apkDownloadUrlNew4">
             <text>点击下载辅助APP</text>
           </a>
-					<a v-if="$global.jqcmSaleChannel===5" :href="utils.apkDownloadUrlNew5">
+					<a v-if="jqcmSaleChannel==='5'" :href="utils.apkDownloadUrlNew5">
 					  <text>点击下载辅助APP</text>
 					</a>
-          <a v-if="$global.jqcmSaleChannel===6" :href="utils.apkDownloadUrlNew6">
+          <a v-if="jqcmSaleChannel==='6'" :href="utils.apkDownloadUrlNew6">
             <text>点击下载辅助APP</text>
           </a>
-          <a v-if="$global.jqcmSaleChannel===7" :href="utils.apkDownloadUrlNew7">
+          <a v-if="jqcmSaleChannel==='7'" :href="utils.apkDownloadUrlNew7">
             <text>点击下载辅助APP</text>
           </a>
-          <a v-if="$global.jqcmSaleChannel===8" :href="utils.apkDownloadUrlNew8">
+          <a v-if="jqcmSaleChannel==='8'" :href="utils.apkDownloadUrlNew8">
             <text>点击下载辅助APP</text>
           </a>
           <!-- <button type="primary" @tap="downloadImage">下载</button> -->
@@ -46,14 +46,17 @@
 
 <script>
 import { getUtils } from '@/api/game'
+import { getChannel } from '@/utils/index'
 export default {
   data() {
     return {
+      jqcmSaleChannel: '',
       utils: '',
       showUpdate: false
     }
   },
   onLoad() {
+    this.jqcmSaleChannel = getChannel()
     this.handleGetUtils()
   },
 

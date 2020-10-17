@@ -36,14 +36,21 @@
 		</view>
 
 		<text v-if="utils.showCommon" class="waring-wrap">{{ utils.common }}</text>
-		<text v-if="utils.showContact&&$global.jqcmSaleChannel===1" class="waring-wrap">{{ utils.contact }}</text>
+		<text v-if="utils.showContact0&&jqcmSaleChannel === '0'" class="waring-wrap">{{ utils.contact0 }}</text>
+		<text v-if="utils.showContact&&jqcmSaleChannel === '1'" class="waring-wrap">{{ utils.contact }}</text>
+		<text v-if="utils.showContact2&&jqcmSaleChannel === '2'" class="waring-wrap">{{ utils.contact2 }}</text>
+		<text v-if="utils.showContact3&&jqcmSaleChannel === '3'" class="waring-wrap">{{ utils.contact3 }}</text>
+		<text v-if="utils.showContact4&&jqcmSaleChannel === '4'" class="waring-wrap">{{ utils.contact4 }}</text>
+		<text v-if="utils.showContact7&&jqcmSaleChannel === '7'" class="waring-wrap">{{ utils.contact7 }}</text>
+		<text v-if="utils.showContact8&&jqcmSaleChannel === '8'" class="waring-wrap">{{ utils.contact8 }}</text>
+		<!-- <text v-if="utils.showContact&&$global.jqcmSaleChannel===1" class="waring-wrap">{{ utils.contact }}</text>
 		<text v-if="utils.showContact2&&$global.jqcmSaleChannel===2" class="waring-wrap">{{ utils.contact2 }}</text>
 		<text v-if="utils.showContact3&&$global.jqcmSaleChannel===3" class="waring-wrap">{{ utils.contact3 }}</text>
 		<text v-if="utils.showContact4&&$global.jqcmSaleChannel===4" class="waring-wrap">{{ utils.contact4 }}</text>
 		<text v-if="utils.showContact5&&$global.jqcmSaleChannel===5" class="waring-wrap">{{ utils.contact5 }}</text>
 		<text v-if="utils.showContact6&&$global.jqcmSaleChannel===6" class="waring-wrap">{{ utils.contact6 }}</text>
 		<text v-if="utils.showContact7&&$global.jqcmSaleChannel===7" class="waring-wrap">{{ utils.contact7 }}</text>
-		<text v-if="utils.showContact8&&$global.jqcmSaleChannel===8" class="waring-wrap">{{ utils.contact8 }}</text>
+		<text v-if="utils.showContact8&&$global.jqcmSaleChannel===8" class="waring-wrap">{{ utils.contact8 }}</text> -->
 		
 		
 		<view class="uni-divider">
@@ -673,7 +680,7 @@ import CryptoJS from 'crypto-js'
 import save from '@/utils/save'
 import moment from 'moment'
 import {mapState,mapMutations} from 'vuex'
-import { getValueByIndex, getIndexByValue } from '@/utils/index'
+import { getValueByIndex, getIndexByValue, getChannel } from '@/utils/index'
 import { startGuaji, stopGuaji } from '@/api/game'
 import { getRoleInfo, getConfigInfo, changeConfigInfo, getUtils, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig, 
@@ -783,6 +790,7 @@ export default {
   },
 	data() {
 		return {
+			jqcmSaleChannel: '',
 			platformName: '',
 			serverName: '',
 			lastServerIndex: 0,
@@ -939,6 +947,7 @@ export default {
 		}
 	},
 	onLoad() {
+		this.jqcmSaleChannel = getChannel()
 		this.loadLoginInfo()
 		this.handleGetUtils()
 		this.handleGetRemoteOptions()

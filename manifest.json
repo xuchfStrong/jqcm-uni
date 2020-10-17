@@ -2,8 +2,8 @@
     "name" : "剑气除魔火箭辅助",
     "appid" : "__UNI__5AE1708",
     "description" : "",
-    "versionName" : "1.5.8",
-    "versionCode" : 158,
+    "versionName" : "1.6.0",
+    "versionCode" : 160,
     "transformPx" : false,
     "app-plus" : {
         "nvueCompiler" : "uni-app",
@@ -34,7 +34,8 @@
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ]
+                ],
+                "abiFilters" : [ "armeabi-v7a" ]
             },
             "ios" : {},
             "sdkConfigs" : {
@@ -118,5 +119,31 @@
         "uniStatistics" : {
             "enable" : true
         }
-    }
+    },
+    "channel_list" : [
+        {
+            "id" : "1",
+            "name" : "悟空1"
+        },
+        {
+            "id" : "2",
+            "name" : "玉清2"
+        },
+        {
+            "id" : "3",
+            "name" : "淘宝3"
+        },
+        {
+            "id" : "4",
+            "name" : "渠道4"
+        },
+        {
+            "id" : "7",
+            "name" : "渠道7"
+        },
+        {
+            "id" : "8",
+            "name" : "渠道8"
+        }
+    ]
 }

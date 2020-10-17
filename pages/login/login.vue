@@ -772,6 +772,10 @@ export default {
 					agree_agreement: false
 				}
 			}
+			if (!isNaN(this.userInfo.usernamePlatForm)) { // 手机号码登录
+				loginData.login_type = 2
+			}
+			console.log('loginData.login_type', loginData.login_type)
 			const DESKey = 'f9drs5uy'
 			const param = {
 				data: encryptByDESModeCBC(JSON.stringify(loginData), DESKey)

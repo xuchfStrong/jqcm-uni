@@ -189,3 +189,24 @@ export function toast(msg) {
   })
 }
 
+export function getChannel() {
+  // #ifdef APP-PLUS
+  return plus.runtime.channel
+  // #endif
+  // #ifdef H5
+  const channelMap = {
+    "8080": "1",
+    "9091": "1",
+    "9092": "2",
+    "9093": "3",
+    "9094": "4",
+    "9095": "5",
+    "9096": "6",
+    "9097": "7",
+    "9098": "8",
+  }
+  const port = window.location.port
+  return channelMap[port]
+  // #endif
+}
+
