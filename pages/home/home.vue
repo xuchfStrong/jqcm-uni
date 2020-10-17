@@ -1102,7 +1102,7 @@ export default {
 					this.saveLoginInfo()
 					this.$toast("服务器更新成功")
 				})
-      }  else if ([19,20].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录
+      }  else if ([19,20,21].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录,蜀山剑诀
         handleGetServerConfigXianfanzhuan(6090, this.loginInfo.userId, 10).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.saveLoginInfo()

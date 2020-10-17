@@ -315,7 +315,7 @@ export default {
 							icon: 'none'
 						})
 						// #endif
-					} else if ([19,20].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录
+					} else if ([19,20,21].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录,蜀山剑诀
 						// #ifdef APP-PLUS
 						this.handleLoginFirstStepXianfanzhuan()
 						// #endif
@@ -364,7 +364,7 @@ export default {
 						this.handleLoginFirstStepShendao() // 神道
 					} else if (this.userInfo.loginType === 18) {
 						this.handleLoginFirstStepDYDJB() // 道友渡劫不
-					} else if ([19,20].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录
+					} else if ([19,20, 21].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录,蜀山剑诀
 						this.handleLoginFirstStepXianfanzhuan()
 					} else {
 						uni.showToast({
@@ -737,6 +737,10 @@ export default {
 				password: this.userInfo.passwordPlatForm, // 密码
 				agree_agreement: false
 			}
+			if (this.userInfo.loginType == 21) { //蜀山剑诀
+				loginData.gamekey = 'hMCYytjybhQrPClg'
+				loginData.game_key = 'hMCYytjybhQrPClg'
+			}
 			if (this.userInfo.loginType == 20) { // 蛮荒异世录
 				loginData = {
 					idfa: 'unknown',
@@ -857,7 +861,7 @@ export default {
 					userId: this.loginInfo.userId,
 					token: this.loginInfo.token
 				}
-			} else if ([19,20].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录
+			} else if ([19,20,21].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录,蜀山剑诀
 				channelId = 6090
 				version = '1.0'
 				signObj = {
@@ -942,7 +946,7 @@ export default {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStepDYDJB()
 						})
-					} else if ([19,20].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录
+					} else if ([19,20,21].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录,蜀山剑诀
 						handleGetServerConfigXianfanzhuan(6090, this.loginInfo.userId, 10).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStepXianfanzhuan()
