@@ -43,6 +43,7 @@
 		<text v-if="utils.showContact5&&$global.jqcmSaleChannel===5" class="waring-wrap">{{ utils.contact5 }}</text>
 		<text v-if="utils.showContact6&&$global.jqcmSaleChannel===6" class="waring-wrap">{{ utils.contact6 }}</text>
 		<text v-if="utils.showContact7&&$global.jqcmSaleChannel===7" class="waring-wrap">{{ utils.contact7 }}</text>
+		<text v-if="utils.showContact8&&$global.jqcmSaleChannel===8" class="waring-wrap">{{ utils.contact8 }}</text>
 		
 		
 		<view class="uni-divider">
