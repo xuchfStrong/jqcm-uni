@@ -17,7 +17,14 @@
 		<view class="input-group">
 		    <view class="input-row border">
 		        <text class="title">账号：</text>
-		        <m-input class="m-input" type="text" :disabled="false"  clearable focus v-model="userInfo.usernamePlatForm" placeholder="请输入账号"></m-input>
+		        <!-- <m-input class="m-input" type="text" :disabled="false"  clearable focus v-model="userInfo.usernamePlatForm" placeholder="请输入账号"></m-input> -->
+						<input-autocomplete
+								class="unit-item__input"
+								v-model="userInfo.usernamePlatForm"
+								placeholder="请输入账号"
+								highlightColor="#FF0000"
+								:stringList="autocompleteStringList"
+								v-on:selectItem="selectItemD"/>
 		    </view>
 		    <view class="input-row">
 		        <text class="title">密码：</text>
@@ -92,6 +99,7 @@ export default {
 			platformList: [], // 平台信息
 			configInfo: '',
 			utils: '',
+			autocompleteStringList: [],
 			flag: {
 			    loginFlag: false,
 			    logoutFlag: false,
@@ -138,6 +146,11 @@ export default {
 		this.handleGetUtils()
 	},
 	methods: {
+		//响应选择事件，接收选中的数据
+    selectItemD(data) {
+				this.userInfo.passwordPlatForm = data.password
+    },
+
 		// 获取远程选项
 		handleGetRemoteOptions() {
 			getRemoteOptions()
@@ -178,6 +191,7 @@ export default {
 			checkUserStatus(param).then(res => {
 				if (res.code === 200) {
 					// 获取用户信息
+					this.saveAccountList(this.userInfo.usernamePlatForm, this.userInfo.passwordPlatForm)
 					this.loginInfo.userId = res.userid
 					if (this.userInfo.loginType === 1) { // 官方平台
 						// #ifdef APP-PLUS
@@ -1131,6 +1145,7 @@ export default {
       addUser(param).then(res => {
         if (res.code === 200) {
 					this.flag.showServer = true
+					this.saveAccountList(this.userInfo.usernamePlatForm, this.userInfo.passwordPlatForm)
           this.saveLoginInfo()
           if (this.flag.newUserFlag) {
 						uni.showToast({
@@ -1151,6 +1166,25 @@ export default {
         console.log(err)
       })
 		},
+
+		// 将登录成功的用户名密码添加到autocompleteStringList中
+		saveAccountList(username,password) {
+			const indexUsername = this.autocompleteStringList.findIndex((item) => {
+				return item.text === username
+			})
+			if (indexUsername === -1) {
+				if (this.autocompleteStringList.length >= 5) {
+					this.autocompleteStringList.pop()
+				}
+				const userObj = {
+					text: username,
+					password: password
+				}
+				this.autocompleteStringList.unshift(userObj)
+			} else {
+				this.autocompleteStringList[indexUsername].password = password
+			}
+		},
 		
 		// 读取记住的登录信息
     loadLoginInfo() {
@@ -1168,6 +1202,7 @@ export default {
 				this.flag.showServer = gameLoginInfo.showServer
 				this.platformName = gameLoginInfo.platformName
 				this.serverInfo = gameLoginInfo.serverInfo
+				this.autocompleteStringList = JSON.parse(gameLoginInfo.autocompleteStringList)
 				this.initSaveData()
         // this.serverInfo = JSON.parse(gameLoginInfo.serverInfo)
         // this.handleGuajiStatus()
@@ -1188,7 +1223,8 @@ export default {
         userId: this.loginInfo.userId,
 				showServer: this.flag.showServer,
 				platformName: this.platformName,
-				serverInfo: this.serverInfo
+				serverInfo: this.serverInfo,
+				autocompleteStringList: JSON.stringify(this.autocompleteStringList)
         // serverInfo: JSON.stringify(this.serverInfo)
 			}
       save.setGameLoginInfo(gameLoginInfo)
@@ -1273,5 +1309,12 @@ export default {
 .item-wrap {
   color: #969799;
   padding-bottom: 20rpx;
+}
+.unit-item__input {
+	text-align: left;
+	flex:1;
+	padding: 0 10upx;
+	min-height: 50upx;
+	line-height: 50upx;
 }
 </style>
