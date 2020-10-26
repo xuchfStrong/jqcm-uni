@@ -1235,8 +1235,6 @@ export default {
 				this.flag.showServer = gameLoginInfo.showServer
 				this.platformName = gameLoginInfo.platformName
 				this.serverInfo = gameLoginInfo.serverInfo
-				console.log('gameLoginInfo', gameLoginInfo)
-				console.log('autocompleteStringList', gameLoginInfo.autocompleteStringList)
 				if (Array.isArray(gameLoginInfo.autocompleteStringList)) this.autocompleteStringList = gameLoginInfo.autocompleteStringList
 				this.initSaveData()
         // this.serverInfo = JSON.parse(gameLoginInfo.serverInfo)

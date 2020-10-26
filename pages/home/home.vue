@@ -736,7 +736,7 @@ const configInfoDefault = {
   moyuleixing: 0,
   boss_id1: 0,
 	boss_id2: 0,
-  on_off: '',
+  on_off: 0,
   gongfagoumai: '',
 	shenshou_id1: 0,
 	shenshou_id2: 0,
@@ -771,6 +771,37 @@ const gongfaObjDefault = {
   canye: '10', // 购买残页
   juexue: '10' // 购买绝学
 }
+
+const roleInfoDefault =  {
+    userid: '',
+    server_id: '',
+    role_name: '',
+    update_time: '',
+    role_level: '',
+    vip_level: '',
+    zhanli: '',
+    xianyuan: '',
+    guanqia: '',
+    zhuzai_level: '',
+    bazhu_cengshu: '',
+    dianfeng_pos: '',
+    mozuruqin_times: '',
+    lilianshiwu: '',
+    yijikaicai_times: '',
+    yijijingong_times: '',
+    dianfeng_times: '',
+    xiandou_times: '',
+    xianmengjianshe_times: '',
+    xianmengmijing_times: '',
+    moyu_times: '',
+		charge_value: '',
+		xiuwei: '',
+    lingbi: '',
+    shenshou_tiaozhan_times: '',
+		shenshou_lianhua_times: '',
+		jlz_jianzao_times: '',
+		jlz_fireTimess: ''
+  }
 
 export default {
 	components:{
@@ -827,6 +858,7 @@ export default {
 			options:options,
 			configInfo: Object.assign({}, configInfoDefault),
 			gongfaObj: Object.assign({}, gongfaObjDefault), // 功法购买相关的配置
+			roleInfo: Object.assign({}, roleInfoDefault),
 			gongfaIndex: {
 				gongji: 0,
 				shengming: 0,
@@ -844,7 +876,7 @@ export default {
 			},
 			fuzuStatus: {
         end_time: '',
-        on_off: '',
+        on_off: 0,
         isExpired: false
 			},
 			switchInfo: {
@@ -858,36 +890,6 @@ export default {
         boss_id2: false,
         gongfagoumai: false
 
-      },
-			roleInfo: {
-        userid: '',
-        server_id: '',
-        role_name: '',
-        update_time: '',
-        role_level: '',
-        vip_level: '',
-        zhanli: '',
-        xianyuan: '',
-        guanqia: '',
-        zhuzai_level: '',
-        bazhu_cengshu: '',
-        dianfeng_pos: '',
-        mozuruqin_times: '',
-        lilianshiwu: '',
-        yijikaicai_times: '',
-        yijijingong_times: '',
-        dianfeng_times: '',
-        xiandou_times: '',
-        xianmengjianshe_times: '',
-        xianmengmijing_times: '',
-        moyu_times: '',
-				charge_value: '',
-				xiuwei: '',
-        lingbi: '',
-        shenshou_tiaozhan_times: '',
-				shenshou_lianhua_times: '',
-				jlz_jianzao_times: '',
-				jlz_fireTimess: ''
       },
 			userInfo: {
 			  usernamePlatForm: '', // 平台的用户名
@@ -1104,7 +1106,7 @@ export default {
 				this.platformName = gameLoginInfo.platformName
 				this.flag.showServer = gameLoginInfo.showServer
 				this.serverInfo = gameLoginInfo.serverInfo
-				this.autocompleteStringList = gameLoginInfo.autocompleteStringList
+				if (Array.isArray(gameLoginInfo.autocompleteStringList)) this.autocompleteStringList = gameLoginInfo.autocompleteStringList
 				this.initSaveData()
 				this.handleGuajiStatus()
 			}
@@ -1312,7 +1314,8 @@ export default {
             break
           case 404:
 						this.flag.saveRoleFlag = false
-            this.yunguaji = false
+						this.yunguaji = false
+						this.roleInfo = Object.assign({}, roleInfoDefault)
 						uni.showToast({
 							title: '未查询到挂机信息，请开启云挂机',
 							duration: 2000,
