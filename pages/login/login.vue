@@ -36,18 +36,18 @@
 		    <button type="primary" class="primary" @tap="handleCheckUserStatus">登录</button>
 		</view>
 
-		<view style="margin-top:10px; color:#1989fa; text-align: center;">
+		<!-- <view style="margin-top:10px; color:#1989fa; text-align: center;">
       <a :href="utils.zhushouUrl">
         <text>点击下载登录助手</text>
       </a>
-    </view>
+    </view> -->
 
-		<view>
+		<!-- <view>
 			<view class="content">
 				<view class="sub-title">登录说明:</view>
 				<view v-for="(item,index) in loginDescription.description" :key="index" class="item-wrap">{{ item }}</view>
 			</view>
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -346,6 +346,23 @@ export default {
 							icon: 'none'
 						})
 						// #endif
+					} else if ([23].includes(this.userInfo.loginType)) { // 画江湖盟主
+						// #ifdef APP-PLUS
+						this.handleLoginFirstStepXianfanzhuan()
+						// #endif
+						// #ifdef H5
+						handleGetServerConfigXianfanzhuan(6106, this.loginInfo.userId, 12).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+						// #endif
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -378,7 +395,7 @@ export default {
 						this.handleLoginFirstStepShendao() // 神道
 					} else if (this.userInfo.loginType === 18) {
 						this.handleLoginFirstStepDYDJB() // 道友渡劫不
-					} else if ([19,20,21,22].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录,蜀山剑诀,我要飞升(苹果)
+					} else if ([19,20,21,22,23].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录,蜀山剑诀,我要飞升(苹果)
 						this.handleLoginFirstStepXianfanzhuan()
 					} else {
 						uni.showToast({
@@ -759,6 +776,10 @@ export default {
 				loginData.gamekey = 'ptFztWrZANurZdhj'
 				loginData.game_key = 'ptFztWrZANurZdhj'
 			}
+			if (this.userInfo.loginType == 23) { //画江湖盟主
+				loginData.gamekey = 'bNIArCSJRRFcRzQH'
+				loginData.game_key = 'bNIArCSJRRFcRzQH'
+			}
 			if (this.userInfo.loginType == 20) { // 蛮荒异世录
 				loginData = {
 					idfa: 'unknown',
@@ -890,6 +911,13 @@ export default {
 					uid: this.loginInfo.userId,
 					token: this.loginInfo.token
 				}
+			} else if ([23].includes(this.userInfo.loginType)) { // 画江湖盟主
+				channelId = 6106
+				version = '1.0'
+				signObj = {
+					uid: this.loginInfo.userId,
+					token: this.loginInfo.token
+				}
 			}
 			const timeStamp = Date.parse(new Date()) / 1000
 			const str1 = JSON.stringify(signObj)
@@ -973,7 +1001,12 @@ export default {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStepXianfanzhuan()
 						})
-					}
+					} else if ([23].includes(this.userInfo.loginType)) { // 画江湖盟主
+						handleGetServerConfigXianfanzhuan(6106, this.loginInfo.userId, 12).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.handleLoginThirdStepXianfanzhuan()
+						})
+				} 
 				} else {
 					uni.showToast({
 						title: res.msg,
@@ -1202,7 +1235,9 @@ export default {
 				this.flag.showServer = gameLoginInfo.showServer
 				this.platformName = gameLoginInfo.platformName
 				this.serverInfo = gameLoginInfo.serverInfo
-				this.autocompleteStringList = JSON.parse(gameLoginInfo.autocompleteStringList)
+				console.log('gameLoginInfo', gameLoginInfo)
+				console.log('autocompleteStringList', gameLoginInfo.autocompleteStringList)
+				if (Array.isArray(gameLoginInfo.autocompleteStringList)) this.autocompleteStringList = gameLoginInfo.autocompleteStringList
 				this.initSaveData()
         // this.serverInfo = JSON.parse(gameLoginInfo.serverInfo)
         // this.handleGuajiStatus()
@@ -1224,7 +1259,7 @@ export default {
 				showServer: this.flag.showServer,
 				platformName: this.platformName,
 				serverInfo: this.serverInfo,
-				autocompleteStringList: JSON.stringify(this.autocompleteStringList)
+				autocompleteStringList: this.autocompleteStringList
         // serverInfo: JSON.stringify(this.serverInfo)
 			}
       save.setGameLoginInfo(gameLoginInfo)
@@ -1316,5 +1351,6 @@ export default {
 	padding: 0 10upx;
 	min-height: 50upx;
 	line-height: 50upx;
+	z-index: 1;
 }
 </style>

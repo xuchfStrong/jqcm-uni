@@ -1,6 +1,7 @@
 // 管理登录信息
 const LOGIN_KEY = 'LOGIN_KEY';
 const SERVER_KEY = 'SERVER_KEY';
+const ROLE_KEY = 'ROLE_KEY';
 
 const getGameLoginInfo = function () {
     let ret = '';
@@ -28,9 +29,24 @@ const setServerInfo = function (serverInfo) {
   uni.setStorageSync(SERVER_KEY, JSON.stringify(serverInfo));
 }
 
+const getRoleList = function () {
+  let ret = '';
+  ret = uni.getStorageSync(ROLE_KEY);
+  if (!ret) {
+      ret = '[]';
+  }
+  return JSON.parse(ret);
+}
+
+const setRoleList = function (roleList) {
+  uni.setStorageSync(ROLE_KEY, JSON.stringify(roleList));
+}
+
 export default {
   getGameLoginInfo,
   setGameLoginInfo,
   getServerInfo,
-  setServerInfo
+  setServerInfo,
+  getRoleList,
+  setRoleList
 }

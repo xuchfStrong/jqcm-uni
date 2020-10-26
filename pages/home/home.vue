@@ -11,6 +11,16 @@
 		          </picker>
 		      </view>
 		  </view>
+			<view class="list-cell">
+		      <view class="uni-list-cell-left">
+		          收藏的角色：
+		      </view>
+		      <view class="uni-list-cell-db">
+		          <picker @change="changeSavedRoleList" :value="roleIndex" class="bg-picker-gongfa" range-key="roleName" :range="roleList">
+		              <view class="uni-input">{{selectRoleName}}</view>
+		          </picker>
+		      </view>
+		  </view>
 			<!-- <view class="uni-list-cell">
 			    <view class="uni-list-cell-left">
 			        所有的服务器：
@@ -25,13 +35,24 @@
 		<view v-if="!flag.showServer" class="btn-row">
 		    <button type="primary" @tap="handleLogin">登录</button>
 		</view>
-		<view v-else class="btn-center">
-			<view>
-				<button type="primary" plain="true" size="mini" @tap="transferTime">转移辅助</button>
-				<text style="width: 10upx; display: inline-block;"></text>
-				<button type="primary" plain="true" size="mini" @tap="loginSwitch">切换账号</button>
-				<text style="width: 10upx; display: inline-block;"></text>
-				<button type="primary" plain="true" size="mini" @tap="handleGetServerList">更新服务器</button>
+		<view v-else>
+			<view class="btn-center btn-center-margin">
+				<view>
+					<button type="primary" plain="true" size="mini" @tap="transferTime">转移辅助</button>
+					<text style="width: 10upx; display: inline-block;"></text>
+					<button type="primary" plain="true" size="mini" @tap="loginSwitch">切换账号</button>
+					<text style="width: 10upx; display: inline-block;"></text>
+					<button type="primary" plain="true" size="mini" @tap="handleGetServerList">更新服务器</button>
+				</view>
+			</view>
+			<view  class="btn-center">
+				<view>
+					<button type="primary" plain="true" size="mini" @tap="handleSaveRole">收藏角色</button>
+					<text style="width: 10upx; display: inline-block;"></text>
+					<button type="primary" plain="true" size="mini" @tap="handleRemoveRole">移除收藏</button>
+					<text style="width: 10upx; display: inline-block;"></text>
+					<button type="primary" plain="true" size="mini" @tap="handleClearSaveRole">清空收藏</button>
+				</view>
 			</view>
 		</view>
 
@@ -680,7 +701,7 @@ import CryptoJS from 'crypto-js'
 import save from '@/utils/save'
 import moment from 'moment'
 import {mapState,mapMutations} from 'vuex'
-import { getValueByIndex, getIndexByValue, getChannel } from '@/utils/index'
+import { getValueByIndex, getIndexByValue, getChannel, toast } from '@/utils/index'
 import { startGuaji, stopGuaji } from '@/api/game'
 import { getRoleInfo, getConfigInfo, changeConfigInfo, getUtils, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig, 
@@ -818,7 +839,8 @@ export default {
 			    loginFlag: false,
 			    logoutFlag: false,
 			    newUserFlag: false,
-			    showServer: false
+			    showServer: false,
+					saveRoleFlag: false
 			},
 			fuzuStatus: {
         end_time: '',
@@ -903,8 +925,11 @@ export default {
 				{value: '1', name: '一倍'},
 				{value: '2', name: '两倍'},
 				{value: '5', name: '五倍'}
-			]
-			
+			],
+			roleList: [],
+			roleIndex: 0,
+			selectRoleName: '',
+			autocompleteStringList: []
 		}
 	},
 	computed: {
@@ -948,9 +973,9 @@ export default {
 	},
 	onLoad() {
 		this.jqcmSaleChannel = getChannel()
-		this.loadLoginInfo()
 		this.handleGetUtils()
 		this.handleGetRemoteOptions()
+		this.loadLoginInfo()
 	},
 	methods: {
 		handleLogin() {
@@ -994,11 +1019,77 @@ export default {
 			})
 		},
 
+		// 收藏角色到本地
+		handleSaveRole() {
+			if (!this.flag.saveRoleFlag) {
+				toast('角色信息错误，收藏失败！')
+				return
+			}
+			const saveRoleObj = {
+				roleName: this.roleInfo.role_name + '-' + this.serverName,
+				userId: this.loginInfo.userId,
+				platformName: this.platformName,
+				loginType: this.userInfo.loginType,
+				serverId: this.userInfo.server,
+				serverName: this.serverName,
+				passwordPlatForm: this.userInfo.passwordPlatForm
+			}
+			const indexRole = this.roleList.findIndex((item) => {
+				return item.roleName === saveRoleObj.roleName
+			})
+			if (indexRole === -1) {
+				this.roleList.unshift(saveRoleObj)
+			} else {
+				this.roleList[indexRole] = saveRoleObj
+			}
+			this.saveRoleInfo()
+			uni.showToast({
+				title: '收藏成功',
+				duration: 2000,
+				icon: 'none'
+			})
+		},
+
+		// 删除收藏的角色
+		handleRemoveRole() {
+			const roleName = this.roleInfo.role_name + '-' + this.serverName
+			const indexRole = this.roleList.findIndex((item) => {
+				return item.roleName === roleName
+			})
+			if (indexRole === -1) {
+				uni.showToast({
+					title: '收藏列表无该角色',
+					duration: 2000,
+					icon: 'none'
+				})
+			} else {
+				this.roleList.splice(indexRole, 1)
+				this.saveRoleInfo()
+				uni.showToast({
+					title: '移除成功',
+					duration: 2000,
+					icon: 'none'
+				})
+			}
+		},
+
+		// 清空收藏角色
+		handleClearSaveRole() {
+			this.roleList = []
+			this.saveRoleInfo()
+			uni.showToast({
+				title: '清空成功',
+				duration: 2000,
+				icon: 'none'
+			})
+		},
+
 		// 读取记住的登录信息
 		loadLoginInfo() {
 			uni.setNavigationBarTitle({
 					title: '剑气除魔火箭辅助V' + this.$global.jqcmVersionName
 			});
+			this.roleList = save.getRoleList()
 			const gameLoginInfo = save.getGameLoginInfo()
 			if (gameLoginInfo.serverInfo) {
 				this.userInfo.platform = gameLoginInfo.platform
@@ -1013,6 +1104,7 @@ export default {
 				this.platformName = gameLoginInfo.platformName
 				this.flag.showServer = gameLoginInfo.showServer
 				this.serverInfo = gameLoginInfo.serverInfo
+				this.autocompleteStringList = gameLoginInfo.autocompleteStringList
 				this.initSaveData()
 				this.handleGuajiStatus()
 			}
@@ -1031,18 +1123,38 @@ export default {
 				userId: this.loginInfo.userId,
 				showServer: this.flag.showServer,
 				platformName: this.platformName,
-				serverInfo: this.serverInfo
+				serverInfo: this.serverInfo,
+				autocompleteStringList: this.autocompleteStringList
 			}
 			save.setGameLoginInfo(gameLoginInfo)
+		},
+
+		// 存储收藏的角色
+		saveRoleInfo() {
+			save.setRoleList(this.roleList)
 		},
 
 		// 加载后将存储的数据显示出来
 		initSaveData() {
 			const lastServerIndex = getIndexByValue(this.serverInfo.last_server_list, this.userInfo.server)
 			if (lastServerIndex !== -1) {
-				this.serverName = this.serverInfo.last_server_list[this.lastServerIndex].text
+				this.serverName = this.serverInfo.last_server_list[lastServerIndex].text
 				this.lastServerIndex = lastServerIndex
+			} else {
+				this.serverName = ''
 			}
+		},
+
+		// 选择保存的角色
+		changeSavedRoleList(e) {
+			this.selectRoleName = this.roleList[e.target.value]['roleName']
+			this.loginInfo.userId = this.roleList[e.target.value]['userId']
+			this.userInfo.server = this.roleList[e.target.value]['serverId']
+			this.userInfo.loginType = this.roleList[e.target.value]['loginType']
+			this.platformName = this.roleList[e.target.value]['platformName']
+			this.userInfo.passwordPlatForm = this.roleList[e.target.value]['passwordPlatForm']
+			this.handleGetServerList()
+			this.handleGuajiStatus()
 		},
 
 		// 选择最后登录服务器
@@ -1051,7 +1163,6 @@ export default {
 			this.serverName = this.serverInfo.last_server_list[this.lastServerIndex].text
 			this.userInfo.server = getValueByIndex(this.serverInfo.last_server_list, e.target.value)
 			this.allServerindex = getIndexByValue(this.serverInfo.server_list, this.userInfo.server)
-			this.saveLoginInfo()
 			this.handleGuajiStatus()
 		},
 		// 选择所以登录服务器
@@ -1067,61 +1178,78 @@ export default {
       if (this.userInfo.loginType === 1) { // 官方平台
         handleGetServerConfig(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
-					this.saveLoginInfo()
+					// this.saveLoginInfo()
+					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 2) { // TapTap平台
         handleGetServerConfigTapTap(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
-					this.saveLoginInfo()
+					// this.saveLoginInfo()
+					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 12) { // 无尽修炼
         handleGetServerConfigWJXL(6030, this.loginInfo.userId, 7).then(serverInfo => {
 					this.serverInfo = serverInfo
-					this.saveLoginInfo()
+					// this.saveLoginInfo()
+					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 14) { // 无尽修炼2
         handleGetServerConfigWJXL2(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
-					this.saveLoginInfo()
+					// this.saveLoginInfo()
+					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 15) { // 单机江湖-渠道服
         handleGetServerConfigDJJH(6044, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
-					this.saveLoginInfo()
+					// this.saveLoginInfo()
+					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
       }  else if (this.userInfo.loginType === 16) { // 单机江湖-无尽1
         handleGetServerConfigDJJHWJXL(6046, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
-					this.saveLoginInfo()
+					// this.saveLoginInfo()
+					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
 			}  else if (this.userInfo.loginType === 17) { // 神道
         handleGetServerConfigWJXL(6084, this.loginInfo.userId, 11).then(serverInfo => {
 					this.serverInfo = serverInfo
-					this.saveLoginInfo()
+					// this.saveLoginInfo()
+					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
       }  else if (this.userInfo.loginType === 18) { // 道友渡劫不
         handleGetServerConfigWJXL(6109, this.loginInfo.userId, 16).then(serverInfo => {
 					this.serverInfo = serverInfo
-					this.saveLoginInfo()
+					// this.saveLoginInfo()
+					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
       }  else if ([19,20,21,22].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录,蜀山剑诀,我要飞升(苹果)
         handleGetServerConfigXianfanzhuan(6090, this.loginInfo.userId, 10).then(serverInfo => {
 					this.serverInfo = serverInfo
-					this.saveLoginInfo()
+					// this.saveLoginInfo()
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
+      }  else if ([23].includes(this.userInfo.loginType)) { // 画江湖盟主
+        handleGetServerConfigXianfanzhuan(6106, this.loginInfo.userId, 12).then(serverInfo => {
+					this.serverInfo = serverInfo
+					// this.saveLoginInfo()
+					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
       }  else { // 其他平台
         handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
-					this.saveLoginInfo()
+					// this.saveLoginInfo()
+					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
       }
@@ -1153,12 +1281,10 @@ export default {
 				})
         return
 			}
-			const dateNow = new Date()
-			const ts = dateNow.getTime()
       const param = {
         userid: this.loginInfo.userId,
 				server_id: this.userInfo.server,
-				_t: ts
+				t: new Date().getTime()
 			}
 			this.statusLoading = true
       getRoleInfo(param).then(res => { // 查询角色信息
@@ -1166,7 +1292,9 @@ export default {
 				this.statusLoading = false
         switch (code) {
           case 200:
-            this.roleInfo = res.data
+						this.roleInfo = res.data
+						this.flag.saveRoleFlag = true
+						this.saveLoginInfo()
             this.yunguaji = true
 						uni.showToast({
 							title: '查询挂机状态成功',
@@ -1175,6 +1303,7 @@ export default {
 						})
             break
           case 403:
+						this.flag.saveRoleFlag = false
 						uni.showToast({
 							title: '参数错误',
 							duration: 2000,
@@ -1182,6 +1311,7 @@ export default {
 						})
             break
           case 404:
+						this.flag.saveRoleFlag = false
             this.yunguaji = false
 						uni.showToast({
 							title: '未查询到挂机信息，请开启云挂机',
@@ -1191,6 +1321,7 @@ export default {
             break
         }
       }).catch(err => {
+				this.flag.saveRoleFlag = false
         console.log(err)
       })
       this.handleGetConfigInfo()
@@ -1208,7 +1339,8 @@ export default {
       }
       const param = {
         userid: this.loginInfo.userId,
-        server_id: this.userInfo.server
+				server_id: this.userInfo.server,
+				t: new Date().getTime()
       }
       getConfigInfo(param).then(res => {
         const code = res.code
@@ -1773,6 +1905,8 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+.btn-center-margin {
 	margin-top: 20upx;
 }
 .attr-flex {
@@ -1803,6 +1937,10 @@ export default {
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+}
+.content .uni-list-cell-left {
+	width: 35%;
+	text-align: right;
 }
 .flex-item-two {
 	display: flex;
