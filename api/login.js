@@ -3,7 +3,7 @@ import { http, httpForm } from '@/utils/request.js'
 // 登录一步
 export function loginFirstStep(data) {
   return http.post(
-    'http://49.232.96.20:9080/jqcm_login/api/login',
+    'http://m.huojiangame.com:9080/jqcm_login/api/login',
     data
   )
 }
@@ -11,7 +11,7 @@ export function loginFirstStep(data) {
 // 登录二步获取用户token
 export function loginSecondStep(params) {
   return http.get(
-    'http://49.232.96.20:9080/jqcm_usertoken/user/v1/token',
+    'http://m.huojiangame.com:9080/jqcm_usertoken/user/v1/token',
     {params}
   )
 }
@@ -53,7 +53,7 @@ export function loginThirdStepDDJHWJXL1(params) {
 // 无尽修炼2登录一步
 export function loginFirstStepWJXL2(data) {
   return http.post(
-    'http://49.232.96.20:9080/jqcm_login_wjxl2/api/login',
+    'http://m.huojiangame.com:9080/jqcm_login_wjxl2/api/login',
     data
   )
 }
@@ -110,7 +110,7 @@ export function loginThirdStepTapTap(params) {
 export function loginFirstStepDYDJB(data, header) {
   return httpForm.post(
     // 'http://www.fzsyouxi.com/api/authorizations',
-    'http://49.232.96.20:9080/jqcm_login_dydjb/api/authorizations',
+    'http://m.huojiangame.com:9080/jqcm_login_dydjb/api/authorizations',
     data,
     {header}
   )
@@ -120,7 +120,7 @@ export function loginFirstStepDYDJB(data, header) {
 export function loginSecondStepDYDJB(params, header) {
   return http.get(
     // 'http://www.fzsyouxi.com/api/user',
-    'http://49.232.96.20:9080/jqcm_login_dydjb/api/user',
+    'http://m.huojiangame.com:9080/jqcm_login_dydjb/api/user',
     {params, header}
   )
 }

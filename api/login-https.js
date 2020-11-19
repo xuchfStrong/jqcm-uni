@@ -3,7 +3,7 @@ import { http, httpForm } from '@/utils/request.js'
 // 登录一步
 export function loginFirstStep(data) {
   return http.post(
-    'https://49.232.96.20:9443/jqcm_login/api/login',
+    'https://m.huojiangame.com:9443/jqcm_login/api/login',
     data
   )
 }
@@ -11,7 +11,7 @@ export function loginFirstStep(data) {
 // 登录二步获取用户token
 export function loginSecondStep(params) {
   return http.get(
-    'https://49.232.96.20:9443/jqcm_usertoken/user/v1/token',
+    'https://m.huojiangame.com:9443/jqcm_usertoken/user/v1/token',
     {params}
   )
 }
@@ -28,7 +28,7 @@ export function loginSecondStepByProxy(params) {
 export function loginFirstStepShendao(params) {
   return http.get(
     // 'http://api.1017sy.cn/index.php',
-    'https://49.232.96.20:9443/login_step1/index.php',
+    'https://m.huojiangame.com:9443/login_step1/index.php',
     {params}
   )
 }
@@ -38,7 +38,7 @@ export function loginFirstStepShendao(params) {
 export function loginThirdStep(params) {
   return http.get(
     // 'http://106.53.178.160:83/game/biguo/index.php',
-    'https://49.232.96.20:9443/login_step3/game/biguo/index.php',
+    'https://m.huojiangame.com:9443/login_step3/game/biguo/index.php',
     {params}
   )
 }
@@ -47,7 +47,7 @@ export function loginThirdStep(params) {
 export function loginThirdStepDDJHWJXL1(params) {
   return http.get(
     // 'http://106.53.178.160:83/game/biguo/index_ml.php',
-    'https://49.232.96.20:9443/login_step3/game/biguo/index_ml.php',
+    'https://m.huojiangame.com:9443/login_step3/game/biguo/index_ml.php',
     {params}
   )
 }
@@ -56,7 +56,7 @@ export function loginThirdStepDDJHWJXL1(params) {
 // 无尽修炼2登录一步
 export function loginFirstStepWJXL2(data) {
   return http.post(
-    'https://49.232.96.20:9443/jqcm_login_wjxl2/api/login',
+    'https://m.huojiangame.com:9443/jqcm_login_wjxl2/api/login',
     data
   )
 }
@@ -65,7 +65,7 @@ export function loginFirstStepWJXL2(data) {
 export function loginThirdStepWJXL2(params) {
   return http.get(
     // 'http://106.53.178.160:83/game/biguo/index_hlyx.php',
-    'https://49.232.96.20:9443/login_step3/game/biguo/index_hlyx.php',
+    'https://m.huojiangame.com:9443/login_step3/game/biguo/index_hlyx.php',
     {params}
   )
 }
@@ -74,7 +74,7 @@ export function loginThirdStepWJXL2(params) {
 export function loginThirdStepWJXL(params) {
   return http.get(
     // 'http://106.53.178.160:83/game/biguo/index_ml.php',
-    'https://49.232.96.20:9443/login_step3/game/biguo/index_ml.php',
+    'https://m.huojiangame.com:9443/login_step3/game/biguo/index_ml.php',
     {params}
   )
 }
@@ -83,7 +83,7 @@ export function loginThirdStepWJXL(params) {
 export function loginThirdStepShendao(params) {
   return http.get(
     // 'http://106.53.178.160:83/game/biguo/index_lw.php',
-    'https://49.232.96.20:9443/login_step3/game/biguo/index_lw.php',
+    'https://m.huojiangame.com:9443/login_step3/game/biguo/index_lw.php',
     {params}
   )
 }
@@ -92,7 +92,7 @@ export function loginThirdStepShendao(params) {
 export function loginFirstStepTapTap(data) {
   return httpForm.post(
     // 'http://sdk.66hjh.com/user/login',
-    'https://49.232.96.20:9443/login_step1_taptap/user/login',
+    'https://m.huojiangame.com:9443/login_step1_taptap/user/login',
     data
   )
 }
@@ -109,7 +109,7 @@ export function loginFirstStepTapTap(data) {
 export function loginThirdStepTapTap(params) {
   return http.get(
     // 'http://106.53.178.160:83/game/biguo/index_qudao.php',
-    'https://49.232.96.20:9443/login_step3/game/biguo/index_qudao.php',
+    'https://m.huojiangame.com:9443/login_step3/game/biguo/index_qudao.php',
     {params}
   )
 }
@@ -118,7 +118,7 @@ export function loginThirdStepTapTap(params) {
 export function loginFirstStepDYDJB(data, header) {
   return httpForm.post(
     // 'http://www.fzsyouxi.com/api/authorizations',
-    'https://49.232.96.20:9443/jqcm_login_dydjb/api/authorizations',
+    'https://m.huojiangame.com:9443/jqcm_login_dydjb/api/authorizations',
     data,
     {header}
   )
@@ -128,7 +128,7 @@ export function loginFirstStepDYDJB(data, header) {
 export function loginSecondStepDYDJB(params, header) {
   return http.get(
     // 'http://www.fzsyouxi.com/api/user',
-    'https://49.232.96.20:9443/jqcm_login_dydjb/api/user',
+    'https://m.huojiangame.com:9443/jqcm_login_dydjb/api/user',
     {params, header}
   )
 }
@@ -137,7 +137,7 @@ export function loginSecondStepDYDJB(params, header) {
 export function loginThirdStepDYDJB(params) {
   return http.get(
     // 'http://106.53.178.160:83/game/biguo/index_ww.php',
-    'https://49.232.96.20:9443/login_step3/game/biguo/index_ww.php',
+    'https://m.huojiangame.com:9443/login_step3/game/biguo/index_ww.php',
     {params}
   )
 }
@@ -178,7 +178,7 @@ export function checkUserStatus(params) {
 export function getServerConfig(params) {
   return http.get(
     // 'http://dzztest.8866net.com:83/www/api/server_config.php',
-    'https://49.232.96.20:9443/jqcm_server/www/api/server_config.php',
+    'https://m.huojiangame.com:9443/jqcm_server/www/api/server_config.php',
     {params}
   )
 }
@@ -187,7 +187,7 @@ export function getServerConfig(params) {
 export function getServerConfigQudao(params) {
   return http.get(
     // 'http://dzztest.8866net.com:83/www/api/server_config_qudao.php',
-    'https://49.232.96.20:9443/jqcm_server/www/api/server_config_qudao.php',
+    'https://m.huojiangame.com:9443/jqcm_server/www/api/server_config_qudao.php',
     {params}
   )
 }
@@ -196,7 +196,7 @@ export function getServerConfigQudao(params) {
 export function getServerConfigWJXL(params) {
   return http.get(
     // 'http://dzztest.8866net.com:83/www/api/server_config_ml.php',
-    'https://49.232.96.20:9443/jqcm_server/www/api/server_config_ml.php',
+    'https://m.huojiangame.com:9443/jqcm_server/www/api/server_config_ml.php',
     {params}
   )
 }
@@ -205,7 +205,7 @@ export function getServerConfigWJXL(params) {
 export function getServerConfigXianfanzhuan(params) {
   return http.get(
     // 'https://dzzapi.8866net.com/www/api/server_config_xcx.php',
-    'https://49.232.96.20:9443/jqcm_server2/www/api/server_config_xcx.php',
+    'https://m.huojiangame.com:9443/jqcm_server2/www/api/server_config_xcx.php',
     {params}
   )
 }

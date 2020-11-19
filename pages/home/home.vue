@@ -7,10 +7,20 @@
 		      </view>
 		      <view class="uni-list-cell-db">
 		          <picker @change="changeLastServer" :value="lastServerIndex" class="bg-picker-gongfa" range-key="text" :range="serverInfo.last_server_list">
-		              <view class="uni-input">{{serverName}}</view>
+		              <view class="uni-input">{{serverNameLast}}</view>
 		          </picker>
 		      </view>
 		  </view>
+			<view class="list-cell">
+			    <view class="uni-list-cell-left">
+			        所有的服务器：
+			    </view>
+			    <view class="uni-list-cell-db">
+			        <picker @change="changeAllServer" :value="allServerindex" class="bg-picker-gongfa" range-key="text" :range="serverInfo.server_list">
+			            <view class="uni-input">{{serverNameAll}}</view>
+			        </picker>
+			    </view>
+			</view>
 			<view class="list-cell">
 		      <view class="uni-list-cell-left">
 		          收藏的角色：
@@ -21,16 +31,7 @@
 		          </picker>
 		      </view>
 		  </view>
-			<!-- <view class="uni-list-cell">
-			    <view class="uni-list-cell-left">
-			        所有的服务器：
-			    </view>
-			    <view class="uni-list-cell-db">
-			        <picker @change="changeAllServer" :value="allServerindex" range-key="text" :range="serverInfo.server_list">
-			            <view class="uni-input">{{serverInfo.server_list[allServerindex].text}}</view>
-			        </picker>
-			    </view>
-			</view> -->
+			
 		</view>
 		<view v-if="!flag.showServer" class="btn-row">
 		    <button type="primary" @tap="handleLogin">登录</button>
@@ -620,6 +621,20 @@
 					</view>
 		    </view>
 
+				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerLingshoudao" :value="configInfo.index_lingshoudao_refresh" class="background-picker" range-key="text" :range="options.index_lingshoudao_refresh">
+											<view class="uni-input">{{options.index_lingshoudao_refresh[configInfo.index_lingshoudao_refresh].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">自动刷灵兽岛</view>
+		        <switch :checked="!!configInfo.index_lingshoudao_refresh" @change="changeSwitchLingshoudao"/>
+					</view>
+		    </view> -->
+
 		</view>
 
 		<view class="uni-divider">
@@ -760,7 +775,8 @@ const configInfoDefault = {
 	is_daolv_baifang: 0, // 是否自动道侣拜访
 	daolvxiulian_index: 0, // 关闭道侣修炼任务
 	daolvliwu_index: 0, // 关闭道侣赠送礼物
-	goumai_jinglian_index: 0 // 自动购买精炼石
+	goumai_jinglian_index: 0, // 自动购买精炼石
+	index_lingshoudao_refresh: 0 // 灵兽岛
 }
 
 const gongfaObjDefault = {
@@ -847,6 +863,7 @@ export default {
 			serverName: '',
 			lastServerIndex: 0,
 			allServerindex: 0,
+			serverFromAllServer: 0,
 			utils: {},
 			remoteOptions: {
 				shenshou: []
@@ -935,13 +952,12 @@ export default {
 		}
 	},
 	computed: {
-		// serverName() {
-		// 	let res = ''
-		// 	if (this.serverInfo.last_server_list) {
-		// 		res = this.serverInfo.last_server_list[this.lastServerIndex].text
-		// 	}
-		// 	return res
-		// },
+		serverNameLast() {
+			return this.serverFromAllServer? '':this.serverName
+		},
+		serverNameAll() {
+			return this.serverFromAllServer? this.serverName:''
+		},
 		// 更新时间是否超过2小时
     isPassedTwoHours() {
       const a = moment(new Date())
@@ -1106,6 +1122,7 @@ export default {
 				this.platformName = gameLoginInfo.platformName
 				this.flag.showServer = gameLoginInfo.showServer
 				this.serverInfo = gameLoginInfo.serverInfo
+				this.serverFromAllServer = gameLoginInfo.serverFromAllServer
 				if (Array.isArray(gameLoginInfo.autocompleteStringList)) this.autocompleteStringList = gameLoginInfo.autocompleteStringList
 				this.initSaveData()
 				this.handleGuajiStatus()
@@ -1126,6 +1143,7 @@ export default {
 				showServer: this.flag.showServer,
 				platformName: this.platformName,
 				serverInfo: this.serverInfo,
+				serverFromAllServer: this.serverFromAllServer,
 				autocompleteStringList: this.autocompleteStringList
 			}
 			save.setGameLoginInfo(gameLoginInfo)
@@ -1138,12 +1156,22 @@ export default {
 
 		// 加载后将存储的数据显示出来
 		initSaveData() {
-			const lastServerIndex = getIndexByValue(this.serverInfo.last_server_list, this.userInfo.server)
-			if (lastServerIndex !== -1) {
-				this.serverName = this.serverInfo.last_server_list[lastServerIndex].text
-				this.lastServerIndex = lastServerIndex
+			if (this.serverFromAllServer) {
+				const allServerindex = getIndexByValue(this.serverInfo.server_list, this.userInfo.server)
+				if (allServerindex !== -1) {
+					this.serverName = this.serverInfo.server_list[allServerindex].text
+					this.allServerindex = allServerindex
+				} else {
+					this.serverName = ''
+				}
 			} else {
-				this.serverName = ''
+				const lastServerIndex = getIndexByValue(this.serverInfo.last_server_list, this.userInfo.server)
+				if (lastServerIndex !== -1) {
+					this.serverName = this.serverInfo.last_server_list[lastServerIndex].text
+					this.lastServerIndex = lastServerIndex
+				} else {
+					this.serverName = ''
+				}
 			}
 		},
 
@@ -1161,18 +1189,19 @@ export default {
 
 		// 选择最后登录服务器
 		changeLastServer: function(e) {
+			this.serverFromAllServer = 0
 			this.lastServerIndex = e.target.value
 			this.serverName = this.serverInfo.last_server_list[this.lastServerIndex].text
 			this.userInfo.server = getValueByIndex(this.serverInfo.last_server_list, e.target.value)
-			this.allServerindex = getIndexByValue(this.serverInfo.server_list, this.userInfo.server)
 			this.handleGuajiStatus()
 		},
 		// 选择所以登录服务器
 		changeAllServer: function(e) {
-			this.userInfo.server = getValueByIndex(this.serverInfo.server_list, e.target.value)
+			this.serverFromAllServer = 1
 			this.allServerindex = e.target.value
-			this.lastServerIndex = getIndexByValue(this.serverInfo.last_server_list, this.userInfo.server)
-			this.saveLoginInfo()
+			this.serverName = this.serverInfo.server_list[this.allServerindex].text
+			this.userInfo.server = getValueByIndex(this.serverInfo.server_list, e.target.value)
+			this.handleGuajiStatus()
 		},
 
 		// 更新服务器列表
@@ -1485,6 +1514,10 @@ export default {
 			const index = e.target.value
 			this.configInfo.goumai_jinglian_index = index
 		},
+		changePickerLingshoudao(e) {
+			const index = e.target.value
+			this.configInfo.index_lingshoudao_refresh = index
+		},
 
 		// 修改下拉选项后面的开关
 		changeSwitchLilian(e) {
@@ -1627,6 +1660,14 @@ export default {
 			const checked = e.target.value
 			if (!checked) {
 				this.configInfo.goumai_jinglian_index = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchLingshoudao(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.index_lingshoudao_refresh = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}
@@ -1990,6 +2031,7 @@ export default {
   color: red;
   margin-top: 10upx;
   white-space: pre-line;
+	user-select: text;
 }
 .content-wrap {
 	user-select: text;
