@@ -1030,7 +1030,8 @@ export default {
       const param = {
         userId: this.loginInfo.userId,
         token: this.loginInfo.token,
-        channelId: this.loginInfo.channelId
+				channelId: this.loginInfo.channelId,
+				version: '1.5.0'
       }
       loginThirdStep(param).then(res => {
         this.loginInfo.token = res.token
@@ -1048,7 +1049,8 @@ export default {
       const param = {
         userId: this.loginInfo.userId,
         token: this.loginInfo.token,
-        channelId: this.loginInfo.channelId
+				channelId: this.loginInfo.channelId,
+				version: '1.5.0'
       }
       loginThirdStepTapTap(param).then(res => {
         this.loginInfo.token = res.token
@@ -1065,7 +1067,8 @@ export default {
       const param = {
         userId: this.loginInfo.userId,
         token: this.loginInfo.token,
-        channelId: this.loginInfo.channelId
+				channelId: this.loginInfo.channelId,
+				version: '1.5.0'
       }
       loginThirdStepWJXL2(param).then(res => {
         this.loginInfo.token = res.token
@@ -1082,7 +1085,8 @@ export default {
       const param = {
         userId: this.loginInfo.userId,
         token: this.loginInfo.token,
-        channelId: this.loginInfo.channelId
+				channelId: this.loginInfo.channelId,
+				version: '1.5.0'
       }
       loginThirdStepDDJHWJXL1(param).then(res => {
         this.loginInfo.token = res.token
@@ -1099,7 +1103,8 @@ export default {
       const param = {
         userId: this.loginInfo.userId,
         token: this.loginInfo.token,
-        channelId: this.loginInfo.channelId
+				channelId: this.loginInfo.channelId,
+				version: '1.5.0'
       }
       loginThirdStepDDJHWJXL1(param).then(res => {
         this.loginInfo.token = res.token
@@ -1116,7 +1121,8 @@ export default {
       const param = {
         userId: this.loginInfo.userId,
         token: this.loginInfo.token,
-        channelId: this.loginInfo.channelId
+				channelId: this.loginInfo.channelId,
+				version: '1.5.0'
       }
       loginThirdStepDYDJB(param).then(res => {
         this.loginInfo.token = res.token
@@ -1134,7 +1140,7 @@ export default {
         userId: this.loginInfo.userId,
         token: this.loginInfo.token,
 				channelId: this.loginInfo.channelId,
-				version: '1.0'
+				version: '1.5.0'
       }
       loginThirdStepXianfanzhuan(param).then(res => {
         this.loginInfo.token = res.token

@@ -36,7 +36,7 @@ export function loginFirstStepShendao(params) {
 // 登录第三步
 export function loginThirdStep(params) {
   return http.get(
-    'http://106.53.178.160:83/game/biguo/index.php',
+    'http://dzztest.dzz.begindcc.com/game/biguo/index.php',
     {params}
   )
 }
@@ -44,7 +44,7 @@ export function loginThirdStep(params) {
 // 单机江湖无尽修炼1登录第三步
 export function loginThirdStepDDJHWJXL1(params) {
   return http.get(
-    'http://106.53.178.160:83/game/biguo/index_ml.php',
+    'http://dzztest.dzz.begindcc.com/game/biguo/index_ml.php',
     {params}
   )
 }
@@ -61,7 +61,7 @@ export function loginFirstStepWJXL2(data) {
 // 无尽修炼2登录第三步
 export function loginThirdStepWJXL2(params) {
   return http.get(
-    'http://106.53.178.160:83/game/biguo/index_hlyx.php',
+    'http://dzztest.dzz.begindcc.com/game/biguo/index_hlyx.php',
     {params}
   )
 }
@@ -69,7 +69,7 @@ export function loginThirdStepWJXL2(params) {
 // 无尽修炼1登录第三步
 export function loginThirdStepWJXL(params) {
   return http.get(
-    'http://106.53.178.160:83/game/biguo/index_ml.php',
+    'http://dzztest.dzz.begindcc.com/game/biguo/index_ml.php',
     {params}
   )
 }
@@ -77,7 +77,7 @@ export function loginThirdStepWJXL(params) {
 // 神道登录第三步
 export function loginThirdStepShendao(params) {
   return http.get(
-    'http://106.53.178.160:83/game/biguo/index_lw.php',
+    'http://dzztest.dzz.begindcc.com/game/biguo/index_lw.php',
     {params}
   )
 }
@@ -101,7 +101,7 @@ export function loginFirstStepTapTap(data) {
 // TapTap登录第三步
 export function loginThirdStepTapTap(params) {
   return http.get(
-    'http://106.53.178.160:83/game/biguo/index_qudao.php',
+    'http://dzztest.dzz.begindcc.com/game/biguo/index_qudao.php',
     {params}
   )
 }
@@ -128,7 +128,7 @@ export function loginSecondStepDYDJB(params, header) {
 // 道友渡劫不登录第三步
 export function loginThirdStepDYDJB(params) {
   return http.get(
-    'http://106.53.178.160:83/game/biguo/index_ww.php',
+    'http://dzztest.dzz.begindcc.com/game/biguo/index_ww.php',
     {params}
   )
 }
@@ -167,7 +167,7 @@ export function checkUserStatus(params) {
 
 export function getServerConfig(params) {
   return http.get(
-    'http://dzztest.8866net.com:83/www/api/server_config.php',
+    'http://dzztest.dzz.begindcc.com/www/api/server_config.php',
     {params}
   )
 }
@@ -175,7 +175,7 @@ export function getServerConfig(params) {
 // 获取渠道服务器列表
 export function getServerConfigQudao(params) {
   return http.get(
-    'http://dzztest.8866net.com:83/www/api/server_config_qudao.php',
+    'http://dzztest.dzz.begindcc.com/www/api/server_config_qudao.php',
     {params}
   )
 }
@@ -183,7 +183,7 @@ export function getServerConfigQudao(params) {
 // 获取无尽修炼服务器列表
 export function getServerConfigWJXL(params) {
   return http.get(
-    'http://dzztest.8866net.com:83/www/api/server_config_ml.php',
+    'http://dzztest.dzz.begindcc.com/www/api/server_config_ml.php',
     {params}
   )
 }
