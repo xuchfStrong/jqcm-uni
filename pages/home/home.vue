@@ -104,9 +104,10 @@
 			<text>数据更新时间：</text>
 			<text :class="{danger: isPassedTwoHours}">{{ roleInfo.update_time }}</text>
 		</view>
-		<view>
+		<view class="fuzhu-info">
 			<text>续费请提供此ID：</text>
 			<text class="content-wrap">{{ loginInfo.userId }}</text>
+			<button class="copy-button" type="primary" plain="true" size="mini" @tap="doCopy">复制</button>
 		</view>
 		<view>
 			<text>云挂机状态：</text>
@@ -1880,7 +1881,33 @@ export default {
             break
         }
       })
-    },
+		},
+		
+		doCopy() {
+			if (!this.userInfo.server || !this.loginInfo.userId) {
+				toast("复制失败,没有选择服务器或者没有登录")
+				return
+			}
+			const cpText = `服务器:${this.userInfo.server}, 续费ID:${this.loginInfo.userId}`
+			// #ifdef APP-PLUS
+			uni.setClipboardData({
+				data: String(cpText),
+				success: function () {
+					toast("复制成功,可用于辅助续费充值")
+				}
+			})
+			// #endif
+			// #ifdef H5
+			this.$copyText(cpText).then(
+        res => {
+          toast("复制成功,可用于辅助续费充值")
+        },
+        err => {
+          toast("复制失败")
+        }
+			)
+			// #endif
+		},
 
 		radioChange: function(evt) {
 			this.configInfo.lixianbeishu = Number(evt.target.value)
@@ -2035,5 +2062,12 @@ export default {
 }
 .content-wrap {
 	user-select: text;
+}
+.fuzhu-info {
+	display: flex;
+	align-items: center;
+}
+.copy-button {
+	margin-left:40upx;
 }
 </style>

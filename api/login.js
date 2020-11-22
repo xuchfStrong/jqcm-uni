@@ -145,7 +145,7 @@ export function loginFirstStepXianfanzhuan(data) {
 // 仙凡传登录第三步
 export function loginThirdStepXianfanzhuan(params) {
   return http.get(
-    'https://dzzapi.8866net.com/game/biguo/index_xcx.php',
+    'https://dzztest.dzz.begindcc.com/game/biguo/index_xcx.php',
     {params}
   )
 }
@@ -191,7 +191,7 @@ export function getServerConfigWJXL(params) {
 // 获取仙凡传服务器列表
 export function getServerConfigXianfanzhuan(params) {
   return http.get(
-    'https://dzzapi.8866net.com/www/api/server_config_xcx.php',
+    'https://dzztest.dzz.begindcc.com/www/api/server_config_xcx.php',
     {params}
   )
 }
