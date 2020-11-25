@@ -196,6 +196,7 @@ export function getChannel() {
   // #ifdef H5
   const channelMap = {
     "8080": "2",
+    "9090": "0",
     "9091": "1",
     "9092": "2",
     "9093": "3",

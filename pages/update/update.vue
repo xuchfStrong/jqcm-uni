@@ -14,7 +14,10 @@
         </view>
 
        <view style="margin-top:10px; color:#1989fa;">
-          <a v-if="jqcmSaleChannel==='1'" :href="utils.apkDownloadUrlNew">
+         <a v-if="jqcmSaleChannel==='0'" :href="utils.apkDownloadUrlNew">
+            <text>点击下载辅助APP</text>
+          </a>
+          <a v-if="jqcmSaleChannel==='1'" :href="utils.apkDownloadUrlNew1">
             <text>点击下载辅助APP</text>
           </a>
           <a v-if="jqcmSaleChannel==='2'" :href="utils.apkDownloadUrlNew2">

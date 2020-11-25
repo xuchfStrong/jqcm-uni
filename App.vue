@@ -12,7 +12,9 @@
 									var wgtUrl = ''
 									var pkgUrl = ''
 									wgtUrl = data.wgtUrl
-									if (jqcmSaleChannel === '1') {
+									if (jqcmSaleChannel === '0') {
+										pkgUrl = data.pkgUrl
+									} else if (jqcmSaleChannel === '1') {
 										pkgUrl = data.pkgUrl1
 									} else if (jqcmSaleChannel === '2') {
 										pkgUrl = data.pkgUrl2
