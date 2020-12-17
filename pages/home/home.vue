@@ -368,6 +368,18 @@
 		        <view class="uni-list-cell-db">自动道侣拜访</view>
 		        <switch :checked="!!configInfo.is_daolv_baifang" @change="changeSwitchBoolean('is_daolv_baifang')"/>
 		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">道侣自动购买凡级双修丹</view>
+		        <switch :checked="!!configInfo.is_goumai_fanjishuangxiudan" @change="changeSwitchBoolean('is_goumai_fanjishuangxiudan')"/>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">自动仙路争霸(VIP有效)</view>
+		        <switch :checked="!!configInfo.is_auto_xianluzhengba" @change="changeSwitchBoolean('is_auto_xianluzhengba')"/>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">自动三界之战(VIP有效)</view>
+		        <switch :checked="!!configInfo.is_auto_sanjiezhizhan" @change="changeSwitchBoolean('is_auto_sanjiezhizhan')"/>
+		    </view>
 
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
@@ -777,7 +789,10 @@ const configInfoDefault = {
 	daolvxiulian_index: 0, // 关闭道侣修炼任务
 	daolvliwu_index: 0, // 关闭道侣赠送礼物
 	goumai_jinglian_index: 0, // 自动购买精炼石
-	index_lingshoudao_refresh: 0 // 灵兽岛
+	index_lingshoudao_refresh: 0, // 灵兽岛
+	is_auto_xianluzhengba: 0, // 自动仙路争霸(VIP有效)
+	is_auto_sanjiezhizhan: 0, // 自动三界之战(VIP有效)
+	is_goumai_fanjishuangxiudan: 0 //道侣自动购买凡级双修丹
 }
 
 const gongfaObjDefault = {

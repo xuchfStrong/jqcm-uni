@@ -129,3 +129,8 @@
 ## 2020-11-22， V1.6.5
 1. 有些平台的地址没改到。
 2. 增加复制辅助ID的功能。
+
+## 2020-12-12， V1.6.6
+1. 自动仙路争霸(VIP有效)，参数名：is_auto_xianluzhengba
+2. 自动三界之战(VIP有效)，参数名：is_auto_sanjiezhizhan
+3. 道侣自动购买凡级双修丹，参数名：is_goumai_fanjishuangxiudan
