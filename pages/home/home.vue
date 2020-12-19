@@ -634,6 +634,20 @@
 					</view>
 		    </view>
 
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerYihuo" :value="configInfo.yihuo_index" class="background-picker" range-key="text" :range="options.yihuo_index">
+											<view class="uni-input">{{options.yihuo_index[configInfo.yihuo_index].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">自动无尽火域</view>
+		        <switch :checked="!!configInfo.yihuo_index" @change="changeSwitchYihuo"/>
+					</view>
+		    </view>
+
 				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
@@ -739,7 +753,9 @@ import { handleGetServerConfig,
 		handleGetServerConfigWJXL2, 
 		handleGetServerConfigDJJH,
 		handleGetServerConfigDJJHWJXL,
-		handleGetServerConfigXianfanzhuan } from '@/utils/server'
+		handleGetServerConfigXianfanzhuan,
+		handleGetServerConfigZuiqiangxiuxian
+		} from '@/utils/server'
 import options from '@/utils/options.json'
 import { jingjieMap, weimianMap, vipMap } from './mapData.js'
 import mInput from '../../components/m-input.vue'
@@ -792,7 +808,8 @@ const configInfoDefault = {
 	index_lingshoudao_refresh: 0, // 灵兽岛
 	is_auto_xianluzhengba: 0, // 自动仙路争霸(VIP有效)
 	is_auto_sanjiezhizhan: 0, // 自动三界之战(VIP有效)
-	is_goumai_fanjishuangxiudan: 0 //道侣自动购买凡级双修丹
+	is_goumai_fanjishuangxiudan: 0, //道侣自动购买凡级双修丹
+	yihuo_index: 0 // 无尽火域
 }
 
 const gongfaObjDefault = {
@@ -945,6 +962,7 @@ export default {
 			loginInfo: { // 登录过程中需要的数据
 				sessionid: '',
 				userId: '',
+				strUserId: '', // 字符串形式的userid，最强修仙编辑器这才是真实的userid
 				uid: '', // 渠道登录的时候uid和userId不同
 				token: '',
 				channelId: '',
@@ -1135,6 +1153,7 @@ export default {
 				this.userInfo.sessionid = gameLoginInfo.sessionid
 				this.userInfo.loginType = gameLoginInfo.loginType
 				this.loginInfo.userId = gameLoginInfo.userId
+				this.loginInfo.strUserId = gameLoginInfo.strUserId
 				this.platformName = gameLoginInfo.platformName
 				this.flag.showServer = gameLoginInfo.showServer
 				this.serverInfo = gameLoginInfo.serverInfo
@@ -1156,6 +1175,7 @@ export default {
 				loginType: this.userInfo.loginType,
 				username: this.userInfo.username,
 				userId: this.loginInfo.userId,
+				strUserId: this.loginInfo.strUserId,
 				showServer: this.flag.showServer,
 				platformName: this.platformName,
 				serverInfo: this.serverInfo,
@@ -1287,6 +1307,13 @@ export default {
 				})
       }  else if ([23].includes(this.userInfo.loginType)) { // 画江湖盟主
         handleGetServerConfigXianfanzhuan(6106, this.loginInfo.userId, 12).then(serverInfo => {
+					this.serverInfo = serverInfo
+					// this.saveLoginInfo()
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
+      }  else if ([24].includes(this.userInfo.loginType)) { // 最强修仙编辑器
+        handleGetServerConfigZuiqiangxiuxian(1, this.loginInfo.strUserId, 1).then(serverInfo => {
 					this.serverInfo = serverInfo
 					// this.saveLoginInfo()
 					this.initSaveData()
@@ -1530,6 +1557,10 @@ export default {
 			const index = e.target.value
 			this.configInfo.goumai_jinglian_index = index
 		},
+		changePickerYihuo(e) {
+			const index = e.target.value
+			this.configInfo.yihuo_index = index
+		},
 		changePickerLingshoudao(e) {
 			const index = e.target.value
 			this.configInfo.index_lingshoudao_refresh = index
@@ -1676,6 +1707,14 @@ export default {
 			const checked = e.target.value
 			if (!checked) {
 				this.configInfo.goumai_jinglian_index = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchYihuo(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.yihuo_index = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}

@@ -1,90 +1,86 @@
 <script>
+	import { getUpdate } from '@/api/game'
 	export default {
 		onLaunch: function() {
 			// #ifdef APP-PLUS  
 			const that = this
 			plus.runtime.getProperty(plus.runtime.appid, function() {  
 					const jqcmSaleChannel = plus.runtime.channel
-			    uni.request({  
-			        url: 'http://jqcm.huojiangame.com:11658/jqcm/update.php',
-			        success: (result) => {  
-			            var data = result.data;
-									var wgtUrl = ''
-									var pkgUrl = ''
-									wgtUrl = data.wgtUrl
-									if (jqcmSaleChannel === '0') {
-										pkgUrl = data.pkgUrl
-									} else if (jqcmSaleChannel === '1') {
-										pkgUrl = data.pkgUrl1
-									} else if (jqcmSaleChannel === '2') {
-										pkgUrl = data.pkgUrl2
-									} else if (jqcmSaleChannel === '3') {
-										pkgUrl = data.pkgUrl3
-									} else if (jqcmSaleChannel === '4') {
-										pkgUrl = data.pkgUrl4
-									} else if (jqcmSaleChannel === '5') {
-										pkgUrl = data.pkgUrl5
-									} else if (jqcmSaleChannel === '6') {
-										pkgUrl = data.pkgUrl6
-									} else if (jqcmSaleChannel === '7') {
-										pkgUrl = data.pkgUrl7
-									} else if (jqcmSaleChannel === '8') {
-										pkgUrl = data.pkgUrl8
-									}
-			            if (data.version > that.$global.jqcmVersion && wgtUrl && data.updateType ===1 ) {  // 热更新
-											// uni.showModal({
-											//     title: "发现新版本",
-											//     content: "确认下载更新",
-											//     success: (res) => {
-											//         if (res.confirm) {//当用户确定更新，执行更新
-											//             that.doUpData();
-											//         } else if (res.cancel) {
-											//             // console.log('用户点击取消');
-											//         }
-											//     }
-											// })
-			                uni.downloadFile({  
-			                    url: wgtUrl,  
-			                    success: (downloadResult) => {  
-			                        if (downloadResult.statusCode === 200) {  
-			                            plus.runtime.install(downloadResult.tempFilePath, {  
-			                                force: true  
-			                            }, function() {  
-			                                console.log('install success...');  
-																			uni.showToast({
-																				title:"辅助更新成功，即将重启",
-																				duration:1000,
-																				icon:'none'
-																			})
-																			setTimeout(function() {
-																			  plus.runtime.restart();
-																			}, 1100)
-			                            }, function(e) {  
-			                                console.error('install fail...'); 
-																			 uni.showToast({
-																			 	title:"辅助更新失败",
-																				duration:2000,
-																				icon:'none'
-																			 })
-			                            });  
-			                        }
-			                    }  
-			                }); 
-									}
-									if (data.version > that.$global.jqcmVersion && pkgUrl && data.updateType === 2 ) { //整包更新
-										uni.showModal({ //提醒用户更新  
-											title: "更新提示",  
-											content: data.note,  
-											success: (res) => {  
-												if (res.confirm) {  
-													plus.runtime.openURL(pkgUrl);  
-												}  
-											}  
-										})  
-									}
-									  
-			        }  
-			    });  
+					getUpdate().then(data => {
+						var wgtUrl = ''
+						var pkgUrl = ''
+						wgtUrl = data.wgtUrl
+						if (jqcmSaleChannel === '0') {
+							pkgUrl = data.pkgUrl
+						} else if (jqcmSaleChannel === '1') {
+							pkgUrl = data.pkgUrl1
+						} else if (jqcmSaleChannel === '2') {
+							pkgUrl = data.pkgUrl2
+						} else if (jqcmSaleChannel === '3') {
+							pkgUrl = data.pkgUrl3
+						} else if (jqcmSaleChannel === '4') {
+							pkgUrl = data.pkgUrl4
+						} else if (jqcmSaleChannel === '5') {
+							pkgUrl = data.pkgUrl5
+						} else if (jqcmSaleChannel === '6') {
+							pkgUrl = data.pkgUrl6
+						} else if (jqcmSaleChannel === '7') {
+							pkgUrl = data.pkgUrl7
+						} else if (jqcmSaleChannel === '8') {
+							pkgUrl = data.pkgUrl8
+						}
+			      if (data.version > that.$global.jqcmVersion && wgtUrl && data.updateType ===1 ) {  // 热更新
+								// uni.showModal({
+								//     title: "发现新版本",
+								//     content: "确认下载更新",
+								//     success: (res) => {
+								//         if (res.confirm) {//当用户确定更新，执行更新
+								//             that.doUpData();
+								//         } else if (res.cancel) {
+								//             // console.log('用户点击取消');
+								//         }
+								//     }
+								// })
+			          uni.downloadFile({  
+			              url: wgtUrl,  
+			              success: (downloadResult) => {  
+			                  if (downloadResult.statusCode === 200) {  
+			                      plus.runtime.install(downloadResult.tempFilePath, {  
+			                          force: true  
+			                      }, function() {  
+			                          console.log('install success...');  
+																uni.showToast({
+																	title:"辅助更新成功，即将重启",
+																	duration:1000,
+																	icon:'none'
+																})
+																setTimeout(function() {
+																  plus.runtime.restart();
+																}, 1100)
+			                      }, function(e) {  
+			                          console.error('install fail...'); 
+																 uni.showToast({
+																 	title:"辅助更新失败",
+																	duration:2000,
+																	icon:'none'
+																 })
+			                      });  
+			                  }
+			              }  
+			          }); 
+						}
+						if (data.version > that.$global.jqcmVersion && pkgUrl && data.updateType === 2 ) { //整包更新
+							uni.showModal({ //提醒用户更新  
+								title: "更新提示",  
+								content: data.note,  
+								success: (res) => {  
+									if (res.confirm) {  
+										plus.runtime.openURL(pkgUrl);  
+									}  
+								}  
+							})  
+						}
+					})
 			});  
 			// #endif
 		},

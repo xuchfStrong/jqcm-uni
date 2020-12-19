@@ -1,4 +1,10 @@
-import { getServerConfig, getServerConfigQudao, getServerConfigWJXL,getServerConfigXianfanzhuan } from '@/api/login'
+import { 
+  getServerConfig, 
+  getServerConfigQudao, 
+  getServerConfigWJXL,
+  getServerConfigXianfanzhuan,
+  getServerConfigZuiqiangxiuxian
+ } from '@/api/login'
 
 // 获取服务器列表和最后登录服务器
 export function handleGetServerConfig(channelId, userId) {
@@ -195,6 +201,31 @@ export function handleGetServerConfigXianfanzhuan(channelId, userId, game_id) {
     const reslove1 = reslove
     const reject1 = reject
     getServerConfigXianfanzhuan(param).then(res => {
+      const serverInfo = {}
+      if (res.server_list) {
+        serverInfo.client_ip = res.client_ip
+        serverInfo.last_server_list = formatLastServerList(res.last_server_list)
+        serverInfo.server_list = formatServerList(res.server_list)
+      }
+      reslove1(serverInfo)
+    }).catch(err => {
+      reject1(err)
+    })
+  })
+}
+
+// 获取最强修仙编辑器服务器列表和最后登录服务器
+export function handleGetServerConfigZuiqiangxiuxian(channelId, userId, game_id) {
+  return new Promise((reslove, reject) => {
+    const param = {
+      game_id: game_id,
+      channelId: channelId,
+      channel: 'bn',
+      user_name: userId
+    }
+    const reslove1 = reslove
+    const reject1 = reject
+    getServerConfigZuiqiangxiuxian(param).then(res => {
       const serverInfo = {}
       if (res.server_list) {
         serverInfo.client_ip = res.client_ip

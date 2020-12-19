@@ -1,0 +1,74 @@
+第一步
+POST /account/authorize HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 374
+Host: m.xiaotengyouxi.com
+Connection: close
+User-Agent: okhttp/3.11.0
+
+password=063e67a278fe82a34f6c3ce198d19c9b&sign=b871146074e29c4d83543e4068268b8e&time=1608189233&app_id=110001432&and_id=ab819ae90275647c&oaid=&os=android&ad_id=null&device_id=ffffffff-a356-b840-e016-40827eb6877f&imei=865166022590965&login_type=1&sdk_version=3.2.9.0&device_name=Meizu%20m2&game_version=1.6.8&os_version=5.1.1&user_name=jqcm001&channel=ibn_zqxxbjq_and_xjy_150
+
+password = md5(password+md5(password))
+md5(112233d0970714757783e6cf17b26fb8e2298f) = 063e67a278fe82a34f6c3ce198d19c9b
+sign算法md5(key按升序排列，不要&符 + 7d02437ff9eaaa33577d7e33e66d942e)
+md5(ad_id=nulland_id=ab819ae90275647capp_id=110001432channel=ibn_zqxxbjq_and_xjy_150device_id=ffffffff-a356-b840-e016-40827eb6877fdevice_name=Meizu m2game_version=1.6.8imei=865166022590965login_type=1oaid=os=androidos_version=5.1.1password=063e67a278fe82a34f6c3ce198d19c9bsdk_version=3.2.9.0time=1608189233user_name=jqcm0017d02437ff9eaaa33577d7e33e66d942e) = b871146074e29c4d83543e4068268b8e
+
+返回
+{"ret":"1","msg":"success","content":{"authorize_code":"09ZF1f6_N2snj8ZqIHj_FTqNGTOOHmQt73SfGoWPeAu3cTXf3mmiJBATTo2_e8lEukrqkvKQ","user_name":"jqcm001","user_id":"cn3pIjlhN5o="}}
+
+第二步
+GET /game/bn/login.php?gameId=120000143&channelId=2&appId=110001432&sid=09ZF1f6_N2snj8ZqIHj_FTqNGTOOHmQt73SfGoWPeAu3cTXf3mmiJBATTo2_e8lEukrqkvKQ&extra=bn HTTP/1.1
+Host: jq.8866net.com
+Connection: close
+Accept: application/json, text/javascript, */*; q=0.01
+Origin: https://resjq.8866net.com
+User-Agent: Mozilla/5.0 (Linux; Android 5.1.1; m2 Build/LYZ28N) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36 YJS_H5_Android RH_RESP_ALL
+Referer: https://resjq.8866net.com/jq/index.html?&channelId=1
+Accept-Language: zh-CN,en-US;q=0.8
+X-Requested-With: com.bingniao.jqcm.zqxxbjq
+
+返回
+{"qq_group":"914014328","userid":"ujqcm001","time":1608189234,"pfId":"bn","channel":"bn","msg":"success","token":"e25e1ef3a82bda6bafd332624d744267","content":{"ret":0,"msg":"\u6210\u529f","content":{"data":{"gameId":"120000143","channelId":"2","appId":"110001432","userId":"ujqcm001","sdkData":{"channelUid":"ujqcm001"},"accessToken":"0a4gkVjdxAlHGSpriHz1uVlMN8CSlC5NptGpgQWxFW4OS3_7OspKuL51WzGa6sFeiIAauGYWz_ud2BffgXzzmdlmlCCQ"},"cData":{"ret":1,"msg":"success","content":{"expires":2592000,"access_token":"0a4gkVjdxAlHGSpriHz1uVlMN8CSlC5NptGpgQWxFW4OS3_7OspKuL51WzGa6sFeiIAauGYWz_ud2BffgXzzmdlmlCCQ","user_id":"ujqcm001","user_name":"jqcm001"}}}}}
+
+
+e25e1ef3a82bda6bafd332624d744267
+
+00000000   00 00 00 51 00 2A F8 00  00 27 11 00 08 75 6A 71      Q *? '   ujq
+00000010   63 6D 30 30 31 00 02 62  6E 5F DB 05 32 00 20 65   cm001  bn_?2  e
+00000020   32 35 65 31 65 66 33 61  38 32 62 64 61 36 62 61   25e1ef3a82bda6ba
+00000030   66 64 33 33 32 36 32 34  64 37 34 34 32 36 37 00   fd332624d744267 
+00000040   01 31 00 00 00 01 00 0F  31 31 31 2E 31 39 38 2E    1      111.198.
+00000050   32 33 31 2E 31 34 30 01                            231.140 
+
+第三步获取游戏服务器列表
+GET https://jq.8866net.com/www/api/server_config.php?game_id=1&channelId=1&channel=bn&user_name=udzhhzhj HTTP/1.1
+Host: jq.8866net.com
+Connection: keep-alive
+Accept: application/json, text/javascript, */*; q=0.01
+Origin: https://resjq.8866net.com
+User-Agent: Mozilla/5.0 (Linux; Android 10; M2006J10C Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045426 Mobile Safari/537.36 YJS_H5_Android RH_RESP_ALL
+Sec-Fetch-Mode: cors
+X-Requested-With: com.bingniao.jqcm.zqxxbjq
+Sec-Fetch-Site: same-site
+Referer: https://resjq.8866net.com/jq/index.html?&channelId=1
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7
+
+{"server_list":[{"id":"10001","state":"1","ip":"106.55.235.38","port":"8202","domain":"game1-jq.8866net.com","port_s":"7101","name":"\u4fee\u4ed91\u670d","isNear":"1","isAdvice":"1","time":"1608166800"}],"client_ip":"218.88.53.111","last_server_list":"10001","new_ver_list":[]}
+
+ad_id=null
+and_id=ab819ae90275647c
+app_id=110001432
+channel=ibn_zqxxbjq_and_xjy_150
+device_id=ffffffff-a356-b840-e016-40827eb6877f
+device_name=Meizum2
+game_version=1.6.8
+imei=865166022590965
+login_type=1
+oaid=
+os=android
+os_version=5.1.1
+password=063e67a278fe82a34f6c3ce198d19c9b
+sdk_version=3.2.9.0
+time=1608189233
+user_name=jqcm001

@@ -8,6 +8,14 @@ export function getRemoteOptions(params) {
   )
 }
 
+// 获取更新信息
+export function getUpdate(params) {
+  return http.get(
+    'http://jqcm.huojiangame.com:11658/jqcm/update.php',
+    {params}
+  )
+}
+
 // 获取角色信息
 export function getRoleInfo(params) {
   return http.get(
@@ -70,6 +78,20 @@ export function stopGuaji(params) {
 export function getUtils(params) {
   return http.get(
     'http://jqcm.huojiangame.com:11658/jqcm/utils.php',
+    {params}
+  )
+}
+
+export function getIntUserid(params) {
+  return http.get(
+    'http://jqcm.huojiangame.com:11658/jqcm/get_int_uid.php',
+    {params}
+  )
+}
+
+export function getStrUserid(params) {
+  return http.get(
+    'http://jqcm.huojiangame.com:11658/jqcm/get_str_uid.php',
     {params}
   )
 }

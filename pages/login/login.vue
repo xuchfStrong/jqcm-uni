@@ -63,9 +63,11 @@ import { loginFirstStep, loginSecondStep,loginSecondStepByProxy, loginFirstStepW
 // #ifdef APP-PLUS
 import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2, loginFirstStepShendao, loginFirstStepDYDJB, loginSecondStepDYDJB } from '@/api/loginApp'
 // #endif
-import { getUtils } from '@/api/game'
+import { getUtils,getIntUserid,getStrUserid } from '@/api/game'
 import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThirdStepShendao, loginThirdStepDYDJB, loginFirstStepXianfanzhuan, loginThirdStepXianfanzhuan } from '@/api/login'
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
+import { loginFirstStepZuiqiangxiuxian, loginSecondStepZuiqiangxiuxian } from '@/api/login'
+import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
 		handleGetServerConfigOther,
@@ -73,8 +75,9 @@ import { handleGetServerConfig,
 		handleGetServerConfigWJXL2,
 		handleGetServerConfigDJJH,
 		handleGetServerConfigDJJHWJXL,
-		handleGetServerConfigXianfanzhuan} from '@/utils/server'
-import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
+		handleGetServerConfigXianfanzhuan,
+		handleGetServerConfigZuiqiangxiuxian
+		} from '@/utils/server'
 import { genRandomNumber, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
 import { encryptByDESModeCBC, decryptByDESModeCBC } from '@/utils/encrypt'
 import service from '../../service.js';
@@ -127,6 +130,7 @@ export default {
 			loginInfo: { // 登录过程中需要的数据
 				sessionid: '',
 				userId: '',
+				strUserId: '', // 字符串形式的userid，最强修仙编辑器这才是真实的userid
 				uid: '', // 渠道登录的时候uid和userId不同
 				token: '',
 				token_type: '',
@@ -363,6 +367,18 @@ export default {
 							icon: 'none'
 						})
 						// #endif
+					} else if ([24].includes(this.userInfo.loginType)) { // 最强修仙编辑器
+						// #ifdef APP-PLUS
+						this.handleLoginFirstStepZuiqiangxiuxian()
+						// #endif
+						// #ifdef H5
+						this.handleGetStrUid(res.userid)
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+						// #endif
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -397,7 +413,9 @@ export default {
 						this.handleLoginFirstStepDYDJB() // 道友渡劫不
 					} else if ([19,20,21,22,23].includes(this.userInfo.loginType)) { // 仙凡传,蛮荒异世录,蜀山剑诀,我要飞升(苹果)
 						this.handleLoginFirstStepXianfanzhuan()
-					} else {
+					} else if (this.userInfo.loginType === 24) {
+						this.handleLoginFirstStepZuiqiangxiuxian() // 最强修仙编辑器 
+					}	else {
 						uni.showToast({
 							title: '登录失败。',
 							duration: 2000,
@@ -840,6 +858,111 @@ export default {
 		  })
 		},
 
+		// 最强修仙编辑器登录第一步
+		handleLoginFirstStepZuiqiangxiuxian() {
+			if (!this.userInfo.usernamePlatForm || !this.userInfo.passwordPlatForm) {
+				uni.showToast({
+					title: '请输入用户名和密码',
+					duration: 2000,
+					icon: 'none'
+				})
+		    return
+			}
+			const md5pwassword = CryptoJS.MD5(this.userInfo.passwordPlatForm).toString()
+			let loginData = {
+				user_name: this.userInfo.usernamePlatForm, // 用户名
+				password: CryptoJS.MD5(this.userInfo.passwordPlatForm + md5pwassword).toString(), // 密码
+				time: Date.parse(new Date()) / 1000,
+				app_id: 110001432,
+				and_id: 'ab819ae90275647c',
+				oaid: 'eccb27ae5bfc808d',
+				os: 'android',
+				ad_id: 'null',
+				device_id: 'ffffffff-9f7d-ffff-0033-c5870033c587',
+				imei: '',
+				login_type: 1,
+				sdk_version: '3.2.9.0',
+				device_name: 'Xiaomi M2006J10C',
+				game_version: '1.6.8',
+				os_version: 10,
+				channel: 'ibn_zqxxbjq_and_xjy_150'
+			}
+			const keyArray = ['ad_id', 'and_id', 'app_id', 'channel', 'device_id',
+												'device_name', 'game_version', 'imei', 'login_type', 'oaid',
+												'os', 'os_version', 'password', 'sdk_version', 'time', 'user_name']
+			let signStr = ''
+			keyArray.forEach(key => {
+				const onekv = `${key}=${loginData[key]}`
+				signStr += onekv
+			})
+			signStr = signStr + '7d02437ff9eaaa33577d7e33e66d942e'
+			const sign = CryptoJS.MD5(signStr).toString()
+			loginData.sign = sign
+			loginFirstStepZuiqiangxiuxian(loginData).then(res => {
+				if (res.ret === '1') {
+					const authorize_code = res.content.authorize_code
+					this.handleLoginSecondStepZuiqiangxiuxian(authorize_code)
+				} else {
+					this.$toast(res.msg)
+				}
+			})
+		},
+
+		// 最强修仙编辑器登录第二步
+		handleLoginSecondStepZuiqiangxiuxian(sid) {
+			const params = {
+				gameId: 120000143,
+				channelId: 2,
+				appId: 110001432,
+				sid: sid,
+				extra: 'bn'
+			}
+			loginSecondStepZuiqiangxiuxian(params).then(res => {
+				this.loginInfo.strUserId = res.userid
+				handleGetServerConfigZuiqiangxiuxian(1, this.loginInfo.strUserId, 1).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.handleGetIntUid(this.loginInfo.strUserId)
+				})
+			})
+		},
+
+		// 获取后台生成的intUid
+		handleGetIntUid(struid) {
+			const params = {
+				struid: struid
+			}
+			getIntUserid(params).then(res => {
+				if (res.code == 200) {
+					this.loginInfo.userId = res.userid
+					this.handleAddUser()
+				}else {
+					this.$toast('获取intuid参数错误')
+				}
+			})
+		},
+
+		// 获取后台的struid
+		handleGetStrUid(intuid) {
+			const params = {
+				intuid: intuid
+			}
+			getStrUserid(params).then(res => {
+				if (res.code == 200) {
+					this.loginInfo.strUserId = res.userid
+					handleGetServerConfigZuiqiangxiuxian(1, this.loginInfo.strUserId, 1).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.flag.showServer = true
+						this.saveLoginInfo()
+						this.toMain()
+					})
+				} else if (res.code == 403) {
+					this.$toast('获取struid参数错误')
+				} else if (res.code == 404){
+					this.$toast('没有获取到struid')
+				}
+			})
+		},
+
 
 		/* url参数处理*/
     parseParams(data) {
@@ -1006,7 +1129,7 @@ export default {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStepXianfanzhuan()
 						})
-				} 
+					}
 				} else {
 					uni.showToast({
 						title: res.msg,
@@ -1237,7 +1360,8 @@ export default {
         this.userInfo.uid = gameLoginInfo.uid
         this.userInfo.sessionid = gameLoginInfo.sessionid
         this.userInfo.loginType = gameLoginInfo.loginType
-        this.loginInfo.userId = gameLoginInfo.userId
+				this.loginInfo.userId = gameLoginInfo.userId
+				this.loginInfo.strUserId = gameLoginInfo.strUserId
 				this.flag.showServer = gameLoginInfo.showServer
 				this.platformName = gameLoginInfo.platformName
 				this.serverInfo = gameLoginInfo.serverInfo
@@ -1259,7 +1383,8 @@ export default {
         sessionid: this.userInfo.sessionid,
         loginType: this.userInfo.loginType,
         username: this.userInfo.username,
-        userId: this.loginInfo.userId,
+				userId: this.loginInfo.userId,
+				strUserId: this.loginInfo.strUserId,
 				showServer: this.flag.showServer,
 				platformName: this.platformName,
 				serverInfo: this.serverInfo,

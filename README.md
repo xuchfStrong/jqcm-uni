@@ -134,3 +134,20 @@
 1. 自动仙路争霸(VIP有效)，参数名：is_auto_xianluzhengba
 2. 自动三界之战(VIP有效)，参数名：is_auto_sanjiezhizhan
 3. 道侣自动购买凡级双修丹，参数名：is_goumai_fanjishuangxiudan
+
+## 2020-12-20， V1.6.7
+1. 增加最强修仙编辑器
+2. 增加异火功能，下拉选项。参数名：yihuo_index
+3. 增加通关struserid获取intuid的接口
+   /jqcm/get_int_uid.php?struid=123471233414
+   返回值：
+   {"code":200,"userid":"9900004"}
+   {"code":403} 参数名不对或者没参数
+   这里没有404，库里没有，就插入一条记录
+
+4. 根据int类型userid获取str型userid接口：
+   /jqcm/get_str_uid.php?intuid=9900004
+   返回值：
+   {"code":200,"userid":"123471233414"}
+   {"code":403} 参数名不对或者没参数
+   {"code":404} 没找到对应的值

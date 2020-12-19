@@ -150,6 +150,22 @@ export function loginThirdStepXianfanzhuan(params) {
   )
 }
 
+// 最强修仙修改器登录第一步
+export function loginFirstStepZuiqiangxiuxian(data) {
+  return httpForm.post(
+    'https://m.xiaotengyouxi.com/account/authorize',
+    data
+  )
+}
+
+// 最强修仙修改器登录第二步
+export function loginSecondStepZuiqiangxiuxian(params) {
+  return  http.get(
+    'https://jq.8866net.com/game/bn/login.php',
+    {params}
+  )
+}
+
 // 新用户登录，添加到辅助后台
 export function addUser(data) {
   return httpForm.post(
@@ -192,6 +208,14 @@ export function getServerConfigWJXL(params) {
 export function getServerConfigXianfanzhuan(params) {
   return http.get(
     'https://dzztest.dzz.begindcc.com/www/api/server_config_xcx.php',
+    {params}
+  )
+}
+
+// 获取仙凡传服务器列表
+export function getServerConfigZuiqiangxiuxian(params) {
+  return http.get(
+    'https://jq.8866net.com/www/api/server_config.php',
     {params}
   )
 }

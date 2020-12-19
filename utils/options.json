@@ -230,5 +230,19 @@
     {"value":6, "text":"低于5星一键，5星及以上单次刷新到7星"},
     {"value":7, "text":"低于6星一键，6星单次刷新到7星"},
     {"value":8, "text":"无脑一键7星"}
+  ],
+  "yihuo_index": [
+    {"value":0, "text":"关闭无尽火域"},
+    {"value":1, "text":"火焰斗者"},
+    {"value":2, "text":"火焰斗师"},
+    {"value":3, "text":"火焰斗灵"},
+    {"value":4, "text":"火焰斗王"},
+    {"value":5, "text":"火焰斗皇"},
+    {"value":6, "text":"火焰斗宗"},
+    {"value":7, "text":"火焰斗尊"},
+    {"value":8, "text":"火焰斗圣"},
+    {"value":9, "text":"火焰斗帝"},
+    {"value":10, "text":"火焰灵尊"},
+    {"value":11, "text":"火焰天尊"}
   ]
 }
