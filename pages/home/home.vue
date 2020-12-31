@@ -175,11 +175,11 @@
 			</view>
 			<view class="attr-flex-item">
 			</view>
-			<view>
+<!-- 			<view>
 				<text>VIP经验：</text>
 				<text>{{ notGetChargeValue ? '未获取到':roleInfo.charge_value }}，</text>
         <text v-if="!notGetChargeValue">还差{{ vipUpValue }}升级到VIP{{ roleInfo.vip_level + 1 }}</text>
-			</view>
+			</view> -->
 		</view>
 		
 		<view class="uni-divider">
@@ -1942,7 +1942,7 @@ export default {
 				toast("复制失败,没有选择服务器或者没有登录")
 				return
 			}
-			const cpText = `服务器:${this.userInfo.server}, 续费ID:${this.loginInfo.userId}`
+			const cpText = `服务器:${this.userInfo.server},续费ID:${this.loginInfo.userId},游戏:jqcm`
 			// #ifdef APP-PLUS
 			uni.setClipboardData({
 				data: String(cpText),
