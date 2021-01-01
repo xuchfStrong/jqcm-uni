@@ -28,6 +28,8 @@
 							pkgUrl = data.pkgUrl7
 						} else if (jqcmSaleChannel === '8') {
 							pkgUrl = data.pkgUrl8
+						} else if (jqcmSaleChannel === '31') {
+							pkgUrl = data.pkgUrl31
 						}
 			      if (data.version > that.$global.jqcmVersion && wgtUrl && data.updateType ===1 ) {  // 热更新
 								// uni.showModal({
