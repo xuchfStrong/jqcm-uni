@@ -373,6 +373,18 @@
 		        <view class="uni-list-cell-db">自动三界之战(VIP有效)</view>
 		        <switch :checked="!!configInfo.is_auto_sanjiezhizhan" @change="changeSwitchBoolean('is_auto_sanjiezhizhan')"/>
 		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">自动仙穹星界</view>
+		        <switch :checked="!!configInfo.auto_xianqiongxingjie" @change="changeSwitchBoolean('auto_xianqiongxingjie')"/>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">自动斗魂之巅</view>
+		        <switch :checked="!!configInfo.auto_douhunzhidian" @change="changeSwitchBoolean('auto_douhunzhidian')"/>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">自动购买斗魂之巅次数</view>
+		        <switch :checked="!!configInfo.is_goumai_douhunzhidian" @change="changeSwitchBoolean('is_goumai_douhunzhidian')"/>
+		    </view>
 
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
@@ -802,7 +814,10 @@ const configInfoDefault = {
 	is_auto_xianluzhengba: 0, // 自动仙路争霸(VIP有效)
 	is_auto_sanjiezhizhan: 0, // 自动三界之战(VIP有效)
 	is_goumai_fanjishuangxiudan: 0, //道侣自动购买凡级双修丹
-	yihuo_index: 0 // 无尽火域
+	yihuo_index: 0, // 无尽火域
+	auto_xianqiongxingjie: 0, // 自动仙穹星界
+	auto_douhunzhidian: 0, // 自动斗魂之巅
+	is_goumai_douhunzhidian: 0 // 自动购买斗魂之巅次数
 }
 
 const gongfaObjDefault = {

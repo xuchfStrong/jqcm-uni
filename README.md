@@ -157,3 +157,8 @@
 
 ## 2021-1-1， V1.6.9
 1. 给渠道3的下线弄一个自己的安装包，端口用9099
+
+## 2021-1-29， V1.7.0, 剑气增加三个开关
+1. 自动仙穹星界，字段名：auto_xianqiongxingjie
+2. 自动斗魂之巅，字段名：auto_douhunzhidian
+3. 自动购买斗魂之巅次数，字段名：is_goumai_douhunzhidian

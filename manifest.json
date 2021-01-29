@@ -2,8 +2,8 @@
     "name" : "剑气除魔火箭辅助",
     "appid" : "__UNI__5AE1708",
     "description" : "",
-    "versionName" : "1.6.9",
-    "versionCode" : 169,
+    "versionName" : "1.7.0",
+    "versionCode" : 170,
     "transformPx" : false,
     "app-plus" : {
         "nvueCompiler" : "uni-app",
