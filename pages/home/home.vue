@@ -63,6 +63,7 @@
 		<text v-if="utils.showContact2&&jqcmSaleChannel === '2'" class="waring-wrap">{{ utils.contact2 }}</text>
 		<text v-if="utils.showContact3&&jqcmSaleChannel === '3'" class="waring-wrap">{{ utils.contact3 }}</text>
 		<text v-if="utils.showContact4&&jqcmSaleChannel === '4'" class="waring-wrap">{{ utils.contact4 }}</text>
+		<text v-if="utils.showContact5&&jqcmSaleChannel === '5'" class="waring-wrap">{{ utils.contact5 }}</text>
 		<text v-if="utils.showContact7&&jqcmSaleChannel === '7'" class="waring-wrap">{{ utils.contact7 }}</text>
 		<text v-if="utils.showContact8&&jqcmSaleChannel === '8'" class="waring-wrap">{{ utils.contact8 }}</text>
 		<text v-if="utils.showContact31&&jqcmSaleChannel === '31'" class="waring-wrap">{{ utils.contact31 }}</text>
