@@ -166,6 +166,23 @@ export function loginSecondStepZuiqiangxiuxian(params) {
   )
 }
 
+// 人渣反派登录第一步
+export function loginFirstStepRenzhafanpai(data) {
+  return httpForm.post(
+    'https://p.kuafugame.com/api/user/login',
+    data
+  )
+}
+
+// 人渣反派登录第二步
+export function loginSedondStepRenzhafanpai(params) {
+  return http.get(
+    'http://api.1017sy.cn/index.php',
+    {params}
+  )
+}
+
+
 // 新用户登录，添加到辅助后台
 export function addUser(data) {
   return httpForm.post(

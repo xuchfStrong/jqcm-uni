@@ -64,7 +64,7 @@ import { loginFirstStep, loginSecondStep,loginSecondStepByProxy, loginFirstStepW
 import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2, loginFirstStepShendao, loginFirstStepDYDJB, loginSecondStepDYDJB } from '@/api/loginApp'
 // #endif
 import { getUtils,getIntUserid,getStrUserid } from '@/api/game'
-import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThirdStepShendao, loginThirdStepDYDJB, loginFirstStepXianfanzhuan, loginThirdStepXianfanzhuan } from '@/api/login'
+import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThirdStepShendao, loginThirdStepDYDJB, loginFirstStepXianfanzhuan, loginThirdStepXianfanzhuan, loginFirstStepRenzhafanpai, loginSedondStepRenzhafanpai } from '@/api/login'
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
 import { loginFirstStepZuiqiangxiuxian, loginSecondStepZuiqiangxiuxian } from '@/api/login'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
@@ -379,6 +379,23 @@ export default {
 							icon: 'none'
 						})
 						// #endif
+					} else if ([25].includes(this.userInfo.loginType)) { // 人渣反派修仙
+						// #ifdef APP-PLUS
+						this.handleLoginFirstStepRenzhafanpai()
+						// #endif
+						// #ifdef H5
+						handleGetServerConfigWJXL(6102, this.loginInfo.userId, 11).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+						// #endif
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -415,6 +432,8 @@ export default {
 						this.handleLoginFirstStepXianfanzhuan()
 					} else if (this.userInfo.loginType === 24) {
 						this.handleLoginFirstStepZuiqiangxiuxian() // 最强修仙编辑器 
+					}	else if (this.userInfo.loginType === 25) {
+						this.handleLoginFirstStepRenzhafanpai() // 人渣反派 
 					}	else {
 						uni.showToast({
 							title: '登录失败。',
@@ -926,6 +945,103 @@ export default {
 			})
 		},
 
+		// 人渣反派登录第一步
+		handleLoginFirstStepRenzhafanpai() {
+			if (!this.userInfo.usernamePlatForm || !this.userInfo.passwordPlatForm) {
+				uni.showToast({
+					title: '请输入用户名和密码',
+					duration: 2000,
+					icon: 'none'
+				})
+		    return
+		  }
+			const signObj = {
+				ad_id: '0',
+				android_id: '9b2272b3e1f2e0d6',
+				app_id: 10033,
+				app_secret: 'dTAmr9M2DicEtsi6',
+				bundle_id: 'com.jingxiagame.android.jqcm.rzfpxxxt',
+				imei: '',
+				imsi: 'f93c578b-c306-4af8-9cd2-922aa1fd1080',
+				m_id: '0',
+				oaid: 'eccb27ae5bfc808d',
+				os: 2,
+				package_version: '1.1.20',
+				password: this.userInfo.passwordPlatForm,
+				sdk_version: '2.1.19',
+				timestamp: Date.parse(new Date()) / 1000,
+				username: this.userInfo.usernamePlatForm
+			}
+			const singStr = this.parseParams(signObj)
+			const params = {
+				ad_id: '0',
+				android_id: '9b2272b3e1f2e0d6',
+				app_id: 10033,
+				app_secret: 'dTAmr9M2DicEtsi6',
+				bundle_id: 'com.jingxiagame.android.jqcm.rzfpxxxt',
+				imei: '',
+				imsi: 'f93c578b-c306-4af8-9cd2-922aa1fd1080',
+				m_id: '0',
+				oaid: 'eccb27ae5bfc808d',
+				os: 2,
+				package_version: '1.1.20',
+				password: this.userInfo.passwordPlatForm,
+				sdk_version: '2.1.19',
+				timestamp: Date.parse(new Date()) / 1000,
+				username: this.userInfo.usernamePlatForm,
+				sign: CryptoJS.MD5(singStr).toString()
+			}
+			loginFirstStepRenzhafanpai(params).then(res => {
+				if (res.err_code === 0) {
+					this.handleLoginSecondStepRenzhafanpai(res.result.uid)
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: res.err_msg,
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 人渣反派登录第二步
+		handleLoginSecondStepRenzhafanpai(uid) {
+			if (!uid) {
+				uni.showToast({
+					title: '未成功获取到uid',
+					duration: 2000,
+					icon: 'none'
+				})
+		    return
+		  }
+			const params = {
+				r: 'auth/authorize',
+				game_id: 1440,
+				package_id: 'sd_h5jx_02',
+				idfa: '',
+				identif: '',
+				UnallowToke: true,
+				username: 'KFGame' + uid,
+				password: uid,	
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginSedondStepRenzhafanpai(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.sessionid = res.result.access_token
+					this.loginInfo.userId = res.result.user_id
+					this.handleLoginSecondStep()
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: res.message,
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
 		// 获取后台生成的intUid
 		handleGetIntUid(struid) {
 			const params = {
@@ -970,9 +1086,7 @@ export default {
       for (const i in data) {
         var key = encodeURIComponent(i)
         var value = data[i] ? encodeURIComponent(data[i]) : ''
-        if (data[i]) {
-          paramsArr.push(key + '=' + value)
-        }
+        paramsArr.push(key + '=' + value)
       }
       return paramsArr.join('&')
     },
@@ -1040,6 +1154,12 @@ export default {
 				signObj = {
 					uid: this.loginInfo.userId,
 					token: this.loginInfo.token
+				}
+			} else if (this.userInfo.loginType === 25) { // 人渣反派
+				channelId = 6102
+				signObj = {
+					token: this.loginInfo.sessionid,
+					userId: this.loginInfo.userId
 				}
 			}
 			const timeStamp = Date.parse(new Date()) / 1000
@@ -1128,6 +1248,11 @@ export default {
 						handleGetServerConfigXianfanzhuan(6106, this.loginInfo.userId, 12).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStepXianfanzhuan()
+						})
+					} else if ([25].includes(this.userInfo.loginType)) { // 人渣反派
+						handleGetServerConfigWJXL(6102, this.loginInfo.userId, 11).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.handleLoginThirdStep()
 						})
 					}
 				} else {

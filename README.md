@@ -162,3 +162,6 @@
 1. 自动仙穹星界，字段名：auto_xianqiongxingjie
 2. 自动斗魂之巅，字段名：auto_douhunzhidian
 3. 自动购买斗魂之巅次数，字段名：is_goumai_douhunzhidian
+
+## 2021-2-28 V1.7.1
+1. 增加人渣反派修仙系统渠道。
