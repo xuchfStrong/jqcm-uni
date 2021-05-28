@@ -64,6 +64,7 @@
 		<text v-if="utils.showContact3&&jqcmSaleChannel === '3'" class="waring-wrap">{{ utils.contact3 }}</text>
 		<text v-if="utils.showContact4&&jqcmSaleChannel === '4'" class="waring-wrap">{{ utils.contact4 }}</text>
 		<text v-if="utils.showContact5&&jqcmSaleChannel === '5'" class="waring-wrap">{{ utils.contact5 }}</text>
+		<text v-if="utils.showContact6&&jqcmSaleChannel === '6'" class="waring-wrap">{{ utils.contact6 }}</text>
 		<text v-if="utils.showContact7&&jqcmSaleChannel === '7'" class="waring-wrap">{{ utils.contact7 }}</text>
 		<text v-if="utils.showContact8&&jqcmSaleChannel === '8'" class="waring-wrap">{{ utils.contact8 }}</text>
 		<text v-if="utils.showContact31&&jqcmSaleChannel === '31'" class="waring-wrap">{{ utils.contact31 }}</text>
@@ -385,6 +386,10 @@
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">自动购买斗魂之巅次数</view>
 		        <switch :checked="!!configInfo.is_goumai_douhunzhidian" @change="changeSwitchBoolean('is_goumai_douhunzhidian')"/>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">仙盟购买青莲朝心神通</view>
+		        <switch :checked="!!configInfo.is_goumai_qinglianchaoxin" @change="changeSwitchBoolean('is_goumai_qinglianchaoxin')"/>
 		    </view>
 
 
@@ -818,6 +823,7 @@ const configInfoDefault = {
 	yihuo_index: 0, // 无尽火域
 	auto_xianqiongxingjie: 0, // 自动仙穹星界
 	auto_douhunzhidian: 0, // 自动斗魂之巅
+	is_goumai_qinglianchaoxin: 0, // 仙盟购买青莲朝心神通
 	is_goumai_douhunzhidian: 0 // 自动购买斗魂之巅次数
 }
 

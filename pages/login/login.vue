@@ -67,6 +67,7 @@ import { getUtils,getIntUserid,getStrUserid } from '@/api/game'
 import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThirdStepShendao, loginThirdStepDYDJB, loginFirstStepXianfanzhuan, loginThirdStepXianfanzhuan, loginFirstStepRenzhafanpai, loginSedondStepRenzhafanpai } from '@/api/login'
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
 import { loginFirstStepZuiqiangxiuxian, loginSecondStepZuiqiangxiuxian } from '@/api/login'
+import { loginFirstStepTianyingqiyuan, loginSecondTianyingqiyuan } from '@/api/login'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -396,6 +397,23 @@ export default {
 							icon: 'none'
 						})
 						// #endif
+					}  else if ([26].includes(this.userInfo.loginType)) { // 天影奇缘
+						// #ifdef APP-PLUS
+						this.handleLoginFirstStepTianyingqiyuan()
+						// #endif
+						// #ifdef H5
+						handleGetServerConfigWJXL(6142, this.loginInfo.userId, 9).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+						// #endif
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -434,6 +452,8 @@ export default {
 						this.handleLoginFirstStepZuiqiangxiuxian() // 最强修仙编辑器 
 					}	else if (this.userInfo.loginType === 25) {
 						this.handleLoginFirstStepRenzhafanpai() // 人渣反派 
+					}	else if (this.userInfo.loginType === 26) {
+						this.handleLoginFirstStepTianyingqiyuan() // 天影奇缘
 					}	else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1042,6 +1062,85 @@ export default {
 			})
 		},
 
+		// 天影奇缘登录第一步
+		handleLoginFirstStepTianyingqiyuan() {
+			const params = {
+				r: 'auth/authorize',
+				game_id: 1526,
+				package_id: 'sdel_and_02',
+				imei: '',
+				UnallowToke: true,
+				username: 'eLang' + this.userInfo.usernamePlatForm,
+				password: this.userInfo.usernamePlatForm,	
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepTianyingqiyuan(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.token = res.result.access_token
+					this.loginInfo.userId = res.result.user_id
+					this.handleLoginSecondStepTianyingqiyuan()
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: res.message,
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 天影奇缘登录第二步获取token
+		handleLoginSecondStepTianyingqiyuan() {
+			const appId = 6
+			const channelId = 6142
+			const subChannelId = 6142
+			const version = '1.5.0'
+			const timeStamp = Date.parse(new Date()) / 1000
+			const signObj = {
+				token: this.loginInfo.token,
+				userId: this.loginInfo.userId
+			}
+			const str1 = JSON.stringify(signObj)
+			const arr = [appId, channelId, str1, this.userInfo.aid, subChannelId, timeStamp, version, 'cG3dKvBJ10mTGrHf5IOzQLH1dn']
+			const singStr = arr.join('#')
+			const params = {
+				appId: appId,
+				channelId: channelId,
+				subChannelId: subChannelId,
+				deviceId: this.userInfo.aid,
+				sign: CryptoJS.MD5(singStr).toString(),
+				ts: timeStamp,
+				version: version,
+				data: str1
+			}
+			loginSecondTianyingqiyuan(params).then(res => {
+				if (res.code === 1) {
+					if (!res.data.userId) {
+						uni.showToast({
+							title: '获取userID失败，请重新登录',
+							duration: 2000,
+							icon: 'none'
+						})
+						return
+					}
+					this.loginInfo.userId = res.data.userId // 这里获取的userId是为了获取服务器信息
+					this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					handleGetServerConfigWJXL(6142, this.loginInfo.userId, 9).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					uni.showToast({
+						title: res.msg,
+						duration: 2000,
+						icon: 'none'
+					})
+				}
+			})
+		},
+
 		// 获取后台生成的intUid
 		handleGetIntUid(struid) {
 			const params = {
@@ -1273,7 +1372,7 @@ export default {
 		},
 
 		
-	// 登录第三步
+		// 登录第三步
     handleLoginThirdStep() {
       const param = {
         userId: this.loginInfo.userId,
@@ -1289,7 +1388,7 @@ export default {
       }).catch(err => {
         console.log(err)
       })
-	},
+		},
 	
 
     // TapTap登录第三步

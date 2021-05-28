@@ -182,6 +182,22 @@ export function loginSedondStepRenzhafanpai(params) {
   )
 }
 
+// 天影奇缘登录第一步
+export function loginFirstStepTianyingqiyuan(params) {
+  return http.get(
+    'http://api.1017sy.cn/index.php',
+    {params}
+  )
+}
+
+// 天影奇缘登录第二步获取token
+export function loginSecondTianyingqiyuan(params) {
+  return http.get(
+    'http://gw.begindcc.com/ufo/api/6/user/token',
+    {params}
+  )
+}
+
 
 // 新用户登录，添加到辅助后台
 export function addUser(data) {
