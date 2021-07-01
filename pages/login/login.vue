@@ -68,6 +68,7 @@ import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThir
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
 import { loginFirstStepZuiqiangxiuxian, loginSecondStepZuiqiangxiuxian } from '@/api/login'
 import { loginFirstStepTianyingqiyuan, loginSecondTianyingqiyuan } from '@/api/login'
+import { loginFirstStepFeixianjueGYY } from '@/api/login'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -77,9 +78,10 @@ import { handleGetServerConfig,
 		handleGetServerConfigDJJH,
 		handleGetServerConfigDJJHWJXL,
 		handleGetServerConfigXianfanzhuan,
-		handleGetServerConfigZuiqiangxiuxian
+		handleGetServerConfigZuiqiangxiuxian,
+		handleGetServerConfigFeixianjueGYY
 		} from '@/utils/server'
-import { genRandomNumber, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
+import { genRandomNumber, randomString, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
 import { encryptByDESModeCBC, decryptByDESModeCBC } from '@/utils/encrypt'
 import service from '../../service.js';
 import {mapState,mapMutations} from 'vuex'
@@ -137,7 +139,8 @@ export default {
 				token_type: '',
 				channelId: '',
 				pfId: '',
-				time: ''
+				time: '',
+				PHPSESSID: ''
 			},
 			serverInfo: { // 服务器列表
         client_ip: '',
@@ -397,12 +400,12 @@ export default {
 							icon: 'none'
 						})
 						// #endif
-					}  else if ([26].includes(this.userInfo.loginType)) { // 天影奇缘
+					}  else if ([26].includes(this.userInfo.loginType)) { // 飞仙诀(羔羊游)
 						// #ifdef APP-PLUS
-						this.handleLoginFirstStepTianyingqiyuan()
+						this.handleLoginFirstStepFeixianjueGYY()
 						// #endif
 						// #ifdef H5
-						handleGetServerConfigWJXL(6142, this.loginInfo.userId, 9).then(serverInfo => {
+						handleGetServerConfigFeixianjueGYY(270, this.loginInfo.userId, 2).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.flag.showServer = true
 							this.saveLoginInfo()
@@ -453,6 +456,8 @@ export default {
 					}	else if (this.userInfo.loginType === 25) {
 						this.handleLoginFirstStepRenzhafanpai() // 人渣反派 
 					}	else if (this.userInfo.loginType === 26) {
+						this.handleLoginFirstStepFeixianjueGYY() // 飞仙诀(羔羊游)
+					}	else if (this.userInfo.loginType === 40) {
 						this.handleLoginFirstStepTianyingqiyuan() // 天影奇缘
 					}	else {
 						uni.showToast({
@@ -1136,6 +1141,34 @@ export default {
 						title: res.msg,
 						duration: 2000,
 						icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 飞仙诀(羔羊游)登录第一步
+		handleLoginFirstStepFeixianjueGYY() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepFeixianjueGYY(params).then(res => {
+				if (res.code === 200) {
+					this.loginInfo.userId = res.userid
+					this.loginInfo.time = res.time
+					this.loginInfo.token = res.token
+					handleGetServerConfigFeixianjueGYY(270, this.loginInfo.userId,2).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleLoginThirdStep()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
 					})
 				}
 			})

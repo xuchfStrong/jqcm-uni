@@ -765,7 +765,8 @@ import { handleGetServerConfig,
 		handleGetServerConfigDJJH,
 		handleGetServerConfigDJJHWJXL,
 		handleGetServerConfigXianfanzhuan,
-		handleGetServerConfigZuiqiangxiuxian
+		handleGetServerConfigZuiqiangxiuxian,
+		handleGetServerConfigFeixianjueGYY
 		} from '@/utils/server'
 import options from '@/utils/options.json'
 import { jingjieMap, weimianMap, vipMap } from './mapData.js'
@@ -1341,7 +1342,14 @@ export default {
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
-      }  else { // 其他平台
+      } else if (this.userInfo.loginType === 26) { // 飞仙诀(羔羊游)
+        handleGetServerConfigFeixianjueGYY(270, this.loginInfo.userId, 2).then(serverInfo => {
+					this.serverInfo = serverInfo
+					// this.saveLoginInfo()
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
+      } else { // 其他平台
         handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					// this.saveLoginInfo()

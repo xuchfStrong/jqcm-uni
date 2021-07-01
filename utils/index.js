@@ -118,6 +118,21 @@ export function genRandomNumber(num) {
 }
 
 /**
+ * 生成指定位数的随机字符串
+ * @param {Number} n
+ */
+export function randomString(n) {  
+  let str = 'abcdefghijklmnopqrstuvwxyz9876543210';
+  let tmp = '',
+      i = 0,
+      l = str.length;
+  for (i = 0; i < n; i++) {
+    tmp += str.charAt(Math.floor(Math.random() * l));
+  }
+  return tmp;
+}
+
+/**
  * 生成UUID
  * @param {*}
  */

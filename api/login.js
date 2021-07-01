@@ -133,6 +133,22 @@ export function loginThirdStepDYDJB(params) {
   )
 }
 
+// 飞仙诀羔羊游登录
+export function loginFirstStepFeixianjueGYY(data) {
+  return http.post(
+    'http://wdsz2.huojiangame.com:11658/util/gaoyangyouLogin.py',
+    data
+  )
+}
+
+// 飞仙诀羔羊游登录第二步
+export function loginSecondStepFeixianjueGYY(params) {
+  return http.get(
+    'http://www.gaoyangh5.com/mediawide.php?s=/Game/open_game/game_id/1127.html',
+    {params}
+  )
+}
+
 
 // 仙凡传登录第一步
 export function loginFirstStepXianfanzhuan(data) {
@@ -245,10 +261,18 @@ export function getServerConfigXianfanzhuan(params) {
   )
 }
 
-// 获取仙凡传服务器列表
+// 获取最强修仙编辑器服务器列表
 export function getServerConfigZuiqiangxiuxian(params) {
   return http.get(
     'https://jq.8866net.com/www/api/server_config.php',
+    {params}
+  )
+}
+
+// 获取飞仙诀(羔羊游)服务器列表
+export function getServerConfigFeixianjueGYY(params) {
+  return http.get(
+    'https://admin-fxj.zhijiangames.com/www/api/server_config.php',
     {params}
   )
 }
