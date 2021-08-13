@@ -36,6 +36,12 @@
 			"style": {
 				"navigationBarTitleText": "辅助帐号转移"
 			}
+		},
+		{
+			"path": "pages/test/index",
+			"style": {
+				"navigationBarTitleText": "测试"
+			}
 		}
     ],
 	"tabBar": {

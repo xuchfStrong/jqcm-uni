@@ -1,28 +1,21 @@
-import { http, httpForm } from '@/utils/request.js'
+// import { http, httpForm } from '@/utils/request.js'
+import {requestProxy, http, httpForm} from './request.js'
 
-// 登录一步
-export function loginFirstStep(data) {
-  return http.post(
-    'http://m.huojiangame.com:9080/jqcm_login/api/login',
-    data
-  )
-}
+// // 登录一步
+// export function loginFirstStep(data) {
+//   return http.post(
+//     'http://m.huojiangame.com:9080/jqcm_login/api/login',
+//     data
+//   )
+// }
 
-// 登录二步获取用户token
-export function loginSecondStep(params) {
-  return http.get(
-    'http://m.huojiangame.com:9080/jqcm_usertoken/user/v1/token',
-    {params}
-  )
-}
-
-// 通过自己写的proxy登录二步获取用户token
-export function loginSecondStepByProxy(params) {
-  return http.get(
-    'http://192.144.211.81:11658/jqcm_proxy.php',
-    {params}
-  )
-}
+// // 登录二步获取用户token
+// export function loginSecondStep(params) {
+//   return http.get(
+//     'http://m.huojiangame.com:9080/jqcm_usertoken/user/v1/token',
+//     {params}
+//   )
+// }
 
 // 剑气除魔登录第一步
 export function loginFirstStepShendao(params) {
@@ -31,7 +24,6 @@ export function loginFirstStepShendao(params) {
     {params}
   )
 }
-
 
 // 登录第三步
 export function loginThirdStep(params) {
@@ -51,12 +43,12 @@ export function loginThirdStepDDJHWJXL1(params) {
 
 
 // 无尽修炼2登录一步
-export function loginFirstStepWJXL2(data) {
-  return http.post(
-    'http://m.huojiangame.com:9080/jqcm_login_wjxl2/api/login',
-    data
-  )
-}
+// export function loginFirstStepWJXL2(data) {
+//   return http.post(
+//     'http://m.huojiangame.com:9080/jqcm_login_wjxl2/api/login',
+//     data
+//   )
+// }
 
 // 无尽修炼2登录第三步
 export function loginThirdStepWJXL2(params) {
@@ -107,37 +99,29 @@ export function loginThirdStepTapTap(params) {
 }
 
 // 道友渡劫不登录第一步
-export function loginFirstStepDYDJB(data, header) {
-  return httpForm.post(
-    // 'http://www.fzsyouxi.com/api/authorizations',
-    'http://m.huojiangame.com:9080/jqcm_login_dydjb/api/authorizations',
-    data,
-    {header}
-  )
-}
+// export function loginFirstStepDYDJB(data, header) {
+//   return httpForm.post(
+//     // 'http://www.fzsyouxi.com/api/authorizations',
+//     'http://m.huojiangame.com:9080/jqcm_login_dydjb/api/authorizations',
+//     data,
+//     {header}
+//   )
+// }
 
-// 道友渡劫不登录第二步
-export function loginSecondStepDYDJB(params, header) {
-  return http.get(
-    // 'http://www.fzsyouxi.com/api/user',
-    'http://m.huojiangame.com:9080/jqcm_login_dydjb/api/user',
-    {params, header}
-  )
-}
+// // 道友渡劫不登录第二步
+// export function loginSecondStepDYDJB(params, header) {
+//   return http.get(
+//     // 'http://www.fzsyouxi.com/api/user',
+//     'http://m.huojiangame.com:9080/jqcm_login_dydjb/api/user',
+//     {params, header}
+//   )
+// }
 
 // 道友渡劫不登录第三步
 export function loginThirdStepDYDJB(params) {
   return http.get(
     'http://dzztest.dzz.begindcc.com/game/biguo/index_ww.php',
     {params}
-  )
-}
-
-// 飞仙诀羔羊游登录
-export function loginFirstStepFeixianjueGYY(data) {
-  return http.post(
-    'http://wdsz2.huojiangame.com:11658/util/gaoyangyouLogin.py',
-    data
   )
 }
 
@@ -214,22 +198,6 @@ export function loginSecondTianyingqiyuan(params) {
   )
 }
 
-
-// 新用户登录，添加到辅助后台
-export function addUser(data) {
-  return httpForm.post(
-    'http://jqcm.huojiangame.com:11658/jqcm/add_user.php',
-    data
-  )
-}
-
-export function checkUserStatus(params) {
-  return http.get(
-    'http://jqcm.huojiangame.com:11658/jqcm/check_user.php',
-    {params}
-  )
-}
-
 export function getServerConfig(params) {
   return http.get(
     'http://dzztest.dzz.begindcc.com/www/api/server_config.php',
@@ -277,11 +245,4 @@ export function getServerConfigFeixianjueGYY(params) {
   )
 }
 
-// 获取远端选项信息
-export function getRemoteOptions(params) {
-  return http.get(
-    'http://jqcm.huojiangame.com:11658/jqcm/options.php',
-    {params}
-  )
-}
 

@@ -33,7 +33,7 @@
 		</view>
 
 		<view class="btn-row">
-		    <button type="primary" class="primary" @tap="handleCheckUserStatus">登录</button>
+		    <button type="primary" class="primary" :loading="statusLoading" :disabled="statusLoading" @tap="handleCheckUserStatus">登录</button>
 		</view>
 
 		<!-- <view style="margin-top:10px; color:#1989fa; text-align: center;">
@@ -58,7 +58,8 @@ import { http } from '@/utils/request.js'
 import save from '@/utils/save'
 import loginDescription from './loginDescription.json'
 // #ifdef H5
-import { loginFirstStep, loginSecondStep,loginSecondStepByProxy, loginFirstStepWJXL2, loginFirstStepShendao, loginFirstStepDYDJB, loginSecondStepDYDJB } from '@/api/login'
+import { loginFirstStepShendao } from '@/api/login'
+import { loginFirstStep, loginSecondStep, loginSecondStepByProxy, loginFirstStepWJXL2, loginFirstStepDYDJB, loginSecondStepDYDJB } from '@/api/game'
 // #endif
 // #ifdef APP-PLUS
 import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2, loginFirstStepShendao, loginFirstStepDYDJB, loginSecondStepDYDJB } from '@/api/loginApp'
@@ -68,8 +69,8 @@ import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThir
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
 import { loginFirstStepZuiqiangxiuxian, loginSecondStepZuiqiangxiuxian } from '@/api/login'
 import { loginFirstStepTianyingqiyuan, loginSecondTianyingqiyuan } from '@/api/login'
-import { loginFirstStepFeixianjueGYY } from '@/api/login'
-import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
+import { loginFirstStepFeixianjueGYY } from '@/api/game'
+import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
 		handleGetServerConfigOther,
@@ -95,6 +96,7 @@ export default {
 	data() {
 		return {
 			loginDescription: loginDescription,
+			statusLoading: false,
 			platformIndex: 0,
 			platformName: '',
 			account: '',
@@ -196,6 +198,9 @@ export default {
 				pwd_md5: CryptoJS.MD5(this.userInfo.passwordPlatForm).toString(), // 密码
 				login_type: this.userInfo.loginType
 			}
+			this.statusLoading = true
+			const self = this
+			setTimeout(function() { self.statusLoading = false }, 5000)
 			checkUserStatus(param).then(res => {
 				if (res.code === 200) {
 					// 获取用户信息
@@ -1552,12 +1557,12 @@ export default {
         wx_qq_account: '',
         channel_userid: '',
         session_id: '',
-        mac: this.userInfo.mac,
-        device_id: this.userInfo.aid,
-        imei: this.userInfo.udid,
-        pfid: this.loginInfo.pfId,
-        timestamp: this.loginInfo.time,
-        token: this.loginInfo.token,
+        mac: this.userInfo.mac || '',
+        device_id: this.userInfo.aid || '',
+        imei: this.userInfo.udid || '',
+        pfid: this.loginInfo.pfId || '',
+        timestamp: this.loginInfo.time || '',
+        token: this.loginInfo.token || '',
         uname_md5: CryptoJS.MD5(this.userInfo.usernamePlatForm).toString(),
         pwd_md5: CryptoJS.MD5(this.userInfo.passwordPlatForm).toString()
       }

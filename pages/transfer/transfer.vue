@@ -83,7 +83,7 @@ export default {
 			const params = {
 				from_id: this.transferInfo.oldUserId,
 				from_server: this.transferInfo.oldServerId,
-				from_pwd_md5: CryptoJS.MD5(this.transferInfo.oldPassword),
+				from_pwd_md5: CryptoJS.MD5(this.transferInfo.oldPassword).toString(),
 				to_id: this.transferInfo.newUserId,
 				to_server: this.transferInfo.newServerId
 			}
