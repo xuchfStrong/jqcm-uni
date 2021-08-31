@@ -69,6 +69,8 @@ import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThir
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
 import { loginFirstStepZuiqiangxiuxian, loginSecondStepZuiqiangxiuxian } from '@/api/login'
 import { loginFirstStepTianyingqiyuan, loginSecondTianyingqiyuan } from '@/api/login'
+import { loginFirstStepJHCS, loginSecondStepJHCS, loginFourStepJHCS } from '@/api/login'
+import { loginThirdStepJHCS } from '@/api/loginApp'
 import { loginFirstStepFeixianjueGYY } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
@@ -82,7 +84,7 @@ import { handleGetServerConfig,
 		handleGetServerConfigZuiqiangxiuxian,
 		handleGetServerConfigFeixianjueGYY
 		} from '@/utils/server'
-import { genRandomNumber, randomString, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
+import { genRandomNumber, randomString, genUUID, genMac, getValueByIndex, getIndexByValue, parseSearchArgs } from '@/utils/index'
 import { encryptByDESModeCBC, decryptByDESModeCBC } from '@/utils/encrypt'
 import service from '../../service.js';
 import {mapState,mapMutations} from 'vuex'
@@ -422,6 +424,23 @@ export default {
 							icon: 'none'
 						})
 						// #endif
+					} else if ([27].includes(this.userInfo.loginType)) { // 飞仙诀(羔羊游)
+						// #ifdef APP-PLUS
+						this.handleLoginFirstStepJHCS()
+						// #endif
+						// #ifdef H5
+						handleGetServerConfigWJXL(6152, this.loginInfo.userId, 20).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+						// #endif
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -462,7 +481,9 @@ export default {
 						this.handleLoginFirstStepRenzhafanpai() // 人渣反派 
 					}	else if (this.userInfo.loginType === 26) {
 						this.handleLoginFirstStepFeixianjueGYY() // 飞仙诀(羔羊游)
-					}	else if (this.userInfo.loginType === 40) {
+					}	else if (this.userInfo.loginType === 27) {
+						this.handleLoginFirstStepJHCS() // 江湖传说
+					} else if (this.userInfo.loginType === 40) {
 						this.handleLoginFirstStepTianyingqiyuan() // 天影奇缘
 					}	else {
 						uni.showToast({
@@ -1178,6 +1199,110 @@ export default {
 				}
 			})
 		},
+
+		// 江湖传说登录第一步
+		handleLoginFirstStepJHCS() {
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				pass: this.userInfo.passwordPlatForm,
+				client: 0,
+				aid: 2680,
+				mob: 'ios',
+				appkey: '9d30375ebd0242aeb3da84ad2fc53158'
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepJHCS(params).then(res => {
+				if (res.code === '0') {
+					this.loginInfo.userId = res.data.userid
+					this.loginInfo.token = res.data.token
+					const tokenPart2 = res.data.token.split('.')[1]
+					const plainStr = CryptoJS.enc.Base64.parse(tokenPart2).toString(CryptoJS.enc.Utf8)
+					const tokenPart2Obj = JSON.parse(plainStr)
+					this.handleLoginSecondStepJHCS(this.loginInfo.token, tokenPart2Obj.uid)
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 江湖传说登录第二步
+		handleLoginSecondStepJHCS(token, uid) {
+			const params = {
+				client: 'ios',
+				appkey: '9d30375ebd0242aeb3da84ad2fc53158',
+				token: token,
+				account: uid
+			}
+			console.log('uid', uid)
+			loginSecondStepJHCS(params).then(res => {
+				if (res.status === 1) {
+					const urlParams = parseSearchArgs(res.url)
+					this.handleLoginThirdStepJHCS(urlParams)
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 江湖传说登录第三步
+		handleLoginThirdStepJHCS(urlParams) {
+			const appId = 6
+			const channelId = 6152
+			const version = '1.0'
+			const timeStamp = Date.parse(new Date()) / 1000
+			const data = {
+				username: urlParams.username,
+				userId: urlParams.userid,
+				isAdult: "1",
+				avatar: urlParams.avatar,
+				sex: "",
+				vaildCode: urlParams.vaildCode,
+				time: urlParams.time,
+				sign: urlParams.sign
+			}
+			const dataStr = JSON.stringify(data)
+			const arr = [appId, channelId, dataStr, timeStamp, version, 'cG3dKvBJ10mTGrHf5IOzQLH1dn']
+			const singStr = arr.join('#')
+			const sign = CryptoJS.MD5(singStr).toString()
+			const params = {
+				deviceId: '',
+				appId: 6,
+				channelId: 6152,
+				version: version,
+				ts: timeStamp,
+				data: data,
+				sign: sign
+			}
+			loginThirdStepJHCS(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					handleGetServerConfigWJXL(6152, this.loginInfo.userId, 20).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
 
 		// 获取后台生成的intUid
 		handleGetIntUid(struid) {

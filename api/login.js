@@ -198,6 +198,38 @@ export function loginSecondTianyingqiyuan(params) {
   )
 }
 
+// 江湖传说登录第一步
+export function loginFirstStepJHCS(params) {
+  return http.get(
+    'https://h5.h5youyou.com/user/login',
+    {params}
+  )
+}
+
+// 江湖传说登录第二步
+export function loginSecondStepJHCS(params) {
+  return http.get(
+    'https://h5.h5youyou.com/game/start',
+    {params}
+  )
+}
+
+// 江湖传说登录第三步
+export function loginThirdStepJHCS(params) {
+  return http.get(
+    'https://gw.begindcc.com/ufo/api/6/user/token',
+    {params}
+  )
+}
+
+// 江湖传说登录第四步
+export function loginFourStepJHCS(params) {
+  return http.get(
+    'http://dzztest.dzz.begindcc.com/game/biguo/index_ml.php',
+    {params}
+  )
+}
+
 export function getServerConfig(params) {
   return http.get(
     'http://dzztest.dzz.begindcc.com/www/api/server_config.php',

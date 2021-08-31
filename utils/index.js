@@ -196,6 +196,19 @@ export function getIndexByValue(option, value) {
   }
 }
 
+// 解析get URL请求
+export function parseSearchArgs(url) {
+  const rst = {};
+  if (url.indexOf("?") != -1) {
+    const str = url.split("?")[1];
+    const parts = str.split("&");
+      for(let i = 0; i < parts.length; i++) {
+          rst[parts[i].split("=")[0]]=decodeURI(parts[i].split("=")[1]);
+      }
+  }
+  return rst;
+} 
+
 export function toast(msg) {
   uni.showToast({
     title: msg,

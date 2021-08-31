@@ -34,7 +34,23 @@ function encryptByDESModeCBC(message) {
   return encrypted.toString();
 }
 
-const send_chiper2 = encryptByDESModeCBC(send_plain)
-console.log(send_chiper2)
-const res_plain = decryptByDESModeCBC(send_chiper2)
-console.log(res_plain)
+function parseSearchArgs(url) {
+  const rst = {};
+  if (url.indexOf("?") != -1) {
+    const str = url.split("?")[1];
+    const parts = str.split("&");
+      for(let i = 0; i < parts.length; i++) {
+          rst[parts[i].split("=")[0]]=decodeURI(parts[i].split("=")[1]);
+      }
+  }
+  return rst;
+} 
+
+// const send_chiper2 = encryptByDESModeCBC(send_plain)
+// console.log(send_chiper2)
+// const res_plain = decryptByDESModeCBC(send_chiper2)
+// console.log(res_plain)
+
+const url = "https://dzztest.dzz.begindcc.com:9984/index_lw.html?os=h5&channelId=6152&version=1.0&userid=22084137&username=jy5999043674&isAdult=1&avatar=http%3A%2F%2Fh5app.ufile.ucloud.com.cn%2Ficon.png&sex=&vaildCode=71f86f37f45ff2df59a54ec44d319e15&time=1630332346&sign=b516290de4b01e793304b3996270e514"
+const res = parseSearchArgs(url)
+console.log(res)

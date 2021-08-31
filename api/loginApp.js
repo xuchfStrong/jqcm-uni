@@ -49,3 +49,11 @@ export function loginSecondStepDYDJB(params, header) {
     {params, header}
   )
 }
+
+// 江湖传说登录第三步
+export function loginThirdStepJHCS(params) {
+  return http.get(
+    'https://gw.begindcc.com/ufo/api/6/user/token',
+    {params}
+  )
+}
