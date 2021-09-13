@@ -12,7 +12,7 @@ function combineURLs(baseURL, relativeURL) {
 exports.main = async (event, context) => {
 	//event为客户端上传的参数
 	console.log('event : ', event)
-	const baseURL = 'http://49.233.16.152:11658/asdljSDGG546461ajlGH/'
+	const baseURL = 'http://49.232.69.137:23554/asdljSDGG546461ajlGH/'
 	const apiUrl = combineURLs(baseURL, event.url)
 	try {
 		const res = await uniCloud.httpclient.request(apiUrl, {

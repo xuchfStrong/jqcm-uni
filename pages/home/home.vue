@@ -1356,6 +1356,13 @@ export default {
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
+      } else if (this.userInfo.loginType === 28) { // 修真归来
+        handleGetServerConfigWJXL(6147, this.loginInfo.userId, 19).then(serverInfo => {
+					this.serverInfo = serverInfo
+					// this.saveLoginInfo()
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
       } else { // 其他平台
         handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo

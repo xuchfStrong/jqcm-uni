@@ -1,4 +1,4 @@
-// import { http, httpForm } from '@/utils/request.js'
+import { requestNoproxy } from '@/utils/request.js'
 import {requestProxy, http, httpForm} from './request.js'
 
 // // 登录一步
@@ -139,6 +139,31 @@ export function loginFirstStepXianfanzhuan(data) {
   return httpForm.post(
     'https://api.cxgame.net/VGXup/on0af',
     data
+  )
+}
+
+// 修仙归来登录第一步
+export function loginFirstStepXiuzhenguilai(data, boundary) {
+  return requestNoproxy.httpForm.post(
+    'http://apphs.54banana.com/login/index/',
+    data,
+    {ContentType: 'multipart/form-data;boundary=' + boundary}
+  )
+}
+
+// 修仙归来游登录第二步
+export function loginSecondStepXiuzhenguilai(params) {
+  return requestNoproxy.http.get(
+    'https://gw.begindcc.com/ufo/api/6/user/token',
+    {params}
+  )
+}
+
+// 修仙归来游登录第三步
+export function loginThirdStepXiuzhenguilai(params) {
+  return http.get(
+    'https://dzztest.dzz.begindcc.com/game/biguo/index_tengchong.php',
+    {params}
   )
 }
 

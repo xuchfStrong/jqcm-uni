@@ -207,7 +207,7 @@ export function parseSearchArgs(url) {
       }
   }
   return rst;
-} 
+}
 
 export function toast(msg) {
   uni.showToast({

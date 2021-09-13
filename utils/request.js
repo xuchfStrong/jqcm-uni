@@ -14,7 +14,7 @@ httpForm.setConfig((config) => { /* 设置全局配置 */
   config.baseUrl = ''
   config.header = {
     ...config.header,
-    "Content-Type":"application/x-www-form-urlencoded",
+    "Content-Type":'application/x-www-form-urlencoded',
   }
   return config
 })
@@ -22,6 +22,9 @@ httpForm.setConfig((config) => { /* 设置全局配置 */
 httpForm.interceptor.request((config, cancel) => { /* 请求之前拦截器 */
   config.header = {
     ...config.header
+  }
+  if (config.ContentType) {
+    config.header['Content-Type'] = config.ContentType
   }
   /*
   if (!token) { // 如果token不存在，调用cancel 会取消本次请求，但是该函数的catch() 仍会执行
@@ -92,7 +95,13 @@ http.interceptor.response(async (response) => { /* 请求之后拦截器 */
   return response
 })
 
+const requestNoproxy = {
+  http: http,
+  httpForm: httpForm
+}
+
 export {
   http,
-  httpForm
+  httpForm,
+  requestNoproxy
 }

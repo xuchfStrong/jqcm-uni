@@ -70,6 +70,7 @@ import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } fro
 import { loginFirstStepZuiqiangxiuxian, loginSecondStepZuiqiangxiuxian } from '@/api/login'
 import { loginFirstStepTianyingqiyuan, loginSecondTianyingqiyuan } from '@/api/login'
 import { loginFirstStepJHCS, loginSecondStepJHCS, loginFourStepJHCS } from '@/api/login'
+import { loginFirstStepXiuzhenguilai, loginSecondStepXiuzhenguilai, loginThirdStepXiuzhenguilai } from '@/api/login'
 import { loginThirdStepJHCS } from '@/api/loginApp'
 import { loginFirstStepFeixianjueGYY } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
@@ -441,6 +442,8 @@ export default {
 							icon: 'none'
 						})
 						// #endif
+					} else if ([28].includes(this.userInfo.loginType)) { // 修真归来)
+						this.handleLoginFirstStepXiuzhenguilai()
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -483,6 +486,8 @@ export default {
 						this.handleLoginFirstStepFeixianjueGYY() // 飞仙诀(羔羊游)
 					}	else if (this.userInfo.loginType === 27) {
 						this.handleLoginFirstStepJHCS() // 江湖传说
+					} else if (this.userInfo.loginType === 28) {
+						this.handleLoginFirstStepXiuzhenguilai() // 修真归来
 					} else if (this.userInfo.loginType === 40) {
 						this.handleLoginFirstStepTianyingqiyuan() // 天影奇缘
 					}	else {
@@ -1091,6 +1096,189 @@ export default {
 					})
 				}
 			})
+		},
+
+		// 修真归来登录第一步
+		handleLoginFirstStepXiuzhenguilai() {
+			if (!this.userInfo.usernamePlatForm || !this.userInfo.passwordPlatForm) {
+				uni.showToast({
+					title: '请输入用户名和密码',
+					duration: 2000,
+					icon: 'none'
+				})
+		    return
+			}
+			const timeStamp = Date.parse(new Date()) / 1000
+			const boundary = randomString(20)
+			let loginData = {
+				androidid: '',
+				duid: 'ebfc5e1b2fe59617bb217690f81bce3e',
+				gid: 1000559,
+				htid: '',
+				idfa: '00000000-0000-0000-0000-000000000000',
+				idfv: '',
+				imei: '',
+				mac: '',
+				oaid: '',
+				pid: '45',
+				refer: '45_1000559_10164_1',
+				sdkver: '1.0.3',
+				time: timeStamp,
+				uname: this.userInfo.usernamePlatForm,
+				upwd: this.userInfo.passwordPlatForm,
+				utm: '',
+				version: 'junshanggame20200202'
+			}
+			const keyArray = ['androidid', 'duid', 'gid', 'htid', 'idfa',
+												'idfv', 'imei', 'mac', 'oaid', 'pid', 'refer',
+												'sdkver', 'time', 'uname', 'upwd', 'utm', 'version']
+			let signStr = ''
+			keyArray.forEach((key, index) => {
+				let onekv = ''
+				if (index > 0) {
+					onekv = `&${key}=${loginData[key]}`
+				} else {
+					onekv = `${key}=${loginData[key]}`
+				}
+				signStr += onekv
+			})
+			const sign = CryptoJS.MD5(signStr).toString()
+			loginData.sign = sign
+			let multipart = '\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="androidid"' +
+											'\r\n' +
+											'\r\n' +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="duid"' +
+											'\r\n' +
+											'\r\nebfc5e1b2fe59617bb217690f81bce3e' +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="gid"' +
+											'\r\n' +
+											'\r\n1000559' +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="htid"' +
+											'\r\n' +
+											'\r\n' +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="idfa"' +
+											'\r\n' +
+											'\r\n00000000-0000-0000-0000-000000000000' +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="idfv"' +
+											'\r\n' +
+											'\r\n' +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="imei"' +
+											'\r\n' +
+											'\r\n' +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="mac"' +
+											'\r\n' +
+											'\r\n' +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="oaid"' +
+											'\r\n' +
+											'\r\n' +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="pid"' +
+											'\r\n' +
+											'\r\n45' +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="refer"' +
+											'\r\n' +
+											'\r\n45_1000559_10164_1' +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="sdkver"' +
+											'\r\n' +
+											'\r\n1.0.3' +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="time"' +
+											'\r\n' +
+											'\r\n' + timeStamp +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="uname"' +
+											'\r\n' +
+											'\r\n' + this.userInfo.usernamePlatForm +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="upwd"' +
+											'\r\n' +
+											'\r\n' + this.userInfo.passwordPlatForm +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="utm"' +
+											'\r\n' +
+											'\r\n' +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="version"' +
+											'\r\n' +
+											'\r\n' +
+											'\r\n--' + boundary +
+											'\r\nContent-Disposition: form-data; name="sign"' +
+											'\r\n' +
+											'\r\n' + sign +
+											'\r\n--' + boundary + '--'
+			loginFirstStepXiuzhenguilai(multipart, boundary).then(res => {
+				if (res.state === 1) {
+					const token = res.data.token
+					this.handleLoginSecondStepXiuzhenguilai(token)
+				} else {
+					this.$toast(res.msg)
+				}
+			})
+		},
+
+		//修真归来登录第二步获取token
+		handleLoginSecondStepXiuzhenguilai(token) {
+			const appId = 6
+			const channelId = 6147
+			const version = '1.0'
+			const timeStamp = Date.parse(new Date()) / 1000
+			const signObj = {
+				token: token
+			}
+			const str1 = JSON.stringify(signObj)
+			const arr = [appId, channelId, str1, timeStamp, version, 'cG3dKvBJ10mTGrHf5IOzQLH1dn']
+			const singStr = arr.join('#')
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			const params = {
+				appId: appId,
+				channelId: channelId,
+				deviceId: '',
+				sign: CryptoJS.MD5(singStr).toString(),
+				ts: timeStamp,
+				version: version,
+				data: str1
+			}
+			loginSecondStepXiuzhenguilai(params).then(res => {
+				if (res.code === 1) {
+					if (!res.data.userId) {
+						uni.showToast({
+							title: '获取userID失败，请重新登录',
+							duration: 2000,
+							icon: 'none'
+						})
+						return
+					}
+					this.loginInfo.userId = res.data.userId // 这里获取的userId是为了获取服务器信息
+					this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					handleGetServerConfigWJXL(6147, this.loginInfo.userId, 19).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					uni.showToast({
+						title: res.msg,
+						duration: 2000,
+						icon: 'none'
+					})
+				}
+			})
+		},
+
+		//修真归来登录第三步
+		handleLoginThirdStepXiuzhenguilai() {
+
 		},
 
 		// 天影奇缘登录第一步
