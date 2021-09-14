@@ -85,7 +85,7 @@ import { handleGetServerConfig,
 		handleGetServerConfigZuiqiangxiuxian,
 		handleGetServerConfigFeixianjueGYY
 		} from '@/utils/server'
-import { genRandomNumber, randomString, genUUID, genMac, getValueByIndex, getIndexByValue, parseSearchArgs } from '@/utils/index'
+import { genRandomNumber, randomString, genUUID, genMac, getValueByIndex, getIndexByValue, parseSearchArgs, genMultipartFormData } from '@/utils/index'
 import { encryptByDESModeCBC, decryptByDESModeCBC } from '@/utils/encrypt'
 import service from '../../service.js';
 import {mapState,mapMutations} from 'vuex'
@@ -1144,79 +1144,8 @@ export default {
 			})
 			const sign = CryptoJS.MD5(signStr).toString()
 			loginData.sign = sign
-			let multipart = '\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="androidid"' +
-											'\r\n' +
-											'\r\n' +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="duid"' +
-											'\r\n' +
-											'\r\nebfc5e1b2fe59617bb217690f81bce3e' +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="gid"' +
-											'\r\n' +
-											'\r\n1000559' +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="htid"' +
-											'\r\n' +
-											'\r\n' +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="idfa"' +
-											'\r\n' +
-											'\r\n00000000-0000-0000-0000-000000000000' +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="idfv"' +
-											'\r\n' +
-											'\r\n' +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="imei"' +
-											'\r\n' +
-											'\r\n' +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="mac"' +
-											'\r\n' +
-											'\r\n' +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="oaid"' +
-											'\r\n' +
-											'\r\n' +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="pid"' +
-											'\r\n' +
-											'\r\n45' +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="refer"' +
-											'\r\n' +
-											'\r\n45_1000559_10164_1' +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="sdkver"' +
-											'\r\n' +
-											'\r\n1.0.3' +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="time"' +
-											'\r\n' +
-											'\r\n' + timeStamp +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="uname"' +
-											'\r\n' +
-											'\r\n' + this.userInfo.usernamePlatForm +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="upwd"' +
-											'\r\n' +
-											'\r\n' + this.userInfo.passwordPlatForm +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="utm"' +
-											'\r\n' +
-											'\r\n' +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="version"' +
-											'\r\n' +
-											'\r\n' +
-											'\r\n--' + boundary +
-											'\r\nContent-Disposition: form-data; name="sign"' +
-											'\r\n' +
-											'\r\n' + sign +
-											'\r\n--' + boundary + '--'
+			loginData.version = ''
+			const multipart = genMultipartFormData(loginData, boundary)
 			loginFirstStepXiuzhenguilai(multipart, boundary).then(res => {
 				if (res.state === 1) {
 					const token = res.data.token

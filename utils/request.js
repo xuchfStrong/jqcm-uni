@@ -95,13 +95,7 @@ http.interceptor.response(async (response) => { /* 请求之后拦截器 */
   return response
 })
 
-const requestNoproxy = {
-  http: http,
-  httpForm: httpForm
-}
-
 export {
   http,
-  httpForm,
-  requestNoproxy
+  httpForm
 }

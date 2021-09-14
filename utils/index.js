@@ -209,6 +209,19 @@ export function parseSearchArgs(url) {
   return rst;
 }
 
+// 构造multipart/form-data数据
+export function genMultipartFormData(data, boundary) {
+  let str = '\r\n--' + boundary
+  for (let key in data) {
+    const keyPart = '\r\nContent-Disposition: form-data; name="' + key +'"'
+    const valuePart = '\r\n' + data[key]
+    const boundaryPart = '\r\n--' + boundary
+    str += keyPart + '\r\n' + valuePart + boundaryPart
+  }
+  str += '--'
+  return str
+}
+
 export function toast(msg) {
   uni.showToast({
     title: msg,

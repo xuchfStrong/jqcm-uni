@@ -1,4 +1,4 @@
-import { requestNoproxy } from '@/utils/request.js'
+import { http as httpNoProxy, httpForm as httpFormNoProxy } from '@/utils/request.js'
 import {requestProxy, http, httpForm} from './request.js'
 
 // // 登录一步
@@ -144,7 +144,7 @@ export function loginFirstStepXianfanzhuan(data) {
 
 // 修仙归来登录第一步
 export function loginFirstStepXiuzhenguilai(data, boundary) {
-  return requestNoproxy.httpForm.post(
+  return httpFormNoProxy.post(
     'http://apphs.54banana.com/login/index/',
     data,
     {ContentType: 'multipart/form-data;boundary=' + boundary}
@@ -153,7 +153,7 @@ export function loginFirstStepXiuzhenguilai(data, boundary) {
 
 // 修仙归来游登录第二步
 export function loginSecondStepXiuzhenguilai(params) {
-  return requestNoproxy.http.get(
+  return httpNoProxy.get(
     'https://gw.begindcc.com/ufo/api/6/user/token',
     {params}
   )
