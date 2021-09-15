@@ -265,8 +265,9 @@
 			<view class="uni-divider__content">挂机设置</view>
 			<view class="uni-divider__line"></view>
 		</view>
-		
-		<view class="uni-list-no-border">
+
+		<uni-segmented-control :current="currentTab" :values="items" @clickItem="onClickItem" styleType="button" activeColor="#007aff" style="margin-bottom:20upx;"></uni-segmented-control>
+		<view v-show="currentTab === 0" class="uni-list-no-border">
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 		      <view class="uni-list-cell-db">领取离线倍数</view>
 		      <radio-group @change="radioChange" class="flex-lixian-item radio-flex">
@@ -391,8 +392,17 @@
 		        <view class="uni-list-cell-db">仙盟购买青莲朝心神通</view>
 		        <switch :checked="!!configInfo.is_goumai_qinglianchaoxin" @change="changeSwitchBoolean('is_goumai_qinglianchaoxin')"/>
 		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">荣誉购买清风剑碎片</view>
+		        <switch :checked="!!configInfo.is_goumai_qingfengjian" @change="changeSwitchBoolean('is_goumai_qingfengjian')"/>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">自动升级战阵</view>
+		        <switch :checked="!!configInfo.is_shengzhanzhen" @change="changeSwitchBoolean('is_shengzhanzhen')"/>
+		    </view>
+		</view>
 
-
+		<view v-show="currentTab === 1" class="uni-list-no-border">
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
@@ -673,75 +683,77 @@
 					</view>
 		    </view> -->
 
+				<view class="uni-divider">
+					<view class="uni-divider__content">功法设置</view>
+					<view class="uni-divider__line"></view>
+				</view>
+
+				<view class="gongfa-wrap">
+					<view class="list-cell flex-item-two">
+						<view class="gongfa-list-left">
+							攻击:
+						</view>
+						<view class="uni-list-cell-db">
+							<picker @change="changeGongji" :value="gongfaIndex.gongji" class="bg-picker-gongfa"  range-key="text" :range="options.gongfa">
+									<view :class="{ active: gongfaObj.gongji !== '10' }" class="uni-input">{{options.gongfa[gongfaIndex.gongji].text}}</view>
+							</picker>
+						</view>
+					</view>
+					<view class="list-cell flex-item-two">
+						<view class="gongfa-list-left">
+							生命:
+						</view>
+						<view class="uni-list-cell-db">
+							<picker @change="changeShengming" :value="gongfaIndex.shengming" class="bg-picker-gongfa"  range-key="text" :range="options.gongfa">
+									<view :class="{ active: gongfaObj.shengming !== '10' }" class="uni-input">{{options.gongfa[gongfaIndex.shengming].text}}</view>
+							</picker>
+						</view>
+					</view>
+					<view class="list-cell flex-item-two">
+						<view class="gongfa-list-left">
+							物防:
+						</view>
+						<view class="uni-list-cell-db">
+							<picker @change="changeWufang" :value="gongfaIndex.wufang" class="bg-picker-gongfa"  range-key="text" :range="options.gongfa">
+									<view :class="{ active: gongfaObj.wufang !== '10' }" class="uni-input">{{options.gongfa[gongfaIndex.wufang].text}}</view>
+							</picker>
+						</view>
+					</view>
+					<view class="list-cell flex-item-two">
+						<view class="gongfa-list-left">
+							法防:
+						</view>
+						<view class="uni-list-cell-db">
+							<picker @change="changeFafang" :value="gongfaIndex.fafang" class="bg-picker-gongfa"  range-key="text" :range="options.gongfa">
+									<view :class="{ active: gongfaObj.fafang !== '10' }" class="uni-input">{{options.gongfa[gongfaIndex.fafang].text}}</view>
+							</picker>
+						</view>
+					</view>
+					<view class="list-cell flex-item-two">
+						<view class="gongfa-list-left">
+							残页:
+						</view>
+						<view class="uni-list-cell-db">
+							<picker @change="changeCanye" :value="gongfaIndex.canye" class="bg-picker-gongfa"  range-key="text" :range="options.gongfa">
+									<view :class="{ active: gongfaObj.canye !== '10' }" class="uni-input">{{options.gongfa[gongfaIndex.canye].text}}</view>
+							</picker>
+						</view>
+					</view>
+					<view class="list-cell flex-item-two">
+						<view class="gongfa-list-left">
+							绝学:
+						</view>
+						<view class="uni-list-cell-db">
+							<picker @change="changeJuexue" :value="gongfaIndex.juexue" class="bg-picker-gongfa"  range-key="text" :range="options.gongfa">
+									<view :class="{ active: gongfaObj.juexue !== '10' }" class="uni-input">{{options.gongfa[gongfaIndex.juexue].text}}</view>
+							</picker>
+						</view>
+					</view>
+				</view>
+
 		</view>
 
-		<view class="uni-divider">
-			<view class="uni-divider__content">功法设置</view>
-			<view class="uni-divider__line"></view>
-		</view>
-
-		<view class="gongfa-wrap">
-			<view class="list-cell flex-item-two">
-		    <view class="gongfa-list-left">
-		      攻击:
-		    </view>
-		    <view class="uni-list-cell-db">
-		      <picker @change="changeGongji" :value="gongfaIndex.gongji" class="bg-picker-gongfa"  range-key="text" :range="options.gongfa">
-		          <view :class="{ active: gongfaObj.gongji !== '10' }" class="uni-input">{{options.gongfa[gongfaIndex.gongji].text}}</view>
-		      </picker>
-		    </view>
-		  </view>
-			<view class="list-cell flex-item-two">
-		    <view class="gongfa-list-left">
-		      生命:
-		    </view>
-		    <view class="uni-list-cell-db">
-		      <picker @change="changeShengming" :value="gongfaIndex.shengming" class="bg-picker-gongfa"  range-key="text" :range="options.gongfa">
-		          <view :class="{ active: gongfaObj.shengming !== '10' }" class="uni-input">{{options.gongfa[gongfaIndex.shengming].text}}</view>
-		      </picker>
-		    </view>
-		  </view>
-			<view class="list-cell flex-item-two">
-		    <view class="gongfa-list-left">
-		      物防:
-		    </view>
-		    <view class="uni-list-cell-db">
-		      <picker @change="changeWufang" :value="gongfaIndex.wufang" class="bg-picker-gongfa"  range-key="text" :range="options.gongfa">
-		          <view :class="{ active: gongfaObj.wufang !== '10' }" class="uni-input">{{options.gongfa[gongfaIndex.wufang].text}}</view>
-		      </picker>
-		    </view>
-		  </view>
-			<view class="list-cell flex-item-two">
-		    <view class="gongfa-list-left">
-		      法防:
-		    </view>
-		    <view class="uni-list-cell-db">
-		      <picker @change="changeFafang" :value="gongfaIndex.fafang" class="bg-picker-gongfa"  range-key="text" :range="options.gongfa">
-		          <view :class="{ active: gongfaObj.fafang !== '10' }" class="uni-input">{{options.gongfa[gongfaIndex.fafang].text}}</view>
-		      </picker>
-		    </view>
-		  </view>
-			<view class="list-cell flex-item-two">
-		    <view class="gongfa-list-left">
-		      残页:
-		    </view>
-		    <view class="uni-list-cell-db">
-		      <picker @change="changeCanye" :value="gongfaIndex.canye" class="bg-picker-gongfa"  range-key="text" :range="options.gongfa">
-		          <view :class="{ active: gongfaObj.canye !== '10' }" class="uni-input">{{options.gongfa[gongfaIndex.canye].text}}</view>
-		      </picker>
-		    </view>
-		  </view>
-			<view class="list-cell flex-item-two">
-		    <view class="gongfa-list-left">
-		      绝学:
-		    </view>
-		    <view class="uni-list-cell-db">
-		      <picker @change="changeJuexue" :value="gongfaIndex.juexue" class="bg-picker-gongfa"  range-key="text" :range="options.gongfa">
-		          <view :class="{ active: gongfaObj.juexue !== '10' }" class="uni-input">{{options.gongfa[gongfaIndex.juexue].text}}</view>
-		      </picker>
-		    </view>
-		  </view>
-		</view>
+		
 
 		<view class="save-btn">
 			<button type="primary" size="mini" @tap="handleChangeConfigInfo">保存设置</button>
@@ -825,7 +837,9 @@ const configInfoDefault = {
 	auto_xianqiongxingjie: 0, // 自动仙穹星界
 	auto_douhunzhidian: 0, // 自动斗魂之巅
 	is_goumai_qinglianchaoxin: 0, // 仙盟购买青莲朝心神通
-	is_goumai_douhunzhidian: 0 // 自动购买斗魂之巅次数
+	is_goumai_douhunzhidian: 0, // 自动购买斗魂之巅次数
+	is_goumai_qingfengjian: 0, // 荣誉商店购买清风剑碎片
+	is_shengzhanzhen: 0, // 是否自动升级战阵
 }
 
 const gongfaObjDefault = {
@@ -913,6 +927,8 @@ export default {
 			lastServerIndex: 0,
 			allServerindex: 0,
 			serverFromAllServer: 0,
+			currentTab: 0,
+			items: ['开关项','选择项'],
 			utils: {},
 			remoteOptions: {
 				shenshou: []
@@ -2006,6 +2022,10 @@ export default {
 			)
 			// #endif
 		},
+
+		onClickItem(e) {
+      this.currentTab = e.currentIndex
+    },
 
 		radioChange: function(evt) {
 			this.configInfo.lixianbeishu = Number(evt.target.value)

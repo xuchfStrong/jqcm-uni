@@ -97,7 +97,7 @@
             "enable" : true
         },
         "router" : {
-            "base" : "/jqcm/"
+            "base" : ""
         },
         "devServer" : {
             "https" : false
