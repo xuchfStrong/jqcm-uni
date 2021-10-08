@@ -26,6 +26,7 @@ exports.main = async (event, context) => {
 		return res.data
 	} catch(err) {
 		return "have error!!"
+		// return err
 	}
 	
 };
