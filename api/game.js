@@ -137,6 +137,14 @@ export function loginFirstStepFeixianjueGYY(data) {
   )
 }
 
+// 飞仙诀饺子手游游登录
+export function loginFirstStepFeixianjueJiaozishouyou(data) {
+  return httpForm.postGYY(
+    '/util/jiaozishouyouLogin.py',
+    data
+  )
+}
+
 // 登录一步
 export function loginFirstStep(data) {
   return http.post(

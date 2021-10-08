@@ -1359,14 +1359,14 @@ export default {
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 26) { // 飞仙诀(羔羊游)
-        handleGetServerConfigFeixianjueGYY(270, this.loginInfo.userId, 2).then(serverInfo => {
+        handleGetServerConfigFeixianjueGYY(270, 'changwei2', this.loginInfo.userId, 2).then(serverInfo => {
 					this.serverInfo = serverInfo
 					// this.saveLoginInfo()
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 27) { // 江湖传说
-        handleGetServerConfigFeixianjueGYY(6152, this.loginInfo.userId, 20).then(serverInfo => {
+        handleGetServerConfigFeixianjueGYY(6152,'changwei2', this.loginInfo.userId, 20).then(serverInfo => {
 					this.serverInfo = serverInfo
 					// this.saveLoginInfo()
 					this.initSaveData()
@@ -1374,6 +1374,13 @@ export default {
 				})
       } else if (this.userInfo.loginType === 28) { // 修真归来
         handleGetServerConfigWJXL(6147, this.loginInfo.userId, 19).then(serverInfo => {
+					this.serverInfo = serverInfo
+					// this.saveLoginInfo()
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
+      } else if (this.userInfo.loginType === 29) { // 飞仙诀(饺子手游)
+        handleGetServerConfigFeixianjueGYY(2005, 'changwei2', this.loginInfo.userId, 2).then(serverInfo => {
 					this.serverInfo = serverInfo
 					// this.saveLoginInfo()
 					this.initSaveData()

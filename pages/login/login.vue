@@ -73,6 +73,7 @@ import { loginFirstStepJHCS, loginSecondStepJHCS, loginFourStepJHCS } from '@/ap
 import { loginFirstStepXiuzhenguilai, loginSecondStepXiuzhenguilai, loginThirdStepXiuzhenguilai } from '@/api/login'
 import { loginThirdStepJHCS } from '@/api/loginApp'
 import { loginFirstStepFeixianjueGYY } from '@/api/game'
+import { loginFirstStepFeixianjueJiaozishouyou } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -413,7 +414,7 @@ export default {
 						this.handleLoginFirstStepFeixianjueGYY()
 						// #endif
 						// #ifdef H5
-						handleGetServerConfigFeixianjueGYY(270, this.loginInfo.userId, 2).then(serverInfo => {
+						handleGetServerConfigFeixianjueGYY(270,'changwei2', this.loginInfo.userId, 2).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.flag.showServer = true
 							this.saveLoginInfo()
@@ -444,6 +445,8 @@ export default {
 						// #endif
 					} else if ([28].includes(this.userInfo.loginType)) { // 修真归来)
 						this.handleLoginFirstStepXiuzhenguilai()
+					} else if ([29].includes(this.userInfo.loginType)) { // 飞仙诀(饺子手游))
+						this.handleLoginFirstStepFeixianjueJiaozishouyou()
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -488,6 +491,8 @@ export default {
 						this.handleLoginFirstStepJHCS() // 江湖传说
 					} else if (this.userInfo.loginType === 28) {
 						this.handleLoginFirstStepXiuzhenguilai() // 修真归来
+					} else if (this.userInfo.loginType === 29) {
+						this.handleLoginFirstStepFeixianjueJiaozishouyou() // 飞仙诀(饺子手游)
 					} else if (this.userInfo.loginType === 40) {
 						this.handleLoginFirstStepTianyingqiyuan() // 天影奇缘
 					}	else {
@@ -1302,7 +1307,35 @@ export default {
 					this.loginInfo.userId = res.userid
 					this.loginInfo.time = res.time
 					this.loginInfo.token = res.token
-					handleGetServerConfigFeixianjueGYY(270, this.loginInfo.userId,2).then(serverInfo => {
+					handleGetServerConfigFeixianjueGYY(270,'changwei2', this.loginInfo.userId,2).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleLoginThirdStep()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 飞仙诀(饺子手游)登录第一步
+		handleLoginFirstStepFeixianjueJiaozishouyou() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepFeixianjueJiaozishouyou(params).then(res => {
+				if (res.code === 200) {
+					this.loginInfo.userId = res.userid
+					this.loginInfo.time = res.time
+					this.loginInfo.token = res.token
+					handleGetServerConfigFeixianjueGYY(2005, 'changwei2', this.loginInfo.userId,2).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleLoginThirdStep()
 					})

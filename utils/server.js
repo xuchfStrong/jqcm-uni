@@ -241,12 +241,12 @@ export function handleGetServerConfigZuiqiangxiuxian(channelId, userId, game_id)
 }
 
 // 获取飞仙诀(羔羊游)服务器列表
-export function handleGetServerConfigFeixianjueGYY(channelId, userId, game_id) {
+export function handleGetServerConfigFeixianjueGYY(channelId, channel, userId, game_id) {
   return new Promise((reslove, reject) => {
     const param = {
       game_id: game_id,
       channelId: channelId,
-      channel: 'changwei2',
+      channel: channel,
       user_name: userId
     }
     const reslove1 = reslove
