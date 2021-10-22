@@ -400,6 +400,22 @@
 		        <view class="uni-list-cell-db">自动升级战阵</view>
 		        <switch :checked="!!configInfo.is_shengzhanzhen" @change="changeSwitchBoolean('is_shengzhanzhen')"/>
 		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">分解绿色法宝</view>
+				    <switch :checked="!!configInfo.is_fenjie_fabao" @change="changeSwitchBoolean('is_fenjie_fabao')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动升级观星阁</view>
+				    <switch :checked="!!configInfo.is_up_guanxingge" @change="changeSwitchBoolean('is_up_guanxingge')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动购买仙魂洗练石·主</view>
+				    <switch :checked="!!configInfo.is_goumai_xhxls_z" @change="changeSwitchBoolean('is_goumai_xhxls_z')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动购买仙魂经验石·主</view>
+				    <switch :checked="!!configInfo.is_goumai_xhjys_z" @change="changeSwitchBoolean('is_goumai_xhjys_z')"/>
+				</view>
 		</view>
 
 		<view v-show="currentTab === 1" class="uni-list-no-border">
@@ -840,6 +856,10 @@ const configInfoDefault = {
 	is_goumai_douhunzhidian: 0, // 自动购买斗魂之巅次数
 	is_goumai_qingfengjian: 0, // 荣誉商店购买清风剑碎片
 	is_shengzhanzhen: 0, // 是否自动升级战阵
+	is_fenjie_fabao: 0, // 是否分解绿色法宝
+	is_up_guanxingge: 0, // 自动升级观星阁
+	is_goumai_xhxls_z: 0, // 自动购买仙魂洗练石·主
+	is_goumai_xhjys_z: 0, // 自动购买仙魂经验石·主
 }
 
 const gongfaObjDefault = {
