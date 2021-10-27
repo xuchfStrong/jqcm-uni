@@ -1934,7 +1934,7 @@ export default {
 		// 跳转到主页
 		toMain() {
 			uni.reLaunch({
-        url: '../home/home',
+        url: '/pages/home/home',
       })
 		},
 		

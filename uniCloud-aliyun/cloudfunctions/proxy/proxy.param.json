@@ -1,0 +1,14 @@
+// 本文件中的json内容将在云函数【运行】时作为参数传给云函数。
+// 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
+
+{
+	"url": "/ljxz/get_role_info_t.php",
+	"method": "GET",
+	"contentType": "json",
+	"data": {		"userid": 35887505,
+		"server_id": 28
+	},
+	"header": {
+		"access-token": "xxxfff-111-333"
+	}
+}

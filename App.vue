@@ -1,7 +1,19 @@
 <script>
 	import { getUpdate } from '@/api/game'
+	import initApp from '@/common/appInit.js';
 	export default {
+		globalData: {
+			searchText: '',
+			appVersion: {},
+			config: {},
+			$i18n: {},
+			$t: {}
+		},
 		onLaunch: function() {
+			this.globalData.$i18n = this.$i18n
+			this.globalData.$t = str => this.$t(str)
+
+			initApp();
 			// #ifdef APP-PLUS  
 			const that = this
 			plus.runtime.getProperty(plus.runtime.appid, function() {  

@@ -1084,18 +1084,18 @@ export default {
 	methods: {
 		handleLogin() {
 			uni.reLaunch({
-			    url: '../login/login'
+			    url: '/pages/login/login'
 			})
 		},
 		loginSwitch() {
 			uni.navigateTo({
-			    url: '../login/login'
+			    url: '/pages/login/login'
 			})
 		},
 
 		transferTime() {
 			uni.navigateTo({
-			    url: '../transfer/transfer'
+			    url: '/pages/transfer/transfer'
 			})
 		},
 

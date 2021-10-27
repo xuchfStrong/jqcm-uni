@@ -38,12 +38,191 @@
 			}
 		},
 		{
+			"path": "pages/list/list",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/grid/grid",
+			"style": {
+				//#ifndef MP
+				"navigationStyle": "custom"
+				//#endif
+			}
+		}, {
+			"path": "pages/ucenter/login-page/index/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"app-plus": {
+					"animationType": "none",
+					"popGesture": "none"
+				}
+			}
+		}, {
+			"path": "pages/list/search/search",
+			"style": {
+				"navigationBarTitleText":"搜索"
+			}
+		}, {
+			"path": "pages/list/detail",
+			"style": {
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"type": "share"
+						}],
+						"type": "transparent"
+					}
+				},
+				"h5": {
+					"titleNView": {
+						"type": "transparent"
+					}
+				},
+				"navigationBarTitleText": "文章详情"
+			}
+		}, 
+		{
+			"path": "pages/ucenter/userinfo/bind-mobile/bind-mobile",
+			"style": {
+				"navigationBarTitleText": "绑定手机号码"
+			}
+		},
+		{
 			"path": "pages/test/index",
 			"style": {
 				"navigationBarTitleText": "测试"
 			}
+		},
+		{
+			"path": "pages/ucenter/ucenter",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/ucenter/login-page/index/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"app-plus": {
+					"animationType": "none",
+					"popGesture": "none"
+				}
+			}
+		}, {
+			"path": "pages/ucenter/about/about",
+			"style": {
+				"navigationBarTitleText": "关于"
+					// #ifdef APP-PLUS
+					,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"type": "share"
+						}]
+					}
+				}
+				// #endif
+			}
+		}, {
+			"path": "pages/ucenter/settings/settings",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+
+		}, {
+			"path": "pages/ucenter/userinfo/userinfo",
+			"style": {
+				"navigationBarTitleText": "个人资料"
+			}
+		}, {
+			"path": "pages/ucenter/userinfo/cropImage",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/ucenter/login-page/pwd-login/pwd-login",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		}, {
+			"path": "pages/ucenter/login-page/pwd-retrieve/pwd-retrieve",
+			"style": {
+				"navigationBarTitleText": "重置密码"
+			}
+		}, {
+			"path": "pages/ucenter/login-page/phone-code/phone-code",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+
+		}, {
+			"path": "pages/common/webview/webview",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/ucenter/login-page/register/register",
+			"style": {
+				"navigationBarTitleText": "注册",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/ucenter/read-news-log/read-news-log",
+			"style": {
+				"navigationBarTitleText": "阅读记录",
+				"enablePullDownRefresh": true
+			}
+		}, {
+			"path": "pages/ucenter/invite/invite",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/ucenter/settings/deactivate/deactivate",
+			"style": {
+				"navigationBarTitleText": "注销提醒",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "uni_modules/uni-feedback/pages/opendb-feedback/opendb-feedback",
+			"style": {
+				"navigationBarTitleText": "意见反馈",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/ucenter/book/book",
+			"style": {
+				"navigationBarTitleText": "书籍管理",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/ucenter/guestbook/guestbook",
+			"style": {
+				"navigationBarTitleText": "留言板",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+								"text": "切换",
+								"fontSize": "12px"
+							},
+							{
+								"text": "注销",
+								"fontSize": "12px"
+							}
+						]
+					}
+				}
+			}
 		}
-    ],
+  ],
 	"tabBar": {
 		"color": "#7a7e83",
 		"selectedColor": "#007aff",
@@ -67,10 +246,10 @@
 		    "selectedIconPath": "static/img/descriptionHL.png"
 		},
 		{
-		    "pagePath": "pages/update/update",
-		    "text": "更新",
-		    "iconPath": "static/img/upgrade.png",
-		    "selectedIconPath": "static/img/upgradeHL.png"
+			"pagePath": "pages/ucenter/ucenter",
+			"iconPath": "static/tabbar/me.png",
+			"selectedIconPath": "static/tabbar/me_active.png",
+			"text": "我的"
 		}]
 	},
 	"globalStyle": {
