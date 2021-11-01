@@ -50,6 +50,7 @@ export default {
 			"/pages/gonglue/gonglue",
 			"/pages/update/update",
 			"/pages/transfer/transfer",
+			"/pages/login/account"
 		],
 		/*
 		login:配置登陆类型与优先级

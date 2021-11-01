@@ -13,6 +13,13 @@
 			}
 		},
 		{
+			"path": "pages/login/account",
+			"style": {
+				"navigationBarTitleText": "账号管理",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
 			"path": "pages/description/description",
 			"style": {
 				"navigationBarTitleText": "购买说明"
@@ -132,6 +139,21 @@
 			}
 
 		}, {
+			"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
+			"style": {
+				"disableScroll": true,
+				"app-plus": {
+					"backgroundColorTop": "transparent",
+					"background": "transparent",
+					"titleNView": false,
+					"scrollIndicator": false,
+					"popGesture": "none",
+					"animationType": "fade-in",
+					"animationDuration": 200
+
+				}
+			}
+		},{
 			"path": "pages/ucenter/userinfo/userinfo",
 			"style": {
 				"navigationBarTitleText": "个人资料"

@@ -260,7 +260,7 @@ export default async function() {
 			});
 		},
 		success: (e) => {
-			console.log(e);
+			// console.log(e);
 			const {
 				token,
 				tokenExpired
@@ -290,7 +290,7 @@ export default async function() {
 					});
 					break;
 				default:
-					console.log('code的值是：' + e.result.code, '可以在上面添加case，自动处理响应体');
+					// console.log('code的值是：' + e.result.code, '可以在上面添加case，自动处理响应体');
 					break;
 			}
 			
@@ -332,7 +332,7 @@ export default async function() {
 				//获取要前往的页面路径（即url去掉"?"和"?"后的参数）
 				const pages = getCurrentPages();
 				if (!pages.length) {
-					console.log("首页启动调用了");
+					// console.log("首页启动调用了");
 					return e
 				}
 				const fromUrl = pages[pages.length - 1].route;

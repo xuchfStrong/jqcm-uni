@@ -36,7 +36,7 @@ view {
 
 .title {
 	text-align: center;
-	padding-bottom: 5px;
+	padding: 20px 0 5px 0;
 }
 
 .tip {

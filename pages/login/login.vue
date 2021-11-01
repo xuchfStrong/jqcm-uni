@@ -35,6 +35,10 @@
 		<view class="btn-row">
 		    <button type="primary" class="primary" :loading="statusLoading" :disabled="statusLoading" @tap="handleCheckUserStatus">登录</button>
 		</view>
+		<view class="auth-box">
+			<text class="link" @click="saveAccount">保存账号</text>
+			<text class="link" @click="toAccount">账号管理</text>
+		</view>
 
 		<!-- <view style="margin-top:10px; color:#1989fa; text-align: center;">
       <a :href="utils.zhushouUrl">
@@ -42,12 +46,12 @@
       </a>
     </view> -->
 
-		<!-- <view>
+		<view>
 			<view class="content">
-				<view class="sub-title">登录说明:</view>
+				<view class="sub-title">账号管理说明:</view>
 				<view v-for="(item,index) in loginDescription.description" :key="index" class="item-wrap">{{ item }}</view>
 			</view>
-		</view> -->
+		</view>
 	</view>
 </template>
 
@@ -155,8 +159,8 @@ export default {
       }		
 		}
 	},
-	onLoad() {
-		this.handleGetRemoteOptions()
+	onLoad(option) {
+		this.handleGetRemoteOptions(option)
 		this.handleGetUtils()
 	},
 	methods: {
@@ -166,7 +170,7 @@ export default {
     },
 
 		// 获取远程选项
-		handleGetRemoteOptions() {
+		handleGetRemoteOptions(option) {
 			getRemoteOptions()
 			.then(res => {
 				this.remoteOptions = res
@@ -175,7 +179,7 @@ export default {
 				} else {
 					this.platformList = res.platform
 				}
-				this.loadLoginInfo()
+				this.loadLoginInfo(option)
 			})
 			.catch(err => {
 				console.log(err)
@@ -1886,7 +1890,7 @@ export default {
 		},
 		
 		// 读取记住的登录信息
-    loadLoginInfo() {
+    loadLoginInfo(option) {
       const gameLoginInfo = save.getGameLoginInfo()
       if (gameLoginInfo) {
         this.userInfo.platform = gameLoginInfo.platform
@@ -1903,7 +1907,7 @@ export default {
 				this.platformName = gameLoginInfo.platformName
 				this.serverInfo = gameLoginInfo.serverInfo
 				if (Array.isArray(gameLoginInfo.autocompleteStringList)) this.autocompleteStringList = gameLoginInfo.autocompleteStringList
-				this.initSaveData()
+				this.initSaveData(option)
         // this.serverInfo = JSON.parse(gameLoginInfo.serverInfo)
         // this.handleGuajiStatus()
       }
@@ -1937,6 +1941,61 @@ export default {
         url: '/pages/home/home',
       })
 		},
+
+		// 跳转到账号管理
+		toAccount() {
+			uni.navigateTo({
+        url: '/pages/login/account',
+      })
+		},
+
+		saveAccount() {
+			if (!this.userInfo.usernamePlatForm || !this.userInfo.passwordPlatForm) {
+				uni.showToast({
+					title: '请输入用户名和密码后保存',
+					duration: 2000,
+					icon: 'error'
+				})
+		    return
+		  }
+			uni.showLoading({
+        mask: true
+      })
+			const db = uniCloud.database();
+			const table = db.collection('game-account');
+			table.add({
+				game_name: this.platformName,
+				game_id: this.platformIndex,
+				account: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}).then(res => {
+				uni.showToast({
+          icon: 'success',
+          title: '保存成功'
+        })
+			}).catch((err) => {
+				let msg = null
+				if (err.message.indexOf("冲突") != -1) {
+					msg = '该游戏和账号已经存在'
+				}
+        uni.showModal({
+          content: msg || '保存失败',
+          showCancel: false
+        })
+      }).finally(() => {
+        uni.hideLoading()
+      })
+		},
+
+		getChoosedAccount(option) {
+			this.userInfo.usernamePlatForm = option.u
+			this.userInfo.passwordPlatForm = option.p
+			this.platformIndex = parseInt(option.id)
+			if (this.platformIndex !== -1) {
+				this.platformName = this.platformList[this.platformIndex].text
+				this.userInfo.loginType = getValueByIndex(this.platformList, this.platformIndex)
+			}
+		},
 		
 		// 选择平台
 		changePlatform: function(e) {
@@ -1950,10 +2009,14 @@ export default {
 		},
 
 		// 加载后将存储的数据显示出来
-		initSaveData() {
-			this.platformIndex = getIndexByValue(this.platformList, this.userInfo.loginType)
-			if (this.platformIndex !== -1) {
-				this.platformName = this.platformList[this.platformIndex].text
+		initSaveData(option) {
+			if (option.u) {
+				this.getChoosedAccount(option)
+			} else {
+				this.platformIndex = getIndexByValue(this.platformList, this.userInfo.loginType)
+				if (this.platformIndex !== -1) {
+					this.platformName = this.platformList[this.platformIndex].text
+				}
 			}
 		}
 	}
@@ -2018,5 +2081,15 @@ export default {
 	min-height: 50upx;
 	line-height: 50upx;
 	z-index: 1;
+}
+.auth-box {
+	padding: 0 12px 10px 12px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.auth-box .link {
+	font-size: 26rpx;
+	color: #04498c;
 }
 </style>
