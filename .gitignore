@@ -2,6 +2,7 @@
 node_modules/
 unpackage/
 components/uni*
+uni_modules/uni*
 dist/
 npm-debug.log*
 yarn-debug.log*
