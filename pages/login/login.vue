@@ -74,6 +74,7 @@ import { loginFirstStepXiuzhenguilai, loginSecondStepXiuzhenguilai, loginThirdSt
 import { loginThirdStepJHCS } from '@/api/loginApp'
 import { loginFirstStepFeixianjueGYY } from '@/api/game'
 import { loginFirstStepFeixianjueJiaozishouyou } from '@/api/game'
+import { loginFirstStepBinghuyouxi } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -426,7 +427,7 @@ export default {
 							icon: 'none'
 						})
 						// #endif
-					} else if ([27].includes(this.userInfo.loginType)) { // 飞仙诀(羔羊游)
+					} else if ([27].includes(this.userInfo.loginType)) { // 江湖传说
 						// #ifdef APP-PLUS
 						this.handleLoginFirstStepJHCS()
 						// #endif
@@ -446,7 +447,19 @@ export default {
 					} else if ([28].includes(this.userInfo.loginType)) { // 修真归来)
 						this.handleLoginFirstStepXiuzhenguilai()
 					} else if ([29].includes(this.userInfo.loginType)) { // 飞仙诀(饺子手游))
-						this.handleLoginFirstStepFeixianjueJiaozishouyou()
+						handleGetServerConfigFeixianjueGYY(2005, 'changwei2', this.loginInfo.userId,2).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+					} else if ([30].includes(this.userInfo.loginType)) { // 冰湖游戏)
+						this.handleLoginFirstStepBinghuyouxi()
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -494,7 +507,9 @@ export default {
 					} else if (this.userInfo.loginType === 29) {
 						this.handleLoginFirstStepFeixianjueJiaozishouyou() // 飞仙诀(饺子手游)
 					} else if (this.userInfo.loginType === 40) {
-						this.handleLoginFirstStepTianyingqiyuan() // 天影奇缘
+						this.handleLoginFirstStepTianyingqiyuan() // 影奇缘
+					} else if (this.userInfo.loginType === 30) {
+						this.handleLoginFirstStepBinghuyouxi() // 冰湖游戏天
 					}	else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1338,6 +1353,74 @@ export default {
 					handleGetServerConfigFeixianjueGYY(2005, 'changwei2', this.loginInfo.userId,2).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleLoginThirdStep()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 冰湖游戏登录第一步
+		handleLoginFirstStepBinghuyouxi() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepBinghuyouxi(params).then(res => {
+				if (res.code === 200) {
+					this.loginInfo.userId = res.userid
+					this.loginInfo.token = res.token
+					this.handleLoginSecondStepBinghuyouxi({userid: res.userid, token: res.token})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 冰湖游戏登录第二步
+		handleLoginSecondStepBinghuyouxi(urlParams) {
+			const appId = 6
+			const channelId = 6196
+			const version = '2.0.2'
+			const timeStamp = Date.parse(new Date()) / 1000
+			const data = {
+				uid: urlParams.userid,
+				token: urlParams.token,
+			}
+			const dataStr = JSON.stringify(data)
+			const arr = [appId, channelId, dataStr, timeStamp, version, 'cG3dKvBJ10mTGrHf5IOzQLH1dn']
+			const singStr = arr.join('#')
+			const sign = CryptoJS.MD5(singStr).toString()
+			const params = {
+				deviceId: '',
+				data: data,
+				appId: 6,
+				channelId: 6196,
+				version: version,
+				ts: timeStamp,
+				sign: sign
+			}
+			loginThirdStepJHCS(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					// handleGetServerConfigWJXL(6152, this.loginInfo.userId, 20).then(serverInfo => {
+					handleGetServerConfigTapTap(6196, this.loginInfo.userId).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
 					})
 				} else {
 					this.flag.showServer = false

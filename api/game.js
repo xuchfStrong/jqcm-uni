@@ -145,6 +145,14 @@ export function loginFirstStepFeixianjueJiaozishouyou(data) {
   )
 }
 
+// 冰狐游戏登录
+export function loginFirstStepBinghuyouxi(data) {
+  return httpForm.postGYY(
+    '/util/bhyxLogin.py',
+    data
+  )
+}
+
 // 登录一步
 export function loginFirstStep(data) {
   return http.post(
