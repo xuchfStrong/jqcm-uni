@@ -195,3 +195,11 @@
 
 ## 2021-11-15 V1.8.2
 1. 增加剑气-冰狐狸游戏平台
+
+## 2021-11-27 V1.8.3
+1. 增加自动购买琉璃甲·奇珍碎片，字段名:is_goumai_lljia_qzsp
+2. 增加自动购买紫云佩·奇珍碎片，字段名:is_goumai_zyp_qzsp
+3. 增加自动购买紫云衣·奇珍碎片，字段名:is_goumai_zyy_qzsp
+4. 增加自动购买奇珍经验石，字段名:is_goumai_qzjys
+5. 增加自动购买琉璃剑·奇珍碎片，字段名:is_goumai_lljian_qzsp
+6. 增加自动购买琉璃戒·奇珍碎片，字段名:is_goumai_lljie_qzsp

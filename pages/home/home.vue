@@ -416,6 +416,31 @@
 				    <view class="uni-list-cell-db">自动购买仙魂经验石·主</view>
 				    <switch :checked="!!configInfo.is_goumai_xhjys_z" @change="changeSwitchBoolean('is_goumai_xhjys_z')"/>
 				</view>
+
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动购买琉璃甲·奇珍碎片</view>
+				    <switch :checked="!!configInfo.is_goumai_lljia_qzsp" @change="changeSwitchBoolean('is_goumai_lljia_qzsp')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动购买紫云佩·奇珍碎片</view>
+				    <switch :checked="!!configInfo.is_goumai_zyp_qzsp" @change="changeSwitchBoolean('is_goumai_zyp_qzsp')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动购买紫云衣·奇珍碎片</view>
+				    <switch :checked="!!configInfo.is_goumai_zyy_qzsp" @change="changeSwitchBoolean('is_goumai_zyy_qzsp')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动购买奇珍经验石</view>
+				    <switch :checked="!!configInfo.is_goumai_qzjys" @change="changeSwitchBoolean('is_goumai_qzjys')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动购买琉璃剑·奇珍碎片</view>
+				    <switch :checked="!!configInfo.is_goumai_lljian_qzsp" @change="changeSwitchBoolean('is_goumai_lljian_qzsp')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动购买琉璃戒·奇珍碎片</view>
+				    <switch :checked="!!configInfo.is_goumai_lljie_qzsp" @change="changeSwitchBoolean('is_goumai_lljie_qzsp')"/>
+				</view>
 		</view>
 
 		<view v-show="currentTab === 1" class="uni-list-no-border">
@@ -860,6 +885,12 @@ const configInfoDefault = {
 	is_up_guanxingge: 0, // 自动升级观星阁
 	is_goumai_xhxls_z: 0, // 自动购买仙魂洗练石·主
 	is_goumai_xhjys_z: 0, // 自动购买仙魂经验石·主
+	is_goumai_lljia_qzsp: 0, // 自动购买琉璃甲·奇珍碎片
+	is_goumai_zyp_qzsp: 0, // 自动购买紫云佩·奇珍碎片
+	is_goumai_zyy_qzsp: 0, // 自动购买紫云衣·奇珍碎片
+	is_goumai_qzjys: 0, // 自动购买奇珍经验石
+	is_goumai_lljian_qzsp: 0, // 自动购买琉璃剑·奇珍碎片
+	is_goumai_lljie_qzsp: 0 // 自动购买琉璃戒·奇珍碎片
 }
 
 const gongfaObjDefault = {
