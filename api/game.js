@@ -164,7 +164,7 @@ export function loginFirstStep(data) {
 // 登录二步获取用户token
 export function loginSecondStep(params) {
   return http.get(
-    'http://ufo.66hjh.com/user/v1/token',
+    'http://gw.begindcc.com/ufo/api/6/user/token',
     {params}
   )
 }

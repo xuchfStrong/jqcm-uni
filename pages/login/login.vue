@@ -1671,17 +1671,18 @@ export default {
 				data: str1
 			}
 			try {
-				// #ifdef APP-PLUS
+				// // #ifdef APP-PLUS
+				// const res = await loginSecondStep(param)
+				// // #endif
+				// // #ifdef H5
+				// const uriParams = this.parseParams(param)
+				// const getTokenUrl = `http://ufo.66hjh.com/user/v1/token?${uriParams}`
+				// const paramProxy = {
+				// 	url: getTokenUrl
+				// }
+				// const res = await loginSecondStepByProxy(paramProxy)
+				// // #endif
 				const res = await loginSecondStep(param)
-				// #endif
-				// #ifdef H5
-				const uriParams = this.parseParams(param)
-				const getTokenUrl = `http://ufo.66hjh.com/user/v1/token?${uriParams}`
-				const paramProxy = {
-					url: getTokenUrl
-				}
-				const res = await loginSecondStepByProxy(paramProxy)
-				// #endif
 				if (res.code === 1) {
 					if (!res.data.userId) {
 						uni.showToast({
