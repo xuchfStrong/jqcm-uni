@@ -1,4 +1,5 @@
-import { http, httpForm } from '@/utils/request.js'
+// import { http, httpForm } from '@/utils/request.js'
+import {requestProxy, http, httpForm} from './request.js'
 
 // 登录一步,在app上不需要代理
 export function loginFirstStep(data) {

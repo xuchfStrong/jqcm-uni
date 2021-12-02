@@ -1752,7 +1752,7 @@ export default {
 					}
 				} else {
 					uni.showToast({
-						title: res.msg,
+						title: '获取token失败',
 						duration: 2000,
 						icon: 'none'
 					})
