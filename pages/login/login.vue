@@ -59,11 +59,12 @@ import save from '@/utils/save'
 import loginDescription from './loginDescription.json'
 // #ifdef H5
 import { loginFirstStepShendao } from '@/api/login'
-import { loginFirstStep, loginSecondStep, loginSecondStepByProxy, loginFirstStepWJXL2, loginFirstStepDYDJB, loginSecondStepDYDJB } from '@/api/game'
+import { loginFirstStep, loginSecondStepByProxy, loginFirstStepWJXL2, loginFirstStepDYDJB, loginSecondStepDYDJB } from '@/api/game'
 // #endif
 // #ifdef APP-PLUS
-import { loginFirstStep, loginSecondStep, loginFirstStepWJXL2, loginFirstStepShendao, loginFirstStepDYDJB, loginSecondStepDYDJB } from '@/api/loginApp'
+import { loginFirstStep, loginFirstStepWJXL2, loginFirstStepShendao, loginFirstStepDYDJB, loginSecondStepDYDJB } from '@/api/loginApp'
 // #endif
+import { loginSecondStep } from '@/api/login'
 import { getUtils,getIntUserid,getStrUserid } from '@/api/game'
 import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThirdStepShendao, loginThirdStepDYDJB, loginFirstStepXianfanzhuan, loginThirdStepXianfanzhuan, loginFirstStepRenzhafanpai, loginSedondStepRenzhafanpai } from '@/api/login'
 import { loginFirstStepTapTap, loginSecondStepTapTap, loginThirdStepTapTap } from '@/api/login'
