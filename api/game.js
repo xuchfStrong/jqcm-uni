@@ -145,6 +145,14 @@ export function loginFirstStepFeixianjueJiaozishouyou(data) {
   )
 }
 
+// 饺子手游剑气除魔H5登录
+export function loginFirstStepJiaozishouyouH5(data) {
+  return httpForm.postGYY(
+    '/util/jiaozishouyouH5Login.py',
+    data
+  )
+}
+
 // 冰狐游戏登录
 export function loginFirstStepBinghuyouxi(data) {
   return httpForm.postGYY(

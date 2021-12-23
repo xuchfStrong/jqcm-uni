@@ -1437,7 +1437,21 @@ export default {
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
-      } else { // 其他平台
+      } else if (this.userInfo.loginType === 30) { // 冰湖游戏
+        handleGetServerConfigTapTap(6196, this.loginInfo.userId).then(serverInfo => {
+					this.serverInfo = serverInfo
+					// this.saveLoginInfo()
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
+      } else if (this.userInfo.loginType === 31) { // (饺子手游)剑气除魔H5
+        handleGetServerConfigTapTap(6201, this.loginInfo.userId).then(serverInfo => {
+					this.serverInfo = serverInfo
+					// this.saveLoginInfo()
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
+      }  else { // 其他平台
         handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					// this.saveLoginInfo()

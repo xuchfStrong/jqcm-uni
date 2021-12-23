@@ -74,7 +74,7 @@ import { loginFirstStepJHCS, loginSecondStepJHCS, loginFourStepJHCS } from '@/ap
 import { loginFirstStepXiuzhenguilai, loginSecondStepXiuzhenguilai, loginThirdStepXiuzhenguilai } from '@/api/login'
 import { loginThirdStepJHCS } from '@/api/loginApp'
 import { loginFirstStepFeixianjueGYY } from '@/api/game'
-import { loginFirstStepFeixianjueJiaozishouyou } from '@/api/game'
+import { loginFirstStepFeixianjueJiaozishouyou, loginFirstStepJiaozishouyouH5 } from '@/api/game'
 import { loginFirstStepBinghuyouxi } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
@@ -461,6 +461,8 @@ export default {
 						})
 					} else if ([30].includes(this.userInfo.loginType)) { // 冰湖游戏)
 						this.handleLoginFirstStepBinghuyouxi()
+					} else if ([31].includes(this.userInfo.loginType)) { // 饺子手游剑气除魔H5)
+						this.handleLoginFirstStepJiaozishouyouH5()
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -511,7 +513,9 @@ export default {
 						this.handleLoginFirstStepTianyingqiyuan() // 影奇缘
 					} else if (this.userInfo.loginType === 30) {
 						this.handleLoginFirstStepBinghuyouxi() // 冰湖游戏天
-					}	else {
+					}	else if (this.userInfo.loginType === 31) {
+						this.handleLoginFirstStepJiaozishouyouH5() // 饺子手游剑气除魔H5
+					}else {
 						uni.showToast({
 							title: '登录失败。',
 							duration: 2000,
@@ -1354,6 +1358,33 @@ export default {
 					handleGetServerConfigFeixianjueGYY(2005, 'changwei2', this.loginInfo.userId,2).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleLoginThirdStep()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// (饺子手游)剑气除魔H5登录第一步
+		handleLoginFirstStepJiaozishouyouH5() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepJiaozishouyouH5(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					handleGetServerConfigTapTap(6201, this.loginInfo.userId).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
 					})
 				} else {
 					this.flag.showServer = false
