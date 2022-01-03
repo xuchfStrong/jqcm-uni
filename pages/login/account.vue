@@ -247,6 +247,7 @@
   }
 	.item .handle {
     padding-left: 20upx;
+		padding-right: 20upx;
 		flex-direction: row;
 		align-items: center;
 	}

@@ -50,7 +50,7 @@ export default {
 			"/pages/gonglue/gonglue",
 			"/pages/update/update",
 			"/pages/transfer/transfer",
-			"/pages/login/account"
+			"/uni_modules/uni-upgrade-center-app/pages/upgrade-popup"
 		],
 		/*
 		login:配置登陆类型与优先级

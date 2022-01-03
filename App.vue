@@ -1,6 +1,9 @@
 <script>
 	import { getUpdate } from '@/api/game'
 	import initApp from '@/common/appInit.js';
+	import checkUpdate from '@/uni_modules/uni-upgrade-center-app/utils/check-update';
+	import callCheckVersion from '@/uni_modules/uni-upgrade-center-app/utils/call-check-version';
+
 	export default {
 		globalData: {
 			searchText: '',
@@ -15,7 +18,9 @@
 
 			initApp();
 			// #ifdef APP-PLUS  
+			this.checkVersion()
 			const that = this
+			/*
 			plus.runtime.getProperty(plus.runtime.appid, function() {  
 					const jqcmSaleChannel = plus.runtime.channel
 					getUpdate().then(data => {
@@ -96,6 +101,7 @@
 						}
 					})
 			});  
+			*/
 			// #endif
 		},
 		onShow: function() {
@@ -113,7 +119,14 @@
 				uni.showToast({
 					title:"更新中"
 				})
-			}
+			},
+			async checkVersion() {
+				let res = await callCheckVersion()
+				console.log(res);
+				if (res.result.code > 0) {
+					checkUpdate()
+				}
+			},
 		}
 	}
 </script>
