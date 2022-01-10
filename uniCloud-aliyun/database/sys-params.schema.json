@@ -1,0 +1,57 @@
+{
+	"bsonType": "object",
+	"permission": {
+		"create": false,
+		"delete": false,
+		"read": false,
+		"update": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"text": {
+			"bsonType": "string",
+			"componentForEdit": {
+				"name": "uni-easyinput"
+			},
+			"description": "参数名称",
+			"label": "参数名称"
+		},
+		"key": {
+			"bsonType": "string",
+			"componentForEdit": {
+				"name": "uni-easyinput"
+			},
+			"description": "参数编码",
+			"label": "参数编码"
+		},
+		"value": {
+			"bsonType": "string",
+			"componentForEdit": {
+				"name": "uni-easyinput"
+			},
+			"description": "参数值",
+			"label": "参数值"
+		},
+		"create_date": {
+			"bsonType": "timestamp",
+			"componentForEdit": {
+				"name": "uni-dateformat"
+			},
+			"forceDefaultValue": {
+				"$env": "now"
+			},
+			"label": "创建时间"
+		},
+		"description": {
+			"bsonType": "string",
+			"componentForEdit": {
+				"name": "textarea"
+			},
+			"description": "说明",
+			"label": "说明"
+		}
+	},
+	"required": ["text", "key", "value"]
+}

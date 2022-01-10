@@ -1,0 +1,72 @@
+{
+	"bsonType": "object",
+	"permission": {
+		"create": false,
+		"delete": false,
+		"read": false,
+		"update": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"name": {
+			"bsonType": "string",
+			"componentForEdit": {
+				"name": "uni-easyinput",
+				"props": {
+					"disabled": false
+				}
+			},
+			"description": "字典名称",
+			"label": "名称"
+		},
+		"key": {
+			"bsonType": "string",
+			"componentForEdit": {
+				"name": "uni-easyinput",
+				"props": {
+					"disabled": false
+				}
+			},
+			"description": "字典key",
+			"label": "名称"
+		},
+		"game": {
+			"bsonType": "string",
+			"componentForEdit": {
+				"name": "uni-easyinput",
+				"props": {
+					"disabled": false
+				}
+			},
+			"description": "游戏",
+			"label": "游戏"
+		},
+		"create_date": {
+			"bsonType": "timestamp",
+			"componentForEdit": {
+				"name": "uni-dateformat"
+			},
+			"forceDefaultValue": {
+				"$env": "now"
+			},
+			"label": "创建时间"
+		},
+		"description": {
+			"bsonType": "string",
+			"componentForEdit": {
+				"name": "textarea"
+			},
+			"componentForShow": {
+				"name": "textarea",
+				"props": {
+					"disabled": true
+				}
+			},
+			"description": "字典描述",
+			"label": "字典描述"
+		}
+	},
+	"required": ["name", "key", "description"]
+}

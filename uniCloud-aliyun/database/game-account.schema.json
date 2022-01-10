@@ -1,0 +1,52 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": ["game_name", "game_id", "account", "password"],
+	"permission": {
+		"read": "auth.uid == doc.user_id",
+		"create": "auth.uid != null",
+		"update": "auth.uid == doc.user_id",
+		"delete": "auth.uid == doc.user_id"
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成",
+			"permission": {
+				"write": false
+			}
+		},
+		"user_id": {
+			"forceDefaultValue": {
+				"$env": "uid"
+			},
+			"foreignKey": "uni-id-users._id",
+			"permission": {
+				"write": false
+			}
+		},
+		"game_name": {
+			"bsonType": "string",
+			"permission": {
+				"write": true
+			}
+		},
+		"game_id": {
+			"bsonType": "string",
+			"permission": {
+				"write": true
+			}
+		},
+		"account": {
+			"bsonType": "string",
+			"permission": {
+				"write": true
+			}
+		},
+		"password": {
+			"bsonType": "string",
+			"permission": {
+				"write": true
+			}
+		}
+	}
+}

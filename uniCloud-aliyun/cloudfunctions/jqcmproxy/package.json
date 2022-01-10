@@ -1,0 +1,9 @@
+{
+    "cloudfunction-config": {
+        "memorySize": 512,
+        "timeout": 5,
+        "triggers": [],
+        "path": "",
+        "concurrency": 100
+    }
+}
