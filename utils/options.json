@@ -253,5 +253,10 @@
     {"value":9, "text":"火焰斗帝"},
     {"value":10, "text":"火焰灵尊"},
     {"value":11, "text":"火焰天尊"}
+  ],
+  "llsl_mode": [
+    {"value":0, "text":"关闭灵路试炼"},
+    {"value":1, "text":"简单"},
+    {"value":2, "text":"困难"}
   ]
 }

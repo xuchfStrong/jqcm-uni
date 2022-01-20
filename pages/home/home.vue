@@ -416,30 +416,22 @@
 				    <view class="uni-list-cell-db">自动购买仙魂经验石·主</view>
 				    <switch :checked="!!configInfo.is_goumai_xhjys_z" @change="changeSwitchBoolean('is_goumai_xhjys_z')"/>
 				</view>
-
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买琉璃甲·奇珍碎片</view>
-				    <switch :checked="!!configInfo.is_goumai_lljia_qzsp" @change="changeSwitchBoolean('is_goumai_lljia_qzsp')"/>
+				<!-- 最强修仙编辑器独有 -->
+				<view v-if="userInfo.loginType === 24 " class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动购买火凤凰魂骨</view>
+				    <switch :checked="!!configInfo.is_buy_hfhhg" @change="changeSwitchBoolean('is_buy_hfhhg')"/>
 				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买紫云佩·奇珍碎片</view>
-				    <switch :checked="!!configInfo.is_goumai_zyp_qzsp" @change="changeSwitchBoolean('is_goumai_zyp_qzsp')"/>
+				<view v-if="userInfo.loginType === 24 " class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动购买火凤凰碎片</view>
+				    <switch :checked="!!configInfo.is_buy_hfhsp" @change="changeSwitchBoolean('is_buy_hfhsp')"/>
 				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买紫云衣·奇珍碎片</view>
-				    <switch :checked="!!configInfo.is_goumai_zyy_qzsp" @change="changeSwitchBoolean('is_goumai_zyy_qzsp')"/>
+				<view v-if="userInfo.loginType === 24 " class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动购买九心海棠魂骨</view>
+				    <switch :checked="!!configInfo.is_buy_jxhthg" @change="changeSwitchBoolean('is_buy_jxhthg')"/>
 				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买奇珍经验石</view>
-				    <switch :checked="!!configInfo.is_goumai_qzjys" @change="changeSwitchBoolean('is_goumai_qzjys')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买琉璃剑·奇珍碎片</view>
-				    <switch :checked="!!configInfo.is_goumai_lljian_qzsp" @change="changeSwitchBoolean('is_goumai_lljian_qzsp')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买琉璃戒·奇珍碎片</view>
-				    <switch :checked="!!configInfo.is_goumai_lljie_qzsp" @change="changeSwitchBoolean('is_goumai_lljie_qzsp')"/>
+				<view v-if="userInfo.loginType === 24 " class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动购买九心海棠碎片</view>
+				    <switch :checked="!!configInfo.is_buy_jxhtsp" @change="changeSwitchBoolean('is_buy_jxhtsp')"/>
 				</view>
 		</view>
 
@@ -447,280 +439,294 @@
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerLilian" :value="configInfo.lilianfuben" class="background-picker" range-key="text" :range="options.lilian">
+									<picker @change="changePickerConfig($event, 'lilian')" :value="configInfo.lilianfuben" class="background-picker" range-key="text" :range="options.lilian">
 											<view class="uni-input">{{options.lilian[configInfo.lilianfuben].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">自动历练</view>
-		        <switch :checked="!!configInfo.lilianfuben" @change="changeSwitchLilian"/>
+		        <switch :checked="!!configInfo.lilianfuben" @change="changePickerSwitch($event,'lilianfuben')"/>
 					</view>
 		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerXMJS" :value="configInfo.xianmengjianshe" class="background-picker" range-key="text" :range="options.xianmengjianshe">
+									<picker @change="changePickerConfig($event, 'xianmengjianshe')" :value="configInfo.xianmengjianshe" class="background-picker" range-key="text" :range="options.xianmengjianshe">
 											<view class="uni-input">{{options.xianmengjianshe[configInfo.xianmengjianshe].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">自动仙盟建设</view>
-		        <switch :checked="!!configInfo.xianmengjianshe" @change="changeSwitchXMJS"/>
+		        <switch :checked="!!configInfo.xianmengjianshe" @change="changePickerSwitch($event,'xianmengjianshe')"/>
 					</view>
 		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerBZKW" :value="configInfo.bazhukongwei" class="background-picker" range-key="text" :range="options.bazhukongwei">
+									<picker @change="changePickerConfig($event, 'bazhukongwei')" :value="configInfo.bazhukongwei" class="background-picker" range-key="text" :range="options.bazhukongwei">
 											<view class="uni-input">{{options.bazhukongwei[configInfo.bazhukongwei].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">霸主抢空位</view>
-		        <switch :checked="!!configInfo.bazhukongwei" @change="changeSwitchBZKW"/>
+		        <switch :checked="!!configInfo.bazhukongwei" @change="changePickerSwitch($event,'bazhukongwei')"/>
 					</view>
 		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerYJKC" :value="configInfo.yijikaicaileixing" class="background-picker" range-key="text" :range="options.yijikaicaileixing">
+									<picker @change="changePickerConfig($event, 'yijikaicaileixing')" :value="configInfo.yijikaicaileixing" class="background-picker" range-key="text" :range="options.yijikaicaileixing">
 											<view class="uni-input">{{options.yijikaicaileixing[configInfo.yijikaicaileixing].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">自动开采遗迹</view>
-		        <switch :checked="!!configInfo.yijikaicaileixing" @change="changeSwitchYJKC"/>
+		        <switch :checked="!!configInfo.yijikaicaileixing" @change="changePickerSwitch($event,'yijikaicaileixing')"/>
 					</view>
 		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerYJQD" :value="configInfo.yijigongjileixing" class="background-picker" range-key="text" :range="options.yijigongjileixing">
+									<picker @change="changePickerConfig($event, 'yijigongjileixing')" :value="configInfo.yijigongjileixing" class="background-picker" range-key="text" :range="options.yijigongjileixing">
 											<view class="uni-input">{{options.yijigongjileixing[configInfo.yijigongjileixing].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">自动抢夺遗迹</view>
-		        <switch :checked="!!configInfo.yijigongjileixing" @change="changeSwitchYJQD"/>
+		        <switch :checked="!!configInfo.yijigongjileixing" @change="changePickerSwitch($event,'yijigongjileixing')"/>
 					</view>
 		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerMoyu" :value="configInfo.moyuleixing" class="background-picker" range-key="text" :range="options.moyuleixing">
+									<picker @change="changePickerConfig($event, 'moyuleixing')" :value="configInfo.moyuleixing" class="background-picker" range-key="text" :range="options.moyuleixing">
 											<view class="uni-input">{{options.moyuleixing[configInfo.moyuleixing].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">自动打魔域</view>
-		        <switch :checked="!!configInfo.moyuleixing" @change="changeSwitchMoyu"/>
+		        <switch :checked="!!configInfo.moyuleixing" @change="changePickerSwitch($event,'moyuleixing')"/>
 					</view>
 		    </view>
 
 				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerBOSS1" :value="configInfo.boss_id1" class="background-picker" range-key="text" :range="options.boss_id1">
+									<picker @change="changePickerConfig($event, 'boss_id1')" :value="configInfo.boss_id1" class="background-picker" range-key="text" :range="options.boss_id1">
 											<view class="uni-input">{{options.boss_id1[configInfo.boss_id1].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">魔族入侵1</view>
-		        <switch :checked="!!configInfo.boss_id1" @change="changeSwitchBOSS1"/>
+		        <switch :checked="!!configInfo.boss_id1" @change="changePickerSwitch($event,'boss_id1')"/>
 					</view>
 		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerBOSS2" :value="configInfo.boss_id2" class="background-picker" range-key="text" :range="options.boss_id2">
+									<picker @change="changePickerConfig($event, 'boss_id2')" :value="configInfo.boss_id2" class="background-picker" range-key="text" :range="options.boss_id2">
 											<view class="uni-input">{{options.boss_id2[configInfo.boss_id2].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">魔族入侵2</view>
-		        <switch :checked="!!configInfo.boss_id2" @change="changeSwitchBOSS2"/>
+		        <switch :checked="!!configInfo.boss_id2" @change="changePickerSwitch($event,'boss_id2')"/>
 					</view>
 		    </view> -->
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerLHSS1" :value="configInfo.shenshou_id1" class="background-picker" range-key="text" :range="remoteOptions.shenshou">
+									<picker @change="changePickerConfig($event, 'shenshou_id1')" :value="configInfo.shenshou_id1" class="background-picker" range-key="text" :range="remoteOptions.shenshou">
 											<view class="uni-input">{{remoteOptions.shenshou.length > 0? remoteOptions.shenshou[configInfo.shenshou_id1].text : ''}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">炼化神兽1</view>
-		        <switch :checked="!!configInfo.shenshou_id1" @change="changeSwitchLHSS1"/>
+		        <switch :checked="!!configInfo.shenshou_id1" @change="changePickerSwitch($event,'shenshou_id1')"/>
 					</view>
 		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerLHSS2" :value="configInfo.shenshou_id2" class="background-picker" range-key="text" :range="remoteOptions.shenshou">
+									<picker @change="changePickerConfig($event, 'shenshou_id2')" :value="configInfo.shenshou_id2" class="background-picker" range-key="text" :range="remoteOptions.shenshou">
 											<view class="uni-input">{{remoteOptions.shenshou.length > 0? remoteOptions.shenshou[configInfo.shenshou_id2].text : ''}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">炼化神兽2</view>
-		        <switch :checked="!!configInfo.shenshou_id2" @change="changeSwitchLHSS2"/>
+		        <switch :checked="!!configInfo.shenshou_id2" @change="changePickerSwitch($event,'shenshou_id2')"/>
 					</view>
 		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerLHSS3" :value="configInfo.shenshou_id3" class="background-picker" range-key="text" :range="remoteOptions.shenshou">
+									<picker @change="changePickerConfig($event, 'shenshou_id3')" :value="configInfo.shenshou_id3" class="background-picker" range-key="text" :range="remoteOptions.shenshou">
 											<view class="uni-input">{{remoteOptions.shenshou.length > 0? remoteOptions.shenshou[configInfo.shenshou_id3].text : ''}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">炼化神兽3</view>
-		        <switch :checked="!!configInfo.shenshou_id3" @change="changeSwitchLHSS3"/>
+		        <switch :checked="!!configInfo.shenshou_id3" @change="changePickerSwitch($event,'shenshou_id3')"/>
 					</view>
 		    </view>
 
 				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerLHSS4" :value="configInfo.shenshou_id4" class="background-picker" range-key="text" :range="remoteOptions.shenshou">
+									<picker @change="changePickerConfig($event, 'shenshou_id4')" :value="configInfo.shenshou_id4" class="background-picker" range-key="text" :range="remoteOptions.shenshou">
 											<view class="uni-input">{{remoteOptions.shenshou.length > 0? remoteOptions.shenshou[configInfo.shenshou_id4].text : ''}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">炼化神兽4</view>
-		        <switch :checked="!!configInfo.shenshou_id4" @change="changeSwitchLHSS4"/>
+		        <switch :checked="!!configInfo.shenshou_id4" @change="changePickerSwitch($event,'shenshou_id4')"/>
 					</view>
 		    </view> -->
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerJlzJianzao" :value="configInfo.julingzhen_jianzao" class="background-picker" range-key="text" :range="options.julingzhen_jianzao">
+									<picker @change="changePickerConfig($event, 'julingzhen_jianzao')" :value="configInfo.julingzhen_jianzao" class="background-picker" range-key="text" :range="options.julingzhen_jianzao">
 											<view class="uni-input">{{options.julingzhen_jianzao[configInfo.julingzhen_jianzao].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">聚灵阵建造</view>
-		        <switch :checked="!!configInfo.julingzhen_jianzao" @change="changeSwitchJlzJianzao"/>
+		        <switch :checked="!!configInfo.julingzhen_jianzao" @change="changePickerSwitch($event,'julingzhen_jianzao')"/>
 					</view>
 		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerJlzFire" :value="configInfo.julingzhen_huoxi" class="background-picker" range-key="text" :range="options.julingzhen_huoxi">
+									<picker @change="changePickerConfig($event, 'julingzhen_huoxi')" :value="configInfo.julingzhen_huoxi" class="background-picker" range-key="text" :range="options.julingzhen_huoxi">
 											<view class="uni-input">{{options.julingzhen_huoxi[configInfo.julingzhen_huoxi].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">聚灵阵火袭</view>
-		        <switch :checked="!!configInfo.julingzhen_huoxi" @change="changeSwitchJlzFire"/>
+		        <switch :checked="!!configInfo.julingzhen_huoxi" @change="changePickerSwitch($event,'julingzhen_huoxi')"/>
 					</view>
 		    </view>
 
 				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerXianluzhengba" :value="configInfo.xianluzhengba_index" class="background-picker" range-key="text" :range="options.xianluzhengba_index">
+									<picker @change="changePickerConfig($event, 'xianluzhengba_index')" :value="configInfo.xianluzhengba_index" class="background-picker" range-key="text" :range="options.xianluzhengba_index">
 											<view class="uni-input">{{options.xianluzhengba_index[configInfo.xianluzhengba_index].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">自动仙路争霸</view>
-		        <switch :checked="!!configInfo.xianluzhengba_index" @change="changeSwitchXianluzhengba"/>
+		        <switch :checked="!!configInfo.xianluzhengba_index" @change="changePickerSwitch($event,'xianluzhengba_index')"/>
 					</view>
 		    </view> -->
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerDaolvxiulian" :value="configInfo.daolvxiulian_index" class="background-picker" range-key="text" :range="options.daolvxiulian_index">
+									<picker @change="changePickerConfig($event, 'daolvxiulian_index')" :value="configInfo.daolvxiulian_index" class="background-picker" range-key="text" :range="options.daolvxiulian_index">
 											<view class="uni-input">{{options.daolvxiulian_index[configInfo.daolvxiulian_index].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">道侣修炼任务</view>
-		        <switch :checked="!!configInfo.daolvxiulian_index" @change="changeSwitchDaolvxiulian"/>
+		        <switch :checked="!!configInfo.daolvxiulian_index" @change="changePickerSwitch($event,'daolvxiulian_index')"/>
 					</view>
 		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerDaolvliwu" :value="configInfo.daolvliwu_index" class="background-picker" range-key="text" :range="options.daolvliwu_index">
+									<picker @change="changePickerConfig($event, 'daolvliwu_index')" :value="configInfo.daolvliwu_index" class="background-picker" range-key="text" :range="options.daolvliwu_index">
 											<view class="uni-input">{{options.daolvliwu_index[configInfo.daolvliwu_index].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">道侣赠送礼物</view>
-		        <switch :checked="!!configInfo.daolvliwu_index" @change="changeSwitchDaolvliwu"/>
+		        <switch :checked="!!configInfo.daolvliwu_index" @change="changePickerSwitch($event,'daolvliwu_index')"/>
 					</view>
 		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerBuyJinglianshi" :value="configInfo.goumai_jinglian_index" class="background-picker" range-key="text" :range="options.goumai_jinglian_index">
+									<picker @change="changePickerConfig($event, 'goumai_jinglian_index')" :value="configInfo.goumai_jinglian_index" class="background-picker" range-key="text" :range="options.goumai_jinglian_index">
 											<view class="uni-input">{{options.goumai_jinglian_index[configInfo.goumai_jinglian_index].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">自动购买精炼石</view>
-		        <switch :checked="!!configInfo.goumai_jinglian_index" @change="changeSwitchBuyJinglianshi"/>
+		        <switch :checked="!!configInfo.goumai_jinglian_index" @change="changePickerSwitch($event,'goumai_jinglian_index')"/>
 					</view>
 		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerYihuo" :value="configInfo.yihuo_index" class="background-picker" range-key="text" :range="options.yihuo_index">
+									<picker @change="changePickerConfig($event, 'yihuo_index')" :value="configInfo.yihuo_index" class="background-picker" range-key="text" :range="options.yihuo_index">
 											<view class="uni-input">{{options.yihuo_index[configInfo.yihuo_index].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">自动无尽火域</view>
-		        <switch :checked="!!configInfo.yihuo_index" @change="changeSwitchYihuo"/>
+		        <switch :checked="!!configInfo.yihuo_index" @change="changePickerSwitch($event,'yihuo_index')"/>
+					</view>
+		    </view>
+
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerConfig($event, 'llsl_mode')" :value="configInfo.llsl_mode" class="background-picker" range-key="text" :range="options.llsl_mode">
+											<view class="uni-input">{{options.llsl_mode[configInfo.llsl_mode].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">自动灵路试炼</view>
+		        <switch :checked="!!configInfo.llsl_mode" @change="changePickerSwitch($event,'llsl_mode')"/>
 					</view>
 		    </view>
 
 				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerLingshoudao" :value="configInfo.index_lingshoudao_refresh" class="background-picker" range-key="text" :range="options.index_lingshoudao_refresh">
+									<picker @change="changePickerConfig($event, 'index_lingshoudao_refresh')" :value="configInfo.index_lingshoudao_refresh" class="background-picker" range-key="text" :range="options.index_lingshoudao_refresh">
 											<view class="uni-input">{{options.index_lingshoudao_refresh[configInfo.index_lingshoudao_refresh].text}}</view>
 									</picker>
 							</view>
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">自动刷灵兽岛</view>
-		        <switch :checked="!!configInfo.index_lingshoudao_refresh" @change="changeSwitchLingshoudao"/>
+		        <switch :checked="!!configInfo.index_lingshoudao_refresh" @change="changePickerSwitch($event,'index_lingshoudao_refresh')"/>
 					</view>
 		    </view> -->
 
@@ -885,12 +891,11 @@ const configInfoDefault = {
 	is_up_guanxingge: 0, // 自动升级观星阁
 	is_goumai_xhxls_z: 0, // 自动购买仙魂洗练石·主
 	is_goumai_xhjys_z: 0, // 自动购买仙魂经验石·主
-	is_goumai_lljia_qzsp: 0, // 自动购买琉璃甲·奇珍碎片
-	is_goumai_zyp_qzsp: 0, // 自动购买紫云佩·奇珍碎片
-	is_goumai_zyy_qzsp: 0, // 自动购买紫云衣·奇珍碎片
-	is_goumai_qzjys: 0, // 自动购买奇珍经验石
-	is_goumai_lljian_qzsp: 0, // 自动购买琉璃剑·奇珍碎片
-	is_goumai_lljie_qzsp: 0 // 自动购买琉璃戒·奇珍碎片
+	llsl_mode: 0, // 自动灵路试炼
+	is_buy_hfhhg: 0, // 自动购买火凤凰魂骨
+	is_buy_hfhsp: 0, // 自动购买火凤凰碎片
+	is_buy_jxhthg: 0, // 自动购买九心海棠魂骨
+	is_buy_jxhtsp: 0, // 自动购买九心海棠碎片
 }
 
 const gongfaObjDefault = {
@@ -1115,18 +1120,18 @@ export default {
 	methods: {
 		handleLogin() {
 			uni.reLaunch({
-			    url: '../login/login'
+			    url: '/pages/login/login'
 			})
 		},
 		loginSwitch() {
 			uni.navigateTo({
-			    url: '../login/login'
+			    url: '/pages/login/login'
 			})
 		},
 
 		transferTime() {
 			uni.navigateTo({
-			    url: '../transfer/transfer'
+			    url: '/pages/transfer/transfer'
 			})
 		},
 
@@ -1437,21 +1442,7 @@ export default {
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
-      } else if (this.userInfo.loginType === 30) { // 冰湖游戏
-        handleGetServerConfigTapTap(6196, this.loginInfo.userId).then(serverInfo => {
-					this.serverInfo = serverInfo
-					// this.saveLoginInfo()
-					this.initSaveData()
-					this.$toast("服务器更新成功")
-				})
-      } else if (this.userInfo.loginType === 31) { // (饺子手游)剑气除魔H5
-        handleGetServerConfigTapTap(6201, this.loginInfo.userId).then(serverInfo => {
-					this.serverInfo = serverInfo
-					// this.saveLoginInfo()
-					this.initSaveData()
-					this.$toast("服务器更新成功")
-				})
-      }  else { // 其他平台
+      } else { // 其他平台
         handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					// this.saveLoginInfo()
@@ -1555,13 +1546,6 @@ export default {
           case 200:
             this.isClickLilianbeishu = false
 						this.configInfo = this.correctSetting(res.data)
-						// if (!this.configInfo.shenshou_id3) this.$set(this.configInfo, 'shenshou_id3', 0)
-						// if (!this.configInfo.shenshou_id4) this.$set(this.configInfo, 'shenshou_id4', 0)
-						// if (!this.configInfo.julingzhen_jianzao) this.$set(this.configInfo, 'julingzhen_jianzao', 0)
-						// if (!this.configInfo.julingzhen_huoxi) this.$set(this.configInfo, 'julingzhen_huoxi', 0)
-						// if (!this.configInfo.is_auto_shenshou) this.$set(this.configInfo, 'is_auto_shenshou', 0)
-						// if (!this.configInfo.is_auto_lianqi) this.$set(this.configInfo, 'is_auto_lianqi', 0)
-						// if (!this.configInfo.xianluzhengba_index) this.$set(this.configInfo, 'xianluzhengba_index', 0)
             this.calsIsExpired(res.data.end_time)
 						this.calcGongfagoumai(String(res.data.gongfagoumai))
 						this.calcGongfaIndex()
@@ -1615,246 +1599,18 @@ export default {
 				this.configInfo[item] = 1
 			}
 		},
-
+		
 		// 改变picker选项
-		changePickerLilian(e) {
+		changePickerConfig(e, configKey) {
 			const index = e.target.value
-			this.configInfo.lilianfuben = index
-		},
-		changePickerXMJS(e) {
-			const index = e.target.value
-			this.configInfo.xianmengjianshe = index
-		},
-		changePickerBZKW(e) {
-			const index = e.target.value
-			this.configInfo.bazhukongwei = index
-		},
-		changePickerYJKC(e) {
-			const index = e.target.value
-			this.configInfo.yijikaicaileixing = index
-		},
-		changePickerYJQD(e) {
-			const index = e.target.value
-			this.configInfo.yijigongjileixing = index
-		},
-		changePickerMoyu(e) {
-			const index = e.target.value
-			this.configInfo.moyuleixing = index
-		},
-		changePickerBOSS1(e) {
-			const index = e.target.value
-			this.configInfo.boss_id1 = index
-		},
-		changePickerBOSS2(e) {
-			const index = e.target.value
-			this.configInfo.boss_id2 = index
-		},
-		changePickerLHSS1(e) {
-			const index = e.target.value
-			this.configInfo.shenshou_id1 = index
-		},
-		changePickerLHSS2(e) {
-			const index = e.target.value
-			this.configInfo.shenshou_id2 = index
-		},
-		changePickerLHSS3(e) {
-			const index = e.target.value
-			this.configInfo.shenshou_id3 = index
-		},
-		changePickerLHSS4(e) {
-			const index = e.target.value
-			this.configInfo.shenshou_id4 = index
-		},
-		changePickerJlzJianzao(e) {
-			const index = e.target.value
-			this.configInfo.julingzhen_jianzao = index
-		},
-		changePickerJlzFire(e) {
-			const index = e.target.value
-			this.configInfo.julingzhen_huoxi = index
-		},
-		changePickerXianluzhengba(e) {
-			const index = e.target.value
-			this.configInfo.xianluzhengba_index = index
-		},
-		changePickerDaolvxiulian(e) {
-			const index = e.target.value
-			this.configInfo.daolvxiulian_index = index
-		},
-		changePickerDaolvliwu(e) {
-			const index = e.target.value
-			this.configInfo.daolvliwu_index = index
-		},
-		changePickerBuyJinglianshi(e) {
-			const index = e.target.value
-			this.configInfo.goumai_jinglian_index = index
-		},
-		changePickerYihuo(e) {
-			const index = e.target.value
-			this.configInfo.yihuo_index = index
-		},
-		changePickerLingshoudao(e) {
-			const index = e.target.value
-			this.configInfo.index_lingshoudao_refresh = index
+			this.configInfo[configKey] = index
 		},
 
 		// 修改下拉选项后面的开关
-		changeSwitchLilian(e) {
+		changePickerSwitch(e, configKey) {
 			const checked = e.target.value
 			if (!checked) {
-				this.configInfo.lilianfuben = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchXMJS(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.xianmengjianshe = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchBZKW(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.bazhukongwei = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchYJKC(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.yijikaicaileixing = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchYJQD(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.yijigongjileixing = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchMoyu(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.moyuleixing = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchBOSS1(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.boss_id1 = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchBOSS2(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.boss_id2 = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchLHSS1(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.shenshou_id1 = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchLHSS2(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.shenshou_id2 = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchLHSS3(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.shenshou_id3 = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchLHSS4(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.shenshou_id4 = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchJlzJianzao(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.julingzhen_jianzao = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchJlzFire(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.julingzhen_huoxi = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchXianluzhengba(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.xianluzhengba_index = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchDaolvxiulian(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.daolvxiulian_index = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchDaolvliwu(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.daolvliwu_index = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchBuyJinglianshi(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.goumai_jinglian_index = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchYihuo(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.yihuo_index = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchLingshoudao(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.index_lingshoudao_refresh = 0
+				this.configInfo[configKey] = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}
