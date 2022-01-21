@@ -439,7 +439,7 @@
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerConfig($event, 'lilian')" :value="configInfo.lilianfuben" class="background-picker" range-key="text" :range="options.lilian">
+									<picker @change="changePickerConfig($event, 'lilianfuben')" :value="configInfo.lilianfuben" class="background-picker" range-key="text" :range="options.lilian">
 											<view class="uni-input">{{options.lilian[configInfo.lilianfuben].text}}</view>
 									</picker>
 							</view>
