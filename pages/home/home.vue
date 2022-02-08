@@ -400,10 +400,10 @@
 		        <view class="uni-list-cell-db">自动升级战阵</view>
 		        <switch :checked="!!configInfo.is_shengzhanzhen" @change="changeSwitchBoolean('is_shengzhanzhen')"/>
 		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
+				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">分解绿色法宝</view>
 				    <switch :checked="!!configInfo.is_fenjie_fabao" @change="changeSwitchBoolean('is_fenjie_fabao')"/>
-				</view>
+				</view> -->
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动升级观星阁</view>
 				    <switch :checked="!!configInfo.is_up_guanxingge" @change="changeSwitchBoolean('is_up_guanxingge')"/>
@@ -432,6 +432,34 @@
 				<view v-if="userInfo.loginType === 24 " class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动购买九心海棠碎片</view>
 				    <switch :checked="!!configInfo.is_buy_jxhtsp" @change="changeSwitchBoolean('is_buy_jxhtsp')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">购买探宝灯(售价:2000)</view>
+				    <switch :checked="!!configInfo.is_buy_tbd2000" @change="changeSwitchBoolean('is_buy_tbd2000')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">购买探宝灯(售价:4000)</view>
+				    <switch :checked="!!configInfo.is_buy_tbd4000" @change="changeSwitchBoolean('is_buy_tbd4000')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">购买探宝灯(售价:8000)</view>
+				    <switch :checked="!!configInfo.is_buy_tbd8000" @change="changeSwitchBoolean('is_buy_tbd8000')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">购买寻仙令(售价:200)</view>
+				    <switch :checked="!!configInfo.is_buy_xxl200" @change="changeSwitchBoolean('is_buy_xxl200')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">购买寻仙令(售价:400)</view>
+				    <switch :checked="!!configInfo.is_buy_xxl400" @change="changeSwitchBoolean('is_buy_xxl400')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">购买铸炼石(售价:400)</view>
+				    <switch :checked="!!configInfo.is_buy_zls400" @change="changeSwitchBoolean('is_buy_zls400')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">购买淬灵丹(售价:600)</view>
+				    <switch :checked="!!configInfo.is_buy_cld600" @change="changeSwitchBoolean('is_buy_cld600')"/>
 				</view>
 		</view>
 
@@ -716,6 +744,20 @@
 					</view>
 		    </view>
 
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerConfig($event, 'index_llcl_lz_fj')" :value="configInfo.index_llcl_lz_fj" class="background-picker" range-key="text" :range="options.index_llcl_lz_fj">
+											<view class="uni-input">{{options.index_llcl_lz_fj[configInfo.index_llcl_lz_fj].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">法身法宝炼制分解</view>
+		        <switch :checked="!!configInfo.index_llcl_lz_fj" @change="changePickerSwitch($event,'index_llcl_lz_fj')"/>
+					</view>
+		    </view>
+
 				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
@@ -896,6 +938,14 @@ const configInfoDefault = {
 	is_buy_hfhsp: 0, // 自动购买火凤凰碎片
 	is_buy_jxhthg: 0, // 自动购买九心海棠魂骨
 	is_buy_jxhtsp: 0, // 自动购买九心海棠碎片
+	is_buy_tbd2000: 0, // 探宝灯(售价:2000)
+	is_buy_tbd4000: 0, // 探宝灯(售价:4000)
+	is_buy_tbd8000: 0, // 探宝灯(售价:8000)
+	is_buy_xxl200: 0, // 寻仙令(售价:200)
+	is_buy_xxl400: 0, // 寻仙令(售价:400)
+	is_buy_zls400: 0, // 铸炼石(售价:400) 
+	is_buy_cld600: 0, // 淬灵丹(售价:600)
+	index_llcl_lz_fj: 0, // 法身法宝炼制分解
 }
 
 const gongfaObjDefault = {
@@ -1330,7 +1380,7 @@ export default {
 
 		// 更新服务器列表
     handleGetServerList() {
-      if (this.userInfo.loginType === 1) { // 官方平台
+      if ([1, 32].includes(this.userInfo.loginType)) { // 官方平台,3011平台
         handleGetServerConfig(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					// this.saveLoginInfo()

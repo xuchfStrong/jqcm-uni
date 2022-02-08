@@ -161,6 +161,14 @@ export function loginFirstStepBinghuyouxi(data) {
   )
 }
 
+// 3011登录
+export function loginFirstStep3011(data) {
+  return httpForm.postGYY(
+    '/util/3011Login.py',
+    data
+  )
+}
+
 // 登录一步
 export function loginFirstStep(data) {
   return http.post(

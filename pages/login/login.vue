@@ -75,7 +75,7 @@ import { loginFirstStepXiuzhenguilai, loginSecondStepXiuzhenguilai, loginThirdSt
 import { loginThirdStepJHCS } from '@/api/loginApp'
 import { loginFirstStepFeixianjueGYY } from '@/api/game'
 import { loginFirstStepFeixianjueJiaozishouyou, loginFirstStepJiaozishouyouH5 } from '@/api/game'
-import { loginFirstStepBinghuyouxi } from '@/api/game'
+import { loginFirstStepBinghuyouxi, loginFirstStep3011 } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -473,6 +473,8 @@ export default {
 							duration: 2000,
 							icon: 'none'
 						})
+					} else if ([32].includes(this.userInfo.loginType)) { // 3011游戏)
+						this.handleLoginFirstStep3011()
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -525,7 +527,9 @@ export default {
 						this.handleLoginFirstStepBinghuyouxi() // 冰湖游戏天
 					}	else if (this.userInfo.loginType === 31) {
 						this.handleLoginFirstStepJiaozishouyouH5() // 饺子手游剑气除魔H5
-					}else {
+					} else if (this.userInfo.loginType === 32) {
+						this.handleLoginFirstStep3011() // 3011游戏
+					} else {
 						uni.showToast({
 							title: '登录失败。',
 							duration: 2000,
@@ -1463,6 +1467,34 @@ export default {
 					handleGetServerConfigTapTap(6196, this.loginInfo.userId).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleAddUser()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 3011登录第一步
+		handleLoginFirstStep3011() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStep3011(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					handleGetServerConfig(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleLoginThirdStep()
 					})
 				} else {
 					this.flag.showServer = false
