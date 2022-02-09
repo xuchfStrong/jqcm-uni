@@ -9,13 +9,13 @@ import {requestProxy, http, httpForm} from './request.js'
 //   )
 // }
 
-// // 登录二步获取用户token
-// export function loginSecondStep(params) {
-//   return http.get(
-//     'http://m.huojiangame.com:9080/jqcm_usertoken/user/v1/token',
-//     {params}
-//   )
-// }
+// 登录二步获取用户token
+export function loginSecondStep(params) {
+  return httpNoProxy.get(
+    'https://gw.begindcc.com/ufo/api/6/user/token',
+    {params}
+  )
+}
 
 // 剑气除魔登录第一步
 export function loginFirstStepShendao(params) {
@@ -217,7 +217,7 @@ export function loginFirstStepTianyingqiyuan(params) {
 
 // 天影奇缘登录第二步获取token
 export function loginSecondTianyingqiyuan(params) {
-  return http.get(
+  return httpNoProxy.get(
     'http://gw.begindcc.com/ufo/api/6/user/token',
     {params}
   )

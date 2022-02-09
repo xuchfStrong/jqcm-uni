@@ -145,19 +145,35 @@ export function loginFirstStepFeixianjueJiaozishouyou(data) {
   )
 }
 
+// 饺子手游剑气除魔H5登录
+export function loginFirstStepJiaozishouyouH5(data) {
+  return httpForm.postGYY(
+    '/util/jiaozishouyouH5Login.py',
+    data
+  )
+}
+
+// 冰狐游戏登录
+export function loginFirstStepBinghuyouxi(data) {
+  return httpForm.postGYY(
+    '/util/bhyxLogin.py',
+    data
+  )
+}
+
+// 3011登录
+export function loginFirstStep3011(data) {
+  return httpForm.postGYY(
+    '/util/3011Login.py',
+    data
+  )
+}
+
 // 登录一步
 export function loginFirstStep(data) {
   return http.post(
     'http://center.wscbwh.cn/api/login',
     data
-  )
-}
-
-// 登录二步获取用户token
-export function loginSecondStep(params) {
-  return http.get(
-    'http://ufo.66hjh.com/user/v1/token',
-    {params}
   )
 }
 

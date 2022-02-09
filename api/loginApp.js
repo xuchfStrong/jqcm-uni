@@ -1,4 +1,5 @@
 import { http, httpForm } from '@/utils/request.js'
+// import {requestProxy, http, httpForm} from './request.js'
 
 // 登录一步,在app上不需要代理
 export function loginFirstStep(data) {
@@ -11,7 +12,8 @@ export function loginFirstStep(data) {
 // 登录二步获取用户token,在app上不需要代理
 export function loginSecondStep(params) {
   return http.get(
-    'http://ufo.66hjh.com/user/v1/token',
+    // 'http://ufo.66hjh.com/user/v1/token',
+		'https://gw.begindcc.com/ufo/api/6/user/token',
     {params}
   )
 }
