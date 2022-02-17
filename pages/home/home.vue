@@ -485,6 +485,10 @@
 				    <view class="uni-list-cell-db">购买淬灵丹(售价:600)</view>
 				    <switch :checked="!!configInfo.is_buy_cld600" @change="changeSwitchBoolean('is_buy_cld600')"/>
 				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动仙路争霸竞猜</view>
+				    <switch :checked="!!configInfo.is_auto_xlzb_jc" @change="changeSwitchBoolean('is_auto_xlzb_jc')"/>
+				</view>
 		</view>
 
 		<view v-show="currentTab === 1" class="uni-list-no-border">
@@ -976,6 +980,7 @@ const configInfoDefault = {
 	is_buy_zls400: 0, // 铸炼石(售价:400) 
 	is_buy_cld600: 0, // 淬灵丹(售价:600)
 	index_llcl_lz_fj: 0, // 法身法宝炼制分解
+	is_auto_xlzb_jc: 0, // 自动仙路争霸竞猜
 }
 
 const gongfaObjDefault = {

@@ -245,3 +245,6 @@
 	- is_goumai_qzjys: 0, // 自动购买奇珍经验石
 	- is_goumai_lljian_qzsp: 0, // 自动购买琉璃剑·奇珍碎片
 	- is_goumai_lljie_qzsp: 0, // 自动购买琉璃戒·奇珍碎片
+
+## 2022-2-17 V1.9.4
+1. 增加自动仙路争霸竞猜功能。
