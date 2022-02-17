@@ -1422,7 +1422,7 @@ export default {
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
-      } else if (this.userInfo.loginType === 2) { // TapTap平台
+      } else if ([2, 33].includes(this.userInfo.loginType)) { // TapTap平台
         handleGetServerConfigTapTap(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					// this.saveLoginInfo()

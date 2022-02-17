@@ -169,6 +169,14 @@ export function loginFirstStep3011(data) {
   )
 }
 
+// 游戏鸭登录
+export function loginFirstStepYXY(data) {
+  return httpForm.postGYY(
+    '/util/yxyLogin.py',
+    data
+  )
+}
+
 // 登录一步
 export function loginFirstStep(data) {
   return http.post(

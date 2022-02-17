@@ -39,7 +39,7 @@ export function handleGetServerConfigTapTap(channelId, userId) {
     const param = {
       v: '1.1.54',
       game_id: 6,
-      channelId: 6002,
+      channelId: channelId,
       channel: 'biguo',
       user_name: userId
     }
