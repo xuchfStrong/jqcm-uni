@@ -75,7 +75,7 @@ import { loginFirstStepXiuzhenguilai, loginSecondStepXiuzhenguilai, loginThirdSt
 import { loginThirdStepJHCS } from '@/api/loginApp'
 import { loginFirstStepFeixianjueGYY } from '@/api/game'
 import { loginFirstStepFeixianjueJiaozishouyou, loginFirstStepJiaozishouyouH5 } from '@/api/game'
-import { loginFirstStepBinghuyouxi, loginFirstStep3011, loginFirstStepYXY } from '@/api/game'
+import { loginFirstStepBinghuyouxi, loginFirstStep3011, loginFirstStepYXY, loginFirstStepYXYSzlm } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -477,7 +477,9 @@ export default {
 						this.handleLoginFirstStep3011()
 					} else if ([33].includes(this.userInfo.loginType)) { // 游戏鸭)
 						this.handleLoginFirstStepYXY()
-					} else {
+					} else if ([34].includes(this.userInfo.loginType)) { // 游戏鸭神之六面)
+						this.handleLoginFirstStepYXYSzlm()
+					}else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
 							this.serverInfo = serverInfo
@@ -524,15 +526,17 @@ export default {
 					} else if (this.userInfo.loginType === 29) {
 						this.handleLoginFirstStepFeixianjueJiaozishouyou() // 飞仙诀(饺子手游)
 					} else if (this.userInfo.loginType === 40) {
-						this.handleLoginFirstStepTianyingqiyuan() // 影奇缘
+						this.handleLoginFirstStepTianyingqiyuan() // 天影奇缘
 					} else if (this.userInfo.loginType === 30) {
 						this.handleLoginFirstStepBinghuyouxi() // 冰湖游戏天
 					}	else if (this.userInfo.loginType === 31) {
 						this.handleLoginFirstStepJiaozishouyouH5() // 饺子手游剑气除魔H5
 					} else if (this.userInfo.loginType === 32) {
 						this.handleLoginFirstStep3011() // 3011游戏
-					}  else if (this.userInfo.loginType === 33) {
+					} else if (this.userInfo.loginType === 33) {
 						this.handleLoginFirstStepYXY() // 游戏鸭
+					} else if (this.userInfo.loginType === 34) {
+						this.handleLoginFirstStepYXYSzlm() // 游戏鸭神之六面
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1525,6 +1529,34 @@ export default {
 					this.loginInfo.token = res.data.token
 					this.loginInfo.channelId = res.data.channelId
 					handleGetServerConfigTapTap(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleLoginThirdStep()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 游戏鸭登神之六面录第一步
+		handleLoginFirstStepYXYSzlm() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepYXYSzlm(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					handleGetServerConfigXianfanzhuan(this.loginInfo.channelId, this.loginInfo.userId, 21).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleLoginThirdStep()
 					})

@@ -177,6 +177,14 @@ export function loginFirstStepYXY(data) {
   )
 }
 
+// 游戏鸭神之六面登录
+export function loginFirstStepYXYSzlm(data) {
+  return httpForm.postGYY(
+    '/util/yxySzlmh5Login.py',
+    data
+  )
+}
+
 // 登录一步
 export function loginFirstStep(data) {
   return http.post(
