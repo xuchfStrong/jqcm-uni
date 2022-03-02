@@ -1537,35 +1537,36 @@ export default {
       } else if (this.userInfo.loginType === 31) { // 饺子手游剑气除魔H5
         handleGetServerConfigTapTap(6201, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
-					// this.saveLoginInfo()
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 32) { // 3011
         handleGetServerConfig(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
-					// this.saveLoginInfo()
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 33) { // 游戏鸭
         handleGetServerConfigTapTap(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
-					// this.saveLoginInfo()
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 34) { // 游戏鸭登神之六面
         handleGetServerConfigXianfanzhuan(this.loginInfo.channelId, this.loginInfo.userId, 21).then(serverInfo => {
 					this.serverInfo = serverInfo
-					// this.saveLoginInfo()
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
-      } else { // 其他平台
+      } else if (this.userInfo.loginType === 35) { // 游戏鸭剑气除魔文字修真
+        handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId, 21).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
+      }else { // 其他平台
         handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
-					// this.saveLoginInfo()
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})

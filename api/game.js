@@ -185,6 +185,14 @@ export function loginFirstStepYXYSzlm(data) {
   )
 }
 
+// 游戏鸭剑气除魔文字修真登录
+export function loginFirstStepYXYJqcmWzxz(data) {
+  return httpForm.postGYY(
+    '/util/yxyJqcmwzxzLogin.py',
+    data
+  )
+}
+
 // 登录一步
 export function loginFirstStep(data) {
   return http.post(

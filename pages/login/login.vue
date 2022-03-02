@@ -75,7 +75,11 @@ import { loginFirstStepXiuzhenguilai, loginSecondStepXiuzhenguilai, loginThirdSt
 import { loginThirdStepJHCS } from '@/api/loginApp'
 import { loginFirstStepFeixianjueGYY } from '@/api/game'
 import { loginFirstStepFeixianjueJiaozishouyou, loginFirstStepJiaozishouyouH5 } from '@/api/game'
-import { loginFirstStepBinghuyouxi, loginFirstStep3011, loginFirstStepYXY, loginFirstStepYXYSzlm } from '@/api/game'
+import { loginFirstStepBinghuyouxi, 
+				 loginFirstStep3011,
+				 loginFirstStepYXY,
+				 loginFirstStepYXYSzlm,
+				 loginFirstStepYXYJqcmWzxz } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -479,7 +483,9 @@ export default {
 						this.handleLoginFirstStepYXY()
 					} else if ([34].includes(this.userInfo.loginType)) { // 游戏鸭神之六面)
 						this.handleLoginFirstStepYXYSzlm()
-					}else {
+					} else if ([35].includes(this.userInfo.loginType)) { // 游戏鸭剑气除魔文字修真)
+						this.handleLoginFirstStepYXYJqcmWzxz()
+					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
 							this.serverInfo = serverInfo
@@ -537,6 +543,8 @@ export default {
 						this.handleLoginFirstStepYXY() // 游戏鸭
 					} else if (this.userInfo.loginType === 34) {
 						this.handleLoginFirstStepYXYSzlm() // 游戏鸭神之六面
+					} else if (this.userInfo.loginType === 35) {
+						this.handleLoginFirstStepYXYJqcmWzxz() // 游戏鸭剑气除魔文字修真
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1557,6 +1565,34 @@ export default {
 					this.loginInfo.token = res.data.token
 					this.loginInfo.channelId = res.data.channelId
 					handleGetServerConfigXianfanzhuan(this.loginInfo.channelId, this.loginInfo.userId, 21).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleLoginThirdStep()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 游戏鸭剑气除魔文字修真登录第一步
+		handleLoginFirstStepYXYJqcmWzxz() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepYXYJqcmWzxz(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleLoginThirdStep()
 					})
