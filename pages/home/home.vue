@@ -409,6 +409,10 @@
 				    <switch :checked="!!configInfo.is_up_guanxingge" @change="changeSwitchBoolean('is_up_guanxingge')"/>
 				</view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动购买占命石</view>
+				    <switch :checked="!!configInfo.is_buy_zhanmingshi" @change="changeSwitchBoolean('is_buy_zhanmingshi')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动购买仙魂洗练石·主</view>
 				    <switch :checked="!!configInfo.is_goumai_xhxls_z" @change="changeSwitchBoolean('is_goumai_xhxls_z')"/>
 				</view>
@@ -457,15 +461,15 @@
 				    <view class="uni-list-cell-db">自动购买九心海棠碎片</view>
 				    <switch :checked="!!configInfo.is_buy_jxhtsp" @change="changeSwitchBoolean('is_buy_jxhtsp')"/>
 				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
+				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">购买探宝灯(售价:2000)</view>
 				    <switch :checked="!!configInfo.is_buy_tbd2000" @change="changeSwitchBoolean('is_buy_tbd2000')"/>
-				</view>
+				</view> -->
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">购买探宝灯(售价:4000)</view>
 				    <switch :checked="!!configInfo.is_buy_tbd4000" @change="changeSwitchBoolean('is_buy_tbd4000')"/>
 				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
+				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">购买探宝灯(售价:8000)</view>
 				    <switch :checked="!!configInfo.is_buy_tbd8000" @change="changeSwitchBoolean('is_buy_tbd8000')"/>
 				</view>
@@ -476,7 +480,7 @@
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">购买寻仙令(售价:400)</view>
 				    <switch :checked="!!configInfo.is_buy_xxl400" @change="changeSwitchBoolean('is_buy_xxl400')"/>
-				</view>
+				</view> -->
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">购买铸炼石(售价:400)</view>
 				    <switch :checked="!!configInfo.is_buy_zls400" @change="changeSwitchBoolean('is_buy_zls400')"/>
@@ -488,6 +492,14 @@
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动仙路争霸竞猜</view>
 				    <switch :checked="!!configInfo.is_auto_xlzb_jc" @change="changeSwitchBoolean('is_auto_xlzb_jc')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">仙缘商店买地兽天·山河图</view>
+				    <switch :checked="!!configInfo.is_buy_xy_sht" @change="changeSwitchBoolean('is_buy_xy_sht')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">仙盟坊市买地兽天·山河图</view>
+				    <switch :checked="!!configInfo.is_buy_xm_sht" @change="changeSwitchBoolean('is_buy_xm_sht')"/>
 				</view>
 		</view>
 
@@ -981,6 +993,9 @@ const configInfoDefault = {
 	is_buy_cld600: 0, // 淬灵丹(售价:600)
 	index_llcl_lz_fj: 0, // 法身法宝炼制分解
 	is_auto_xlzb_jc: 0, // 自动仙路争霸竞猜
+	is_buy_zhanmingshi: 0, // 自动购买占命石
+	is_buy_xy_sht: 0, // 仙缘商店买地兽天·山河图
+	is_buy_xm_sht: 0 // 仙盟坊市买地兽天·山河图
 }
 
 const gongfaObjDefault = {
