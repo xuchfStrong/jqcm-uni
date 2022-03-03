@@ -193,6 +193,15 @@ export function loginFirstStepYXYJqcmWzxz(data) {
   )
 }
 
+// 3011剑气除魔文字修真登录
+export function loginFirstStep3011JqcmWzxz(data) {
+  return httpForm.postGYY(
+    '/util/3011JqcmWxxzLogin.py',
+    data
+  )
+}
+
+
 // 登录一步
 export function loginFirstStep(data) {
   return http.post(

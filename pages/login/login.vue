@@ -79,7 +79,8 @@ import { loginFirstStepBinghuyouxi,
 				 loginFirstStep3011,
 				 loginFirstStepYXY,
 				 loginFirstStepYXYSzlm,
-				 loginFirstStepYXYJqcmWzxz } from '@/api/game'
+				 loginFirstStepYXYJqcmWzxz,
+				 loginFirstStep3011JqcmWzxz } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -485,6 +486,8 @@ export default {
 						this.handleLoginFirstStepYXYSzlm()
 					} else if ([35].includes(this.userInfo.loginType)) { // 游戏鸭剑气除魔文字修真)
 						this.handleLoginFirstStepYXYJqcmWzxz()
+					} else if ([36].includes(this.userInfo.loginType)) { // 3011剑气除魔文字修真)
+						this.handleLoginFirstStep3011JqcmWzxz()
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -545,6 +548,8 @@ export default {
 						this.handleLoginFirstStepYXYSzlm() // 游戏鸭神之六面
 					} else if (this.userInfo.loginType === 35) {
 						this.handleLoginFirstStepYXYJqcmWzxz() // 游戏鸭剑气除魔文字修真
+					} else if (this.userInfo.loginType === 36) {
+						this.handleLoginFirstStep3011JqcmWzxz() // 3011剑气除魔文字修真
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1588,6 +1593,34 @@ export default {
 			}
 			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
 			loginFirstStepYXYJqcmWzxz(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleLoginThirdStep()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 3011剑气除魔文字修真登录第一步
+		handleLoginFirstStep3011JqcmWzxz() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStep3011JqcmWzxz(params).then(res => {
 				if (res.code === 1) {
 					this.loginInfo.userId = res.data.userId
 					this.loginInfo.token = res.data.token

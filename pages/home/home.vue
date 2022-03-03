@@ -1579,7 +1579,13 @@ export default {
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
-      }else { // 其他平台
+      } else if (this.userInfo.loginType === 36) { // 3011剑气除魔文字修真
+        handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId, 21).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
+      } else { // 其他平台
         handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.initSaveData()
