@@ -1585,6 +1585,12 @@ export default {
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
+      } else if (this.userInfo.loginType === 37) { // 3011剑气除魔H5
+        handleGetServerConfigTapTap(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
       } else { // 其他平台
         handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo

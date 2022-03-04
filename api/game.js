@@ -201,6 +201,14 @@ export function loginFirstStep3011JqcmWzxz(data) {
   )
 }
 
+// 剑气除魔H5-3011
+export function loginFirstStep3011JqcmH5(data) {
+  return httpForm.postGYY(
+    '/util/3011JqcmH5Login.py',
+    data
+  )
+}
+
 
 // 登录一步
 export function loginFirstStep(data) {

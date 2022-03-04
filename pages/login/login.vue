@@ -80,7 +80,8 @@ import { loginFirstStepBinghuyouxi,
 				 loginFirstStepYXY,
 				 loginFirstStepYXYSzlm,
 				 loginFirstStepYXYJqcmWzxz,
-				 loginFirstStep3011JqcmWzxz } from '@/api/game'
+				 loginFirstStep3011JqcmWzxz,
+				 loginFirstStep3011JqcmH5 } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -488,6 +489,8 @@ export default {
 						this.handleLoginFirstStepYXYJqcmWzxz()
 					} else if ([36].includes(this.userInfo.loginType)) { // 3011剑气除魔文字修真)
 						this.handleLoginFirstStep3011JqcmWzxz()
+					} else if ([37].includes(this.userInfo.loginType)) { // 3011剑气除魔H5)
+						this.handleLoginFirstStep3011JqcmH5()
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -550,6 +553,8 @@ export default {
 						this.handleLoginFirstStepYXYJqcmWzxz() // 游戏鸭剑气除魔文字修真
 					} else if (this.userInfo.loginType === 36) {
 						this.handleLoginFirstStep3011JqcmWzxz() // 3011剑气除魔文字修真
+					} else if (this.userInfo.loginType === 37) {
+						this.handleLoginFirstStep3011JqcmH5() // 3011剑气除魔H5登录
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1626,6 +1631,34 @@ export default {
 					this.loginInfo.token = res.data.token
 					this.loginInfo.channelId = res.data.channelId
 					handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleLoginThirdStep()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 3011剑气除魔H5登录第一步
+		handleLoginFirstStep3011JqcmH5() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStep3011JqcmH5(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					handleGetServerConfigTapTap(6201, this.loginInfo.userId).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleLoginThirdStep()
 					})
