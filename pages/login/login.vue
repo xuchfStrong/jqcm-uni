@@ -81,7 +81,10 @@ import { loginFirstStepBinghuyouxi,
 				 loginFirstStepYXYSzlm,
 				 loginFirstStepYXYJqcmWzxz,
 				 loginFirstStep3011JqcmWzxz,
-				 loginFirstStep3011JqcmH5 } from '@/api/game'
+				 loginFirstStep3011JqcmH5,
+				 loginFirstStepJzsyJqcmWzxz,
+				 loginFirstStepGyyJqcmWzxz,
+				 loginFirstStepWjxl2Direct } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -491,6 +494,20 @@ export default {
 						this.handleLoginFirstStep3011JqcmWzxz()
 					} else if ([37].includes(this.userInfo.loginType)) { // 3011剑气除魔H5)
 						this.handleLoginFirstStep3011JqcmH5()
+					} else if ([38].includes(this.userInfo.loginType)) { // 饺子手游-剑气除魔(纯文字修真)
+						this.handleLoginFirstStepJzsyJqcmCwzxz()
+					} else if ([39].includes(this.userInfo.loginType)) { // 羔羊游-剑气除魔(纯文字修真)
+						handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -555,6 +572,10 @@ export default {
 						this.handleLoginFirstStep3011JqcmWzxz() // 3011剑气除魔文字修真
 					} else if (this.userInfo.loginType === 37) {
 						this.handleLoginFirstStep3011JqcmH5() // 3011剑气除魔H5登录
+					} else if ([38].includes(this.userInfo.loginType)) { // 饺子手游-剑气除魔(纯文字修真)
+						this.handleLoginFirstStepJzsyJqcmCwzxz()
+					} else if ([39].includes(this.userInfo.loginType)) { // 羔羊游-剑气除魔(纯文字修真)
+						this.handleLoginFirstStepGyyJqcmCwzxz()
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -663,8 +684,8 @@ export default {
       })
 		},
 		
-		// 无尽修炼2登录第一步
-		handleLoginFirstStepWJXL2() {
+		
+		handleLoginFirstStepWJXL2Old() {
 		  if (!this.userInfo.usernamePlatForm || !this.userInfo.passwordPlatForm) {
 				uni.showToast({
 					title: '请输入用户名和密码',
@@ -713,6 +734,34 @@ export default {
 		  }).catch(err => {
 		    console.log(err)
 		  })
+		},
+
+		// 无尽修炼2登录第一步
+		handleLoginFirstStepWJXL2() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepWjxl2Direct(params).then(res => {
+				if (res.code == 200) {
+					this.loginInfo.userId = res.userid
+					this.loginInfo.token = res.token
+					this.loginInfo.channelId = res.channelId
+					handleGetServerConfigWJXL2(6072, this.loginInfo.userId, 8).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleLoginThirdStep()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
 		},
 
 		// 单机江湖登录第一步
@@ -1673,6 +1722,62 @@ export default {
 			})
 		},
 
+		// 饺子手游-剑气除魔(纯文字修真)登录第一步
+		handleLoginFirstStepJzsyJqcmCwzxz() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepJzsyJqcmWzxz(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleLoginThirdStep()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 羔羊游-剑气除魔(纯文字修真)登录第一步
+		handleLoginFirstStepGyyJqcmCwzxz() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepGyyJqcmWzxz(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleLoginThirdStep()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
 		// 江湖传说登录第一步
 		handleLoginFirstStepJHCS() {
 			const params = {
@@ -1951,7 +2056,7 @@ export default {
 							this.handleLoginThirdStep()
 						})
 					} else if (this.userInfo.loginType === 14) { // 无尽修炼2
-						handleGetServerConfigWJXL2(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+						handleGetServerConfigWJXL2(6072, this.loginInfo.userId).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStepWJXL2()
 						})

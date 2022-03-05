@@ -201,6 +201,30 @@ export function loginFirstStep3011JqcmWzxz(data) {
   )
 }
 
+// 饺子手游剑气除魔文字修真登录
+export function loginFirstStepJzsyJqcmWzxz(data) {
+  return httpForm.postGYY(
+    '/util/jzsyJqcmCwzxz.py',
+    data
+  )
+}
+
+// 羔羊游剑气除魔文字修真登录
+export function loginFirstStepGyyJqcmWzxz(data) {
+  return httpForm.postGYY(
+    '/util/gyyJqcmCwzxz.py',
+    data
+  )
+}
+
+// 无尽修炼2登录
+export function loginFirstStepWjxl2Direct(data) {
+  return httpForm.postGYY(
+    '/util/wjxl2Login.py',
+    data
+  )
+}
+
 // 剑气除魔H5-3011
 export function loginFirstStep3011JqcmH5(data) {
   return httpForm.postGYY(

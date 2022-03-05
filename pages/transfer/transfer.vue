@@ -2,21 +2,21 @@
 	<view class="content-login">
 		<view class="input-group">
 		    <view class="input-row border">
-		        <text class="title-lang">原辅助ID：</text>
+		        <text class="title-lang">辅助ID：</text>
 		        <m-input class="m-input" type="text" :disabled="false"  clearable focus v-model="transferInfo.oldUserId" placeholder="请输入辅助续费ID"></m-input>
 		    </view>
 		    <view class="input-row border">
-		        <text class="title-lang">原辅助密码：</text>
+		        <text class="title-lang">辅助密码：</text>
 		        <m-input type="password" displayable v-model="transferInfo.oldPassword" placeholder="请输入登录辅助的密码"></m-input>
 		    </view>
 				<view class="input-row border">
 		        <text class="title-lang">原区服ID：</text>
 		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.oldServerId" placeholder="请输入原区服ID,如481,60019"></m-input>
 		    </view>
-				<view class="input-row border">
+				<!-- <view class="input-row border">
 		        <text class="title-lang">新辅助ID：</text>
 		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.newUserId" placeholder="请输入辅助续费ID"></m-input>
-		    </view>
+		    </view> -->
 				<view class="input-row border">
 		        <text class="title-lang">新区服ID：</text>
 		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.newServerId" placeholder="请输入新区服ID,如801,70010"></m-input>
@@ -74,7 +74,6 @@ export default {
 			if (!this.transferInfo.oldUserId ||
 				!this.transferInfo.oldPassword ||
 				!this.transferInfo.oldServerId ||
-				!this.transferInfo.newUserId ||
 				!this.transferInfo.newServerId) {
 				this.$toast('输入信息不全')
 				return
@@ -84,7 +83,7 @@ export default {
 				from_id: this.transferInfo.oldUserId,
 				from_server: this.transferInfo.oldServerId,
 				from_pwd_md5: CryptoJS.MD5(this.transferInfo.oldPassword).toString(),
-				to_id: this.transferInfo.newUserId,
+				to_id: this.transferInfo.oldUserId,
 				to_server: this.transferInfo.newServerId
 			}
 			transferTime(params).then(res => {

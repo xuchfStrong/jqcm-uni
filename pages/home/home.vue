@@ -1452,7 +1452,7 @@ export default {
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 14) { // 无尽修炼2
-        handleGetServerConfigWJXL2(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+        handleGetServerConfigWJXL2(6072, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
 					// this.saveLoginInfo()
 					this.initSaveData()
@@ -1587,6 +1587,18 @@ export default {
 				})
       } else if (this.userInfo.loginType === 37) { // 3011剑气除魔H5
         handleGetServerConfigTapTap(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
+      } else if (this.userInfo.loginType === 38) { // 饺子手游-剑气除魔(纯文字修真
+        handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
+      } else if (this.userInfo.loginType === 39) { // 羔羊游-剑气除魔(纯文字修真)
+        handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.initSaveData()
 					this.$toast("服务器更新成功")

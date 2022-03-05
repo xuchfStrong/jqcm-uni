@@ -169,7 +169,7 @@ export function handleGetServerConfigWJXL2(channelId, userId) {
     const param = {
       v: '1.1.54',
       game_id: 8,
-      channelId: 6041,
+      channelId: channelId,
       channel: 'biguo',
       user_name: userId
     }
