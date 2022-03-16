@@ -84,7 +84,8 @@ import { loginFirstStepBinghuyouxi,
 				 loginFirstStep3011JqcmH5,
 				 loginFirstStepJzsyJqcmWzxz,
 				 loginFirstStepGyyJqcmWzxz,
-				 loginFirstStepWjxl2Direct } from '@/api/game'
+				 loginFirstStepWjxl2Direct,
+				 loginFirstStepJiaozishouyouXzgl } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -508,6 +509,18 @@ export default {
 							duration: 2000,
 							icon: 'none'
 						})
+					} else if ([40].includes(this.userInfo.loginType)) { // 饺子手游-修真归来
+						handleGetServerConfigTapTap(6201, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -554,12 +567,12 @@ export default {
 						this.handleLoginFirstStepXiuzhenguilai() // 修真归来
 					} else if (this.userInfo.loginType === 29) {
 						this.handleLoginFirstStepFeixianjueJiaozishouyou() // 飞仙诀(饺子手游)
-					} else if (this.userInfo.loginType === 40) {
+					} else if (this.userInfo.loginType === 99) {
 						this.handleLoginFirstStepTianyingqiyuan() // 天影奇缘
 					} else if (this.userInfo.loginType === 30) {
 						this.handleLoginFirstStepBinghuyouxi() // 冰湖游戏天
 					}	else if (this.userInfo.loginType === 31) {
-						this.handleLoginFirstStepJiaozishouyouH5() // 饺子手游剑气除魔H5
+						this.handleLoginFirstStepJiaozishouyouH5() // 饺子手游-剑气除魔
 					} else if (this.userInfo.loginType === 32) {
 						this.handleLoginFirstStep3011() // 3011游戏
 					} else if (this.userInfo.loginType === 33) {
@@ -576,6 +589,8 @@ export default {
 						this.handleLoginFirstStepJzsyJqcmCwzxz()
 					} else if ([39].includes(this.userInfo.loginType)) { // 羔羊游-剑气除魔(纯文字修真)
 						this.handleLoginFirstStepGyyJqcmCwzxz()
+					} else if (this.userInfo.loginType === 40) { // 饺子手游修真归来
+						this.handleLoginFirstStepJiaozishouyouXzgl()
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1468,6 +1483,33 @@ export default {
 			}
 			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
 			loginFirstStepJiaozishouyouH5(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					handleGetServerConfigTapTap(6201, this.loginInfo.userId).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// (饺子手游)修真归来登录第一步
+		handleLoginFirstStepJiaozishouyouXzgl() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepJiaozishouyouXzgl(params).then(res => {
 				if (res.code === 1) {
 					this.loginInfo.userId = res.data.userId
 					this.loginInfo.token = res.data.token

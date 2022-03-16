@@ -153,6 +153,14 @@ export function loginFirstStepJiaozishouyouH5(data) {
   )
 }
 
+// 饺子手游修真归来
+export function loginFirstStepJiaozishouyouXzgl(data) {
+  return httpForm.postGYY(
+    '/util/jiaozishouyouXzglLogin.py',
+    data
+  )
+}
+
 // 冰狐游戏登录
 export function loginFirstStepBinghuyouxi(data) {
   return httpForm.postGYY(
