@@ -241,6 +241,14 @@ export function loginFirstStep3011JqcmH5(data) {
   )
 }
 
+// 冰火游戏
+export function loginFirstStepBingHuo(data) {
+  return httpForm.postGYY(
+    '/util/bhJqcmLogin.py',
+    data
+  )
+}
+
 
 // 登录一步
 export function loginFirstStep(data) {

@@ -85,7 +85,8 @@ import { loginFirstStepBinghuyouxi,
 				 loginFirstStepJzsyJqcmWzxz,
 				 loginFirstStepGyyJqcmWzxz,
 				 loginFirstStepWjxl2Direct,
-				 loginFirstStepJiaozishouyouXzgl } from '@/api/game'
+				 loginFirstStepJiaozishouyouXzgl,
+				 loginFirstStepBingHuo } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -521,6 +522,8 @@ export default {
 							duration: 2000,
 							icon: 'none'
 						})
+					} else if ([41].includes(this.userInfo.loginType)) { // 冰火游戏
+						this.handleLoginFirstStepBingHuo()
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -591,6 +594,8 @@ export default {
 						this.handleLoginFirstStepGyyJqcmCwzxz()
 					} else if (this.userInfo.loginType === 40) { // 饺子手游修真归来
 						this.handleLoginFirstStepJiaozishouyouXzgl()
+					} else if (this.userInfo.loginType === 41) { // 冰火游戏
+						this.handleLoginFirstStepBingHuo()
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1514,6 +1519,33 @@ export default {
 					this.loginInfo.userId = res.data.userId
 					this.loginInfo.token = res.data.token
 					handleGetServerConfigTapTap(6201, this.loginInfo.userId).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 冰火游戏登录第一步
+		handleLoginFirstStepBingHuo() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepBingHuo(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					handleGetServerConfigWJXL(6215, this.loginInfo.userId,26).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleAddUser()
 					})
