@@ -523,7 +523,17 @@ export default {
 							icon: 'none'
 						})
 					} else if ([41].includes(this.userInfo.loginType)) { // 冰火游戏
-						this.handleLoginFirstStepBingHuo()
+						handleGetServerConfigWJXL(6215, this.loginInfo.userId,26).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
