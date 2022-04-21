@@ -72,6 +72,7 @@ import { loginFirstStepZuiqiangxiuxian, loginSecondStepZuiqiangxiuxian } from '@
 import { loginFirstStepTianyingqiyuan, loginSecondTianyingqiyuan } from '@/api/login'
 import { loginFirstStepJHCS, loginSecondStepJHCS, loginFourStepJHCS } from '@/api/login'
 import { loginFirstStepXiuzhenguilai, loginSecondStepXiuzhenguilai, loginThirdStepXiuzhenguilai } from '@/api/login'
+import { aojiancangqiongLogin } from '@/api/login'
 import { loginThirdStepJHCS } from '@/api/loginApp'
 import { loginFirstStepFeixianjueGYY } from '@/api/game'
 import { loginFirstStepFeixianjueJiaozishouyou, loginFirstStepJiaozishouyouH5 } from '@/api/game'
@@ -534,6 +535,18 @@ export default {
 							duration: 2000,
 							icon: 'none'
 						})
+					} else if ([42].includes(this.userInfo.loginType)) { // 傲剑苍穹
+						handleGetServerConfigWJXL(6194, this.loginInfo.userId, 12).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -606,6 +619,8 @@ export default {
 						this.handleLoginFirstStepJiaozishouyouXzgl()
 					} else if (this.userInfo.loginType === 41) { // 冰火游戏
 						this.handleLoginFirstStepBingHuo()
+					} else if (this.userInfo.loginType === 42) { // 傲剑苍穹
+						this.handleLoginFirstStepAojianCangQiong()
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1570,6 +1585,36 @@ export default {
 			})
 		},
 
+		// 傲剑苍穹登录第一步
+		handleLoginFirstStepAojianCangQiong() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm,
+				appid: '2391849227',
+				sdkver: 13,
+				remember: 1,
+				imei: '',
+				oaid: '',
+				idfa: ''
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			aojiancangqiongLogin(params).then(res => {
+				if (res.err_code === 0) {
+					this.loginInfo.userId = res.data.uid
+					this.loginInfo.token = res.data.token
+					this.handleLoginSecondStep()
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
 		// 冰湖游戏登录第一步
 		handleLoginFirstStepBinghuyouxi() {
 			this.loginInfo.PHPSESSID = randomString(26)
@@ -2085,6 +2130,13 @@ export default {
 					token: this.loginInfo.sessionid,
 					userId: this.loginInfo.userId
 				}
+			} else if (this.userInfo.loginType === 42) { // 傲剑苍穹
+				channelId = 6194
+				version = '1.0'
+				signObj = {
+					token: this.loginInfo.token,
+					uid: this.loginInfo.userId
+				}
 			}
 			const timeStamp = Date.parse(new Date()) / 1000
 			const str1 = JSON.stringify(signObj)
@@ -2176,6 +2228,11 @@ export default {
 						})
 					} else if ([25].includes(this.userInfo.loginType)) { // 人渣反派
 						handleGetServerConfigWJXL(6102, this.loginInfo.userId, 11).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.handleLoginThirdStep()
+						})
+					} else if ([42].includes(this.userInfo.loginType)) { // 傲剑苍穹
+						handleGetServerConfigWJXL(6194, this.loginInfo.userId, 12).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStep()
 						})

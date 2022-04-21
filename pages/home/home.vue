@@ -1615,6 +1615,12 @@ export default {
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
+      } else if (this.userInfo.loginType === 42) { // 傲剑苍穹
+        handleGetServerConfigWJXL(6194, this.loginInfo.userId,12).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
       } else { // 其他平台
         handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo

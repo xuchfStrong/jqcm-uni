@@ -255,6 +255,14 @@ export function loginFourStepJHCS(params) {
   )
 }
 
+// 傲剑苍穹登录
+export function aojiancangqiongLogin(data) {
+  return httpForm.post(
+    'https://api.kingoo.com.cn/web/sdk_login/',
+    data
+  )
+}
+
 export function getServerConfig(params) {
   return httpNoProxy.get(
     'https://dzztest.dzz.begindcc.com/www/api/server_config.php',
