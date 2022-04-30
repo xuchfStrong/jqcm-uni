@@ -72,7 +72,6 @@ import { loginFirstStepZuiqiangxiuxian, loginSecondStepZuiqiangxiuxian } from '@
 import { loginFirstStepTianyingqiyuan, loginSecondTianyingqiyuan } from '@/api/login'
 import { loginFirstStepJHCS, loginSecondStepJHCS, loginFourStepJHCS } from '@/api/login'
 import { loginFirstStepXiuzhenguilai, loginSecondStepXiuzhenguilai, loginThirdStepXiuzhenguilai } from '@/api/login'
-import { aojiancangqiongLogin } from '@/api/login'
 import { loginThirdStepJHCS } from '@/api/loginApp'
 import { loginFirstStepFeixianjueGYY } from '@/api/game'
 import { loginFirstStepFeixianjueJiaozishouyou, loginFirstStepJiaozishouyouH5 } from '@/api/game'
@@ -87,7 +86,8 @@ import { loginFirstStepBinghuyouxi,
 				 loginFirstStepGyyJqcmWzxz,
 				 loginFirstStepWjxl2Direct,
 				 loginFirstStepJiaozishouyouXzgl,
-				 loginFirstStepBingHuo } from '@/api/game'
+				 loginFirstStepBingHuo,
+				 loginFirstStepAjcq } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -1599,10 +1599,11 @@ export default {
 				idfa: ''
 			}
 			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
-			aojiancangqiongLogin(params).then(res => {
-				if (res.err_code === 0) {
-					this.loginInfo.userId = res.data.uid
-					this.loginInfo.token = res.data.token
+			loginFirstStepAjcq(params).then(res => {
+				console.log('res', res)
+				if (res.code === 200) {
+					this.loginInfo.userId = res.userid
+					this.loginInfo.token = res.token
 					this.handleLoginSecondStep()
 				} else {
 					this.flag.showServer = false

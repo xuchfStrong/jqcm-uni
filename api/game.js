@@ -217,6 +217,15 @@ export function loginFirstStepJzsyJqcmWzxz(data) {
   )
 }
 
+// 傲剑苍穹通过python登录
+export function loginFirstStepAjcq(data) {
+  return httpForm.postGYY(
+    '/util/aojiancangqiongLogin.py',
+    data
+  )
+}
+
+
 // 羔羊游剑气除魔文字修真登录
 export function loginFirstStepGyyJqcmWzxz(data) {
   return httpForm.postGYY(
