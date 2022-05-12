@@ -458,7 +458,17 @@ export default {
 						})
 						// #endif
 					} else if ([28].includes(this.userInfo.loginType)) { // 修真归来)
-						this.handleLoginFirstStepXiuzhenguilai()
+						handleGetServerConfigWJXL(6147, this.loginInfo.userId,19).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else if ([29].includes(this.userInfo.loginType)) { // 飞仙诀(饺子手游))
 						handleGetServerConfigFeixianjueGYY(2005, 'changwei2', this.loginInfo.userId,2).then(serverInfo => {
 							this.serverInfo = serverInfo
@@ -472,7 +482,17 @@ export default {
 							icon: 'none'
 						})
 					} else if ([30].includes(this.userInfo.loginType)) { // 冰湖游戏)
-						this.handleLoginFirstStepBinghuyouxi()
+						handleGetServerConfigTapTap(6196, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else if ([31].includes(this.userInfo.loginType)) { // 饺子手游剑气除魔H5)
 						handleGetServerConfigTapTap(6201, this.loginInfo.userId).then(serverInfo => {
 							this.serverInfo = serverInfo
@@ -486,19 +506,89 @@ export default {
 							icon: 'none'
 						})
 					} else if ([32].includes(this.userInfo.loginType)) { // 3011游戏)
-						this.handleLoginFirstStep3011()
+						handleGetServerConfig(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else if ([33].includes(this.userInfo.loginType)) { // 游戏鸭)
-						this.handleLoginFirstStepYXY()
+						handleGetServerConfigTapTap(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else if ([34].includes(this.userInfo.loginType)) { // 游戏鸭神之六面)
-						this.handleLoginFirstStepYXYSzlm()
+						handleGetServerConfigXianfanzhuan(this.loginInfo.channelId, this.loginInfo.userId, 21).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else if ([35].includes(this.userInfo.loginType)) { // 游戏鸭剑气除魔文字修真)
-						this.handleLoginFirstStepYXYJqcmWzxz()
+						handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else if ([36].includes(this.userInfo.loginType)) { // 3011剑气除魔文字修真)
-						this.handleLoginFirstStep3011JqcmWzxz()
+						handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else if ([37].includes(this.userInfo.loginType)) { // 3011剑气除魔H5)
-						this.handleLoginFirstStep3011JqcmH5()
+						handleGetServerConfigTapTap(6201, this.loginInfo.userId).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else if ([38].includes(this.userInfo.loginType)) { // 饺子手游-剑气除魔(纯文字修真)
-						this.handleLoginFirstStepJzsyJqcmCwzxz()
+						handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else if ([39].includes(this.userInfo.loginType)) { // 羔羊游-剑气除魔(纯文字修真)
 						handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
 							this.serverInfo = serverInfo

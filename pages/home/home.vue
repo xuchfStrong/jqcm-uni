@@ -1574,13 +1574,13 @@ export default {
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 35) { // 游戏鸭剑气除魔文字修真
-        handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId, 21).then(serverInfo => {
+        handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId, 25).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 36) { // 3011剑气除魔文字修真
-        handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId, 21).then(serverInfo => {
+        handleGetServerConfigWJXL(this.loginInfo.channelId, this.loginInfo.userId, 26).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.initSaveData()
 					this.$toast("服务器更新成功")
