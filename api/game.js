@@ -225,6 +225,14 @@ export function loginFirstStepAjcq(data) {
   )
 }
 
+// 修仙霸业通过python登录
+export function loginFirstStepXXBY(data) {
+  return httpForm.postGYY(
+    '/util/xiuxianbayeLogin.py',
+    data
+  )
+}
+
 
 // 羔羊游剑气除魔文字修真登录
 export function loginFirstStepGyyJqcmWzxz(data) {

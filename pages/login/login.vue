@@ -87,7 +87,8 @@ import { loginFirstStepBinghuyouxi,
 				 loginFirstStepWjxl2Direct,
 				 loginFirstStepJiaozishouyouXzgl,
 				 loginFirstStepBingHuo,
-				 loginFirstStepAjcq } from '@/api/game'
+				 loginFirstStepAjcq,
+				 loginFirstStepXXBY } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -637,6 +638,18 @@ export default {
 							duration: 2000,
 							icon: 'none'
 						})
+					} else if ([43].includes(this.userInfo.loginType)) { // 修仙霸业
+						handleGetServerConfigWJXL(6230, this.loginInfo.userId, 12).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -711,6 +724,8 @@ export default {
 						this.handleLoginFirstStepBingHuo()
 					} else if (this.userInfo.loginType === 42) { // 傲剑苍穹
 						this.handleLoginFirstStepAojianCangQiong()
+					} else if (this.userInfo.loginType === 43) { // 修仙霸业
+						this.handleLoginFirstStepXiuxianbaye()
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1706,6 +1721,35 @@ export default {
 			})
 		},
 
+		// 修仙霸业登录第一步
+		handleLoginFirstStepXiuxianbaye() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm,
+				appid: '4046410912',
+				remember: 1,
+				imei: '',
+				idfa: ''
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepXXBY(params).then(res => {
+				console.log('res', res)
+				if (res.code === 200) {
+					this.loginInfo.userId = res.userid
+					this.loginInfo.token = res.token
+					this.handleLoginSecondStep()
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
 		// 冰湖游戏登录第一步
 		handleLoginFirstStepBinghuyouxi() {
 			this.loginInfo.PHPSESSID = randomString(26)
@@ -2228,6 +2272,13 @@ export default {
 					token: this.loginInfo.token,
 					uid: this.loginInfo.userId
 				}
+			} else if (this.userInfo.loginType === 43) { // 修仙霸业
+				channelId = 6230
+				version = '1.0'
+				signObj = {
+					token: this.loginInfo.token,
+					uid: this.loginInfo.userId
+				}
 			}
 			const timeStamp = Date.parse(new Date()) / 1000
 			const str1 = JSON.stringify(signObj)
@@ -2324,6 +2375,11 @@ export default {
 						})
 					} else if ([42].includes(this.userInfo.loginType)) { // 傲剑苍穹
 						handleGetServerConfigWJXL(6194, this.loginInfo.userId, 12).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.handleLoginThirdStep()
+						})
+					} else if ([43].includes(this.userInfo.loginType)) { // 修仙霸业
+						handleGetServerConfigWJXL(6230, this.loginInfo.userId, 12).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.handleLoginThirdStep()
 						})
