@@ -209,6 +209,14 @@ export function loginFirstStep3011JqcmWzxz(data) {
   )
 }
 
+// 3011剑气除魔文字修真登录
+export function loginFirstStepBatu(data) {
+  return httpForm.postGYY(
+    '/util/batuLogin.py',
+    data
+  )
+}
+
 // 饺子手游剑气除魔文字修真登录
 export function loginFirstStepJzsyJqcmWzxz(data) {
   return httpForm.postGYY(

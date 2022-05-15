@@ -88,7 +88,8 @@ import { loginFirstStepBinghuyouxi,
 				 loginFirstStepJiaozishouyouXzgl,
 				 loginFirstStepBingHuo,
 				 loginFirstStepAjcq,
-				 loginFirstStepXXBY } from '@/api/game'
+				 loginFirstStepXXBY,
+				 loginFirstStepBatu } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -650,6 +651,18 @@ export default {
 							duration: 2000,
 							icon: 'none'
 						})
+					} else if ([44].includes(this.userInfo.loginType)) { // 巴兔
+						handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -726,6 +739,8 @@ export default {
 						this.handleLoginFirstStepAojianCangQiong()
 					} else if (this.userInfo.loginType === 43) { // 修仙霸业
 						this.handleLoginFirstStepXiuxianbaye()
+					} else if (this.userInfo.loginType === 44) { // 巴兔平台
+						this.handleLoginFirstStepBatu()
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1739,6 +1754,33 @@ export default {
 					this.loginInfo.userId = res.userid
 					this.loginInfo.token = res.token
 					this.handleLoginSecondStep()
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 巴兔登录第一步
+		handleLoginFirstStepBatu() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepBatu(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					handleGetServerConfigWJXL(6215, this.loginInfo.userId,26).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
 				} else {
 					this.flag.showServer = false
 					uni.showToast({
