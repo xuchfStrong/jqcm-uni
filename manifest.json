@@ -2,8 +2,8 @@
     "name" : "剑气除魔火箭辅助",
     "appid" : "__UNI__5AE1708",
     "description" : "",
-    "versionName" : "2.1.0",
-    "versionCode" : 210,
+    "versionName" : "2.1.1",
+    "versionCode" : 211,
     "transformPx" : false,
     "app-plus" : {
         "nvueCompiler" : "uni-app",
@@ -164,8 +164,12 @@
             "name" : "渠道8"
         },
         {
+            "id" : "10",
+            "name" : "渠道10"
+        },
+        {
             "id" : "31",
-            "name" : "渠道3下线1"
+            "name" : "渠道31"
         }
     ]
 }

@@ -246,6 +246,7 @@ export function getChannel() {
     "9096": "6",
     "9097": "7",
     "9098": "8",
+    "9100": "10",
     "19031": "31",
   }
   const port = window.location.port

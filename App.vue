@@ -28,6 +28,8 @@
 							pkgUrl = data.pkgUrl7
 						} else if (jqcmSaleChannel === '8') {
 							pkgUrl = data.pkgUrl8
+						} else if (jqcmSaleChannel === '10') {
+							pkgUrl = data.pkgUrl10
 						} else if (jqcmSaleChannel === '31') {
 							pkgUrl = data.pkgUrl31
 						}

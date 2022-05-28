@@ -67,6 +67,7 @@
 		<text v-if="utils.showContact6&&jqcmSaleChannel === '6'" class="waring-wrap">{{ utils.contact6 }}</text>
 		<text v-if="utils.showContact7&&jqcmSaleChannel === '7'" class="waring-wrap">{{ utils.contact7 }}</text>
 		<text v-if="utils.showContact8&&jqcmSaleChannel === '8'" class="waring-wrap">{{ utils.contact8 }}</text>
+		<text v-if="utils.showContact10&&jqcmSaleChannel === '10'" class="waring-wrap">{{ utils.contact10 }}</text>
 		<text v-if="utils.showContact31&&jqcmSaleChannel === '31'" class="waring-wrap">{{ utils.contact31 }}</text>
 		
 		
@@ -500,6 +501,26 @@
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">仙盟坊市买地兽天·山河图</view>
 				    <switch :checked="!!configInfo.is_buy_xm_sht" @change="changeSwitchBoolean('is_buy_xm_sht')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">自动打次元裂缝(5+3*8=29星，介意勿开)</view>
+				    <switch :checked="!!configInfo.is_auto_cylf" @change="changeSwitchBoolean('is_auto_cylf')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">次元商店购买孙悟空碎片</view>
+				    <switch :checked="!!configInfo.is_buy_swk_sp" @change="changeSwitchBoolean('is_buy_swk_sp')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">次元商店购买少年哪吒碎片</view>
+				    <switch :checked="!!configInfo.is_buy_snnz_sp" @change="changeSwitchBoolean('is_buy_snnz_sp')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">次元商店购买杨戬碎片</view>
+				    <switch :checked="!!configInfo.is_buy_yj_sp" @change="changeSwitchBoolean('is_buy_yj_sp')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">次元商店购买月光宝匣</view>
+				    <switch :checked="!!configInfo.is_buy_ygbx" @change="changeSwitchBoolean('is_buy_ygbx')"/>
 				</view>
 		</view>
 
@@ -995,7 +1016,11 @@ const configInfoDefault = {
 	is_auto_xlzb_jc: 0, // 自动仙路争霸竞猜
 	is_buy_zhanmingshi: 0, // 自动购买占命石
 	is_buy_xy_sht: 0, // 仙缘商店买地兽天·山河图
-	is_buy_xm_sht: 0 // 仙盟坊市买地兽天·山河图
+	is_auto_cylf: 0, // 自动打次元裂缝(5+3*8=29星，介意勿开)
+	is_buy_swk_sp: 0, // 次元商店购买孙悟空碎片
+	is_buy_snnz_sp: 0, // 次元商店购买少年哪吒碎片
+	is_buy_yj_sp: 0, // 次元商店购买杨戬碎片
+	is_buy_ygbx: 0, // 次元商店购买月光宝匣
 }
 
 const gongfaObjDefault = {
