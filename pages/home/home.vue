@@ -1016,6 +1016,7 @@ const configInfoDefault = {
 	is_auto_xlzb_jc: 0, // 自动仙路争霸竞猜
 	is_buy_zhanmingshi: 0, // 自动购买占命石
 	is_buy_xy_sht: 0, // 仙缘商店买地兽天·山河图
+	is_buy_xm_sht: 0, // 仙盟坊市买地兽天·山河图
 	is_auto_cylf: 0, // 自动打次元裂缝(5+3*8=29星，介意勿开)
 	is_buy_swk_sp: 0, // 次元商店购买孙悟空碎片
 	is_buy_snnz_sp: 0, // 次元商店购买少年哪吒碎片
