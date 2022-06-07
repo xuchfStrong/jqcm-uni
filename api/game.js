@@ -98,10 +98,17 @@ export function getStrUserid(params) {
 }
 
 // 转移时间
-// 修改配置信息
 export function transferTime(data) {
   return httpForm.post(
     '/jqcm/transfer_time.php',
+    data
+  )
+}
+
+// 游戏反馈
+export function feedback(data) {
+  return httpForm.post(
+    '/jqcm/feedback.php',
     data
   )
 }
@@ -237,6 +244,14 @@ export function loginFirstStepAjcq(data) {
 export function loginFirstStepXXBY(data) {
   return httpForm.postGYY(
     '/util/xiuxianbayeLogin.py',
+    data
+  )
+}
+
+// 咪噜通过python登录
+export function loginFirstStepMilu(data) {
+  return httpForm.postGYY(
+    '/util/miluCwzxz.py',
     data
   )
 }

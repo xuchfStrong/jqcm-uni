@@ -38,6 +38,12 @@
 			}
 		},
 		{
+			"path": "pages/feedback/feedback",
+			"style": {
+				"navigationBarTitleText": "征集信息"
+			}
+		},
+		{
 			"path": "pages/test/index",
 			"style": {
 				"navigationBarTitleText": "测试"

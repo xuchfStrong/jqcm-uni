@@ -44,6 +44,7 @@
 					<button type="primary" plain="true" size="mini" @tap="loginSwitch">切换账号</button>
 					<text style="width: 10upx; display: inline-block;"></text>
 					<button type="primary" plain="true" size="mini" @tap="handleGetServerList">更新服务器</button>
+					<text style="width: 10upx; display: inline-block;"></text>
 				</view>
 			</view>
 			<view  class="btn-center">
@@ -53,6 +54,13 @@
 					<button type="primary" plain="true" size="mini" @tap="handleRemoveRole">移除收藏</button>
 					<text style="width: 10upx; display: inline-block;"></text>
 					<button type="primary" plain="true" size="mini" @tap="handleClearSaveRole">清空收藏</button>
+				</view>
+			</view>
+
+			<view  class="btn-center">
+				<view>
+					<button type="primary" plain="true" size="mini" @tap="handleOpenServerTime">开区时间</button>
+					<button v-if="utils.showFeedback" type="primary" plain="true" style="margin-left:10upx" size="mini" @tap="handleFeedback">有需要辅助的游戏点此反馈</button>
 				</view>
 			</view>
 		</view>
@@ -70,7 +78,14 @@
 		<text v-if="utils.showContact10&&jqcmSaleChannel === '10'" class="waring-wrap">{{ utils.contact10 }}</text>
 		<text v-if="utils.showContact31&&jqcmSaleChannel === '31'" class="waring-wrap">{{ utils.contact31 }}</text>
 		
-		
+		<uni-popup ref="openServerTimePopup" type="top">
+			<view class="popup-wrap">
+				<text class="popup-content">
+					{{ utils.openServerTime }}
+				</text>
+			</view>
+		</uni-popup>
+
 		<view class="uni-divider">
 			<view class="uni-divider__content">云挂机</view>
 			<view class="uni-divider__line"></view>
@@ -1261,6 +1276,12 @@ export default {
 			})
 		},
 
+		handleFeedback() {
+			uni.navigateTo({
+			    url: '/pages/feedback/feedback'
+			})
+		},
+
 		handleGetUtils() {
       getUtils().then(res => {
 				this.utils = res
@@ -1283,6 +1304,10 @@ export default {
 			.catch(err => {
 				console.log(err)
 			})
+		},
+
+		handleOpenServerTime() {
+			this.$refs.openServerTimePopup.open('bottom')
 		},
 
 		// 收藏角色到本地
@@ -1653,7 +1678,7 @@ export default {
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
-      } else if (this.userInfo.loginType === 44) { // 巴兔
+      } else if ( [44,45].includes(this.userInfo.loginType)) { // 巴兔和咪噜
         handleGetServerConfigWJXL(6215, this.loginInfo.userId,26).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.initSaveData()
@@ -2220,6 +2245,15 @@ export default {
   color: red;
   margin-top: 10upx;
   white-space: pre-line;
+	user-select: text;
+}
+.popup-wrap {
+	background: #ffffff;
+	padding: 20upx;
+}
+.popup-content {
+	margin-top: 10upx;
+	white-space: pre-line;
 	user-select: text;
 }
 .content-wrap {
