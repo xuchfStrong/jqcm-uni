@@ -90,7 +90,8 @@ import { loginFirstStepBinghuyouxi,
 				 loginFirstStepAjcq,
 				 loginFirstStepXXBY,
 				 loginFirstStepBatu,
-				 loginFirstStepMilu } from '@/api/game'
+				 loginFirstStepMilu,
+				 loginWgzz } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -676,6 +677,18 @@ export default {
 							duration: 2000,
 							icon: 'none'
 						})
+					} else if ([46].includes(this.userInfo.loginType)) { // 万古至尊
+						handleGetServerConfigWJXL(6238, this.loginInfo.userId, 12).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -756,6 +769,8 @@ export default {
 						this.handleLoginFirstStepBatu()
 					} else if (this.userInfo.loginType === 45) { // 咪噜平台
 						this.handleLoginFirstStepMilu()
+					} else if (this.userInfo.loginType === 46) { // 万古至尊
+						this.handleLoginFirstStepWGZZ()
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1820,6 +1835,33 @@ export default {
 					this.loginInfo.userId = res.data.userId
 					this.loginInfo.token = res.data.token
 					handleGetServerConfigWJXL(6215, this.loginInfo.userId,26).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 万古至尊登录第一步
+		handleLoginFirstStepWGZZ() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginWgzz(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					handleGetServerConfigWJXL(6238, this.loginInfo.userId,12).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleAddUser()
 					})

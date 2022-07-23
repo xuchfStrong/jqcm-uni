@@ -248,6 +248,14 @@ export function loginFirstStepXXBY(data) {
   )
 }
 
+// 万古至尊通过python登录
+export function loginWgzz(data) {
+  return httpForm.postGYY(
+    '/util/wgzzLogin.py',
+    data
+  )
+}
+
 // 咪噜通过python登录
 export function loginFirstStepMilu(data) {
   return httpForm.postGYY(
