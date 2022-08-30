@@ -690,7 +690,7 @@ export default {
 							duration: 2000,
 							icon: 'none'
 						})
-					} else if ([46].includes(this.userInfo.loginType)) { // 五岳乾坤
+					} else if ([47].includes(this.userInfo.loginType)) { // 五岳乾坤
 						handleGetServerConfigWJXL(6157, this.loginInfo.userId, 18).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.flag.showServer = true
