@@ -297,6 +297,14 @@ export function loginFirstStepBingHuo(data) {
   )
 }
 
+// 五岳乾坤
+export function loginFirstStepWyqk(data) {
+  return httpForm.postGYY(
+    '/util/wyqkLogin.py',
+    data
+  )
+}
+
 
 // 登录一步
 export function loginFirstStep(data) {

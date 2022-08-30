@@ -154,7 +154,7 @@
 			</view>
 			<view class="attr-flex-item">
 				<text>战力：</text>
-				<text>{{ roleInfo.zhanli }}</text>
+				<text>{{ roleInfo.zhanli | valueFormatFilter }}</text>
 			</view>
 			<view class="attr-flex-item">
 				<text>主宰层数：</text>
@@ -536,6 +536,27 @@
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">次元商店购买月光宝匣</view>
 				    <switch :checked="!!configInfo.is_buy_ygbx" @change="changeSwitchBoolean('is_buy_ygbx')"/>
+				</view>
+				
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">仙缘商店买命元精华(每日500仙缘)</view>
+				    <switch :checked="!!configInfo.is_buy_myjh" @change="changeSwitchBoolean('is_buy_myjh')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">仙盟买聚魂石(每日5000贡献)</view>
+				    <switch :checked="!!configInfo.is_buy_jhs" @change="changeSwitchBoolean('is_buy_jhs')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">仙盟买造化石(每日8000贡献)</view>
+				    <switch :checked="!!configInfo.is_buy_zhs" @change="changeSwitchBoolean('is_buy_zhs')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">仙盟二层买天衍玉(每周500仙贝)</view>
+				    <switch :checked="!!configInfo.is_buy_tyy" @change="changeSwitchBoolean('is_buy_tyy')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">荣誉商店买锻造精铁(每日500荣誉)</view>
+				    <switch :checked="!!configInfo.is_buy_dzjt" @change="changeSwitchBoolean('is_buy_dzjt')"/>
 				</view>
 		</view>
 
@@ -1037,6 +1058,11 @@ const configInfoDefault = {
 	is_buy_snnz_sp: 0, // 次元商店购买少年哪吒碎片
 	is_buy_yj_sp: 0, // 次元商店购买杨戬碎片
 	is_buy_ygbx: 0, // 次元商店购买月光宝匣
+	is_buy_myjh: 0, // 仙缘商店买命元精华(每日500仙缘)
+	is_buy_jhs: 0, // 仙盟买聚魂石(每日5000贡献)
+	is_buy_zhs: 0, // 仙盟买造化石(每日8000贡献)
+	is_buy_tyy: 0, // 仙盟二层买天衍玉(每周500仙贝)
+	is_buy_dzjt: 0, // 荣誉商店买锻造精铁(每日500荣誉)
 }
 
 const gongfaObjDefault = {
@@ -1686,6 +1712,12 @@ export default {
 				})
       } else if (this.userInfo.loginType === 46) { // 万古至尊
         handleGetServerConfigWJXL(6238, this.loginInfo.userId,12).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
+      } else if (this.userInfo.loginType === 47) { // 五岳乾坤
+        handleGetServerConfigWJXL(6157, this.loginInfo.userId,18).then(serverInfo => {
 					this.serverInfo = serverInfo
 					this.initSaveData()
 					this.$toast("服务器更新成功")
