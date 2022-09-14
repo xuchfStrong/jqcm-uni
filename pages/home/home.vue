@@ -143,6 +143,7 @@
 			<text>境界：</text>
 			<text>{{ roleInfo.role_level | jingjieFilter }}</text>
 		</view>
+
 		<view class="attr-flex">
 			<view class="attr-flex-item">
 				<text>巅峰排名：</text>
@@ -184,11 +185,11 @@
 				<text>灵币：</text>
 				<text>{{ roleInfo.lingbi | valueFormatFilter }}</text>
 			</view>
-			<view class="attr-flex-item">
+			<view class="flex-item-two">
 				<text>背包空间：</text>
-				<text>{{ roleInfo.wupin_bag_count }}</text>
+				<text :class="{danger: isBagFull}">{{ roleInfo.wupin_bag_count }}</text>
 			</view>
-			<view class="attr-flex-item"/>
+			<!-- <view class="attr-flex-item"/> -->
 <!-- 			<view>
 				<text>VIP经验：</text>
 				<text>{{ notGetChargeValue ? '未获取到':roleInfo.charge_value }}，</text>
@@ -336,6 +337,10 @@
 		        <switch :checked="!!configInfo.is_change_weimian" @change="changeSwitchBoolean('is_change_weimian')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">位面自动清人</view>
+				    <switch :checked="!!configInfo.is_weimian_attack" @change="changeSwitchBoolean('is_weimian_attack')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">自动仙斗</view>
 		        <switch :checked="!!configInfo.is_xiandou" @change="changeSwitchBoolean('is_xiandou')"/>
 		    </view>
@@ -443,10 +448,6 @@
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动打次元裂缝(5+3*8=29星，介意勿开)</view>
 				    <switch :checked="!!configInfo.is_auto_cylf" @change="changeSwitchBoolean('is_auto_cylf')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">位面自动清人</view>
-				    <switch :checked="!!configInfo.is_weimian_attack" @change="changeSwitchBoolean('is_weimian_attack')"/>
 				</view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动分解绿色仙魂</view>
@@ -1166,6 +1167,17 @@ export default {
     // 计算位面位置是否未占有
     isNoWeimian() {
       return this.roleInfo.weimian_weizhi === 0
+    },
+
+		// 计算包裹是否满了
+    isBagFull() {
+			if (this.roleInfo.wupin_bag_count) {
+				const usedBag = Number(this.roleInfo.wupin_bag_count.split("/")[0])
+				const allBag = Number(this.roleInfo.wupin_bag_count.split("/")[1])
+				return allBag - usedBag <= 10
+			} else {
+				return false
+			}
     },
 
     // 是否获取到充值额度
@@ -2183,7 +2195,7 @@ export default {
 	width: 100%;
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 }
 .attr-flex-item {
 	flex: 1;
