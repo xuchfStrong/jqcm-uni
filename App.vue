@@ -202,6 +202,18 @@
 		padding: 20upx;
 	}
 
+	.uni-collapse-item__title.is-open {
+		background: #dcdfe6;
+	}
+
+	.uni-collapse-item__title-text {
+		font-weight: 600;
+	}
+
+	.uni-collapse-item__title-box {
+		background-color: transparent !important;
+	}
+
 	button.primary {
 		background-color: #0faeff;
 	}

@@ -404,14 +404,14 @@
 		        <view class="uni-list-cell-db">自动购买斗魂之巅次数</view>
 		        <switch :checked="!!configInfo.is_goumai_douhunzhidian" @change="changeSwitchBoolean('is_goumai_douhunzhidian')"/>
 		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
+				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">仙盟购买青莲朝心神通</view>
 		        <switch :checked="!!configInfo.is_goumai_qinglianchaoxin" @change="changeSwitchBoolean('is_goumai_qinglianchaoxin')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">荣誉购买清风剑碎片</view>
 		        <switch :checked="!!configInfo.is_goumai_qingfengjian" @change="changeSwitchBoolean('is_goumai_qingfengjian')"/>
-		    </view>
+		    </view> -->
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">自动升级战阵</view>
 		        <switch :checked="!!configInfo.is_shengzhanzhen" @change="changeSwitchBoolean('is_shengzhanzhen')"/>
@@ -424,7 +424,7 @@
 				    <view class="uni-list-cell-db">自动升级观星阁</view>
 				    <switch :checked="!!configInfo.is_up_guanxingge" @change="changeSwitchBoolean('is_up_guanxingge')"/>
 				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
+				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动购买占命石</view>
 				    <switch :checked="!!configInfo.is_buy_zhanmingshi" @change="changeSwitchBoolean('is_buy_zhanmingshi')"/>
 				</view>
@@ -459,7 +459,7 @@
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动购买琉璃戒·奇珍碎片</view>
 				    <switch :checked="!!configInfo.is_goumai_lljie_qzsp" @change="changeSwitchBoolean('is_goumai_lljie_qzsp')"/>
-				</view>
+				</view> -->
 				<!-- 最强修仙编辑器独有 -->
 				<view v-if="userInfo.loginType === 24 " class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动购买火凤凰魂骨</view>
@@ -481,10 +481,10 @@
 				    <view class="uni-list-cell-db">购买探宝灯(售价:2000)</view>
 				    <switch :checked="!!configInfo.is_buy_tbd2000" @change="changeSwitchBoolean('is_buy_tbd2000')"/>
 				</view> -->
-				<view class="uni-list-cell uni-list-cell-pd-mini">
+				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">购买探宝灯(售价:4000)</view>
 				    <switch :checked="!!configInfo.is_buy_tbd4000" @change="changeSwitchBoolean('is_buy_tbd4000')"/>
-				</view>
+				</view> -->
 				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">购买探宝灯(售价:8000)</view>
 				    <switch :checked="!!configInfo.is_buy_tbd8000" @change="changeSwitchBoolean('is_buy_tbd8000')"/>
@@ -497,31 +497,31 @@
 				    <view class="uni-list-cell-db">购买寻仙令(售价:400)</view>
 				    <switch :checked="!!configInfo.is_buy_xxl400" @change="changeSwitchBoolean('is_buy_xxl400')"/>
 				</view> -->
-				<view class="uni-list-cell uni-list-cell-pd-mini">
+				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">购买铸炼石(售价:400)</view>
 				    <switch :checked="!!configInfo.is_buy_zls400" @change="changeSwitchBoolean('is_buy_zls400')"/>
 				</view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">购买淬灵丹(售价:600)</view>
 				    <switch :checked="!!configInfo.is_buy_cld600" @change="changeSwitchBoolean('is_buy_cld600')"/>
-				</view>
+				</view> -->
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动仙路争霸竞猜</view>
 				    <switch :checked="!!configInfo.is_auto_xlzb_jc" @change="changeSwitchBoolean('is_auto_xlzb_jc')"/>
 				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
+				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">仙缘商店买地兽天·山河图</view>
 				    <switch :checked="!!configInfo.is_buy_xy_sht" @change="changeSwitchBoolean('is_buy_xy_sht')"/>
 				</view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">仙盟坊市买地兽天·山河图</view>
 				    <switch :checked="!!configInfo.is_buy_xm_sht" @change="changeSwitchBoolean('is_buy_xm_sht')"/>
-				</view>
+				</view> -->
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动打次元裂缝(5+3*8=29星，介意勿开)</view>
 				    <switch :checked="!!configInfo.is_auto_cylf" @change="changeSwitchBoolean('is_auto_cylf')"/>
 				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
+				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">次元商店购买孙悟空碎片</view>
 				    <switch :checked="!!configInfo.is_buy_swk_sp" @change="changeSwitchBoolean('is_buy_swk_sp')"/>
 				</view>
@@ -557,7 +557,7 @@
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">荣誉商店买锻造精铁(每日500荣誉)</view>
 				    <switch :checked="!!configInfo.is_buy_dzjt" @change="changeSwitchBoolean('is_buy_dzjt')"/>
-				</view>
+				</view> -->
 		</view>
 
 		<view v-show="currentTab === 1" class="uni-list-no-border">
@@ -939,6 +939,16 @@
 
 		</view>
 
+		<view v-show="currentTab === 2" class="uni-list-no-border">
+			<uni-collapse accordion="true">
+        <uni-collapse-item v-for="(item, index) in options.shop" :key="index" :title="item.text" :open="index === 0">
+					<view style="padding:10px 0 10px 10px;">
+						<uni-data-checkbox v-model="configShop[item.value]" :localdata="options[item.value]" :multiple="true"></uni-data-checkbox>
+					</view>
+				</uni-collapse-item>
+    </uni-collapse>
+		</view>
+
 		
 
 		<view class="save-btn">
@@ -1151,7 +1161,7 @@ export default {
 			allServerindex: 0,
 			serverFromAllServer: 0,
 			currentTab: 0,
-			items: ['开关项','选择项'],
+			items: ['开关项','选择项','商店购买'],
 			utils: {},
 			remoteOptions: {
 				shenshou: []
@@ -1164,6 +1174,7 @@ export default {
 			configInfo: Object.assign({}, configInfoDefault),
 			gongfaObj: Object.assign({}, gongfaObjDefault), // 功法购买相关的配置
 			roleInfo: Object.assign({}, roleInfoDefault),
+			configShop: {},
 			gongfaIndex: {
 				gongji: 0,
 				shengming: 0,
@@ -1824,7 +1835,8 @@ export default {
         switch (code) {
           case 200:
             this.isClickLilianbeishu = false
-						this.configInfo = this.correctSetting(res.data)
+						this.configInfo = res.data
+						this.paraseConfigShop()
             this.calsIsExpired(res.data.end_time)
 						this.calcGongfagoumai(String(res.data.gongfagoumai))
 						this.calcGongfaIndex()
@@ -1979,8 +1991,72 @@ export default {
       }
     },
 
+		// 处理商店购买选项
+		dealConfigShop() {
+			this.options.shop.forEach(item => {
+				if (this.configShop.hasOwnProperty(item.value)) {
+					this.configInfo[item.value] = this.configShop[item.value].join('|')
+				} else {
+					this.configInfo[item.value] = ''
+				}
+			})
+		},
+
+		// 将后台的商店设置解析成数组
+		paraseConfigShop() {
+			this.options.shop.forEach(item => {
+				if (this.configInfo[item.value]) {
+					this.configShop[item.value] = this.configInfo[item.value].split('|')
+				}
+			})
+		},
+
+
+		// 将之前的购买项目设置为0
+		changeOldShopBuyConfig() {
+			const oldShopBuyItem = [
+				'is_goumai_qinglianchaoxin',
+				'is_goumai_qingfengjian',
+				'is_buy_zhanmingshi',
+				'is_goumai_xhxls_z',
+				'is_goumai_xhjys_z',
+				'is_goumai_lljia_qzsp',
+				'is_goumai_zyp_qzsp',
+				'is_goumai_zyy_qzsp',
+				'is_goumai_qzjys',
+				'is_goumai_lljian_qzsp',
+				'is_goumai_lljie_qzsp',
+				'is_buy_tbd2000',
+				'is_buy_tbd4000',
+				'is_buy_tbd8000',
+				'is_buy_xxl200',
+				'is_buy_xxl400',
+				'is_buy_zls400',
+				'is_buy_cld600',
+				'is_buy_xy_sht',
+				'is_buy_xm_sht',
+				'is_buy_swk_sp',
+				'is_buy_snnz_sp',
+				'is_buy_yj_sp',
+				'is_buy_ygbx',
+				'is_buy_myjh',
+				'is_buy_jhs',
+				'is_buy_zhs',
+				'is_buy_tyy',
+				'is_buy_dzjt'
+			]
+			oldShopBuyItem.forEach(item => {
+				if (this.configInfo.hasOwnProperty(item)) {
+					this.configInfo[item] = 0
+				}
+			})
+		},
+
+
     // 修改配置信息
     handleChangeConfigInfo() {
+			this.dealConfigShop()
+			this.changeOldShopBuyConfig()
       this.configInfo.gongfagoumai = this.genGongfagoumaiCfg()
       const param = {
         userid: this.loginInfo.userId,
