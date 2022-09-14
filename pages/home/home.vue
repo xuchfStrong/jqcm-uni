@@ -139,11 +139,11 @@
 			<view class="uni-divider__line"></view>
 		</view>
 		
+		<view>
+			<text>境界：</text>
+			<text>{{ roleInfo.role_level | jingjieFilter }}</text>
+		</view>
 		<view class="attr-flex">
-			<view class="attr-flex-item">
-				<text>境界：</text>
-				<text>{{ roleInfo.role_level | jingjieFilter }}</text>
-			</view>
 			<view class="attr-flex-item">
 				<text>巅峰排名：</text>
 				<text>{{ roleInfo.dianfeng_pos }}</text>
@@ -185,7 +185,10 @@
 				<text>{{ roleInfo.lingbi | valueFormatFilter }}</text>
 			</view>
 			<view class="attr-flex-item">
+				<text>背包空间：</text>
+				<text>{{ roleInfo.wupin_bag_count }}</text>
 			</view>
+			<view class="attr-flex-item"/>
 <!-- 			<view>
 				<text>VIP经验：</text>
 				<text>{{ notGetChargeValue ? '未获取到':roleInfo.charge_value }}，</text>
@@ -404,14 +407,6 @@
 		        <view class="uni-list-cell-db">自动购买斗魂之巅次数</view>
 		        <switch :checked="!!configInfo.is_goumai_douhunzhidian" @change="changeSwitchBoolean('is_goumai_douhunzhidian')"/>
 		    </view>
-				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">仙盟购买青莲朝心神通</view>
-		        <switch :checked="!!configInfo.is_goumai_qinglianchaoxin" @change="changeSwitchBoolean('is_goumai_qinglianchaoxin')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">荣誉购买清风剑碎片</view>
-		        <switch :checked="!!configInfo.is_goumai_qingfengjian" @change="changeSwitchBoolean('is_goumai_qingfengjian')"/>
-		    </view> -->
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">自动升级战阵</view>
 		        <switch :checked="!!configInfo.is_shengzhanzhen" @change="changeSwitchBoolean('is_shengzhanzhen')"/>
@@ -424,42 +419,6 @@
 				    <view class="uni-list-cell-db">自动升级观星阁</view>
 				    <switch :checked="!!configInfo.is_up_guanxingge" @change="changeSwitchBoolean('is_up_guanxingge')"/>
 				</view>
-				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买占命石</view>
-				    <switch :checked="!!configInfo.is_buy_zhanmingshi" @change="changeSwitchBoolean('is_buy_zhanmingshi')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买仙魂洗练石·主</view>
-				    <switch :checked="!!configInfo.is_goumai_xhxls_z" @change="changeSwitchBoolean('is_goumai_xhxls_z')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买仙魂经验石·主</view>
-				    <switch :checked="!!configInfo.is_goumai_xhjys_z" @change="changeSwitchBoolean('is_goumai_xhjys_z')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买琉璃甲·奇珍碎片</view>
-				    <switch :checked="!!configInfo.is_goumai_lljia_qzsp" @change="changeSwitchBoolean('is_goumai_lljia_qzsp')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买紫云佩·奇珍碎片</view>
-				    <switch :checked="!!configInfo.is_goumai_zyp_qzsp" @change="changeSwitchBoolean('is_goumai_zyp_qzsp')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买紫云衣·奇珍碎片</view>
-				    <switch :checked="!!configInfo.is_goumai_zyy_qzsp" @change="changeSwitchBoolean('is_goumai_zyy_qzsp')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买奇珍经验石</view>
-				    <switch :checked="!!configInfo.is_goumai_qzjys" @change="changeSwitchBoolean('is_goumai_qzjys')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买琉璃剑·奇珍碎片</view>
-				    <switch :checked="!!configInfo.is_goumai_lljian_qzsp" @change="changeSwitchBoolean('is_goumai_lljian_qzsp')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">自动购买琉璃戒·奇珍碎片</view>
-				    <switch :checked="!!configInfo.is_goumai_lljie_qzsp" @change="changeSwitchBoolean('is_goumai_lljie_qzsp')"/>
-				</view> -->
 				<!-- 最强修仙编辑器独有 -->
 				<view v-if="userInfo.loginType === 24 " class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动购买火凤凰魂骨</view>
@@ -476,88 +435,23 @@
 				<view v-if="userInfo.loginType === 24 " class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动购买九心海棠碎片</view>
 				    <switch :checked="!!configInfo.is_buy_jxhtsp" @change="changeSwitchBoolean('is_buy_jxhtsp')"/>
-				</view>
-				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">购买探宝灯(售价:2000)</view>
-				    <switch :checked="!!configInfo.is_buy_tbd2000" @change="changeSwitchBoolean('is_buy_tbd2000')"/>
-				</view> -->
-				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">购买探宝灯(售价:4000)</view>
-				    <switch :checked="!!configInfo.is_buy_tbd4000" @change="changeSwitchBoolean('is_buy_tbd4000')"/>
-				</view> -->
-				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">购买探宝灯(售价:8000)</view>
-				    <switch :checked="!!configInfo.is_buy_tbd8000" @change="changeSwitchBoolean('is_buy_tbd8000')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">购买寻仙令(售价:200)</view>
-				    <switch :checked="!!configInfo.is_buy_xxl200" @change="changeSwitchBoolean('is_buy_xxl200')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">购买寻仙令(售价:400)</view>
-				    <switch :checked="!!configInfo.is_buy_xxl400" @change="changeSwitchBoolean('is_buy_xxl400')"/>
-				</view> -->
-				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">购买铸炼石(售价:400)</view>
-				    <switch :checked="!!configInfo.is_buy_zls400" @change="changeSwitchBoolean('is_buy_zls400')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">购买淬灵丹(售价:600)</view>
-				    <switch :checked="!!configInfo.is_buy_cld600" @change="changeSwitchBoolean('is_buy_cld600')"/>
-				</view> -->
+				</view>	
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动仙路争霸竞猜</view>
 				    <switch :checked="!!configInfo.is_auto_xlzb_jc" @change="changeSwitchBoolean('is_auto_xlzb_jc')"/>
 				</view>
-				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">仙缘商店买地兽天·山河图</view>
-				    <switch :checked="!!configInfo.is_buy_xy_sht" @change="changeSwitchBoolean('is_buy_xy_sht')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">仙盟坊市买地兽天·山河图</view>
-				    <switch :checked="!!configInfo.is_buy_xm_sht" @change="changeSwitchBoolean('is_buy_xm_sht')"/>
-				</view> -->
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 				    <view class="uni-list-cell-db">自动打次元裂缝(5+3*8=29星，介意勿开)</view>
 				    <switch :checked="!!configInfo.is_auto_cylf" @change="changeSwitchBoolean('is_auto_cylf')"/>
 				</view>
-				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">次元商店购买孙悟空碎片</view>
-				    <switch :checked="!!configInfo.is_buy_swk_sp" @change="changeSwitchBoolean('is_buy_swk_sp')"/>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">位面自动清人</view>
+				    <switch :checked="!!configInfo.is_weimian_attack" @change="changeSwitchBoolean('is_weimian_attack')"/>
 				</view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">次元商店购买少年哪吒碎片</view>
-				    <switch :checked="!!configInfo.is_buy_snnz_sp" @change="changeSwitchBoolean('is_buy_snnz_sp')"/>
+				    <view class="uni-list-cell-db">自动分解绿色仙魂</view>
+				    <switch :checked="!!configInfo.is_fenjie_lvxianhun" @change="changeSwitchBoolean('is_fenjie_lvxianhun')"/>
 				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">次元商店购买杨戬碎片</view>
-				    <switch :checked="!!configInfo.is_buy_yj_sp" @change="changeSwitchBoolean('is_buy_yj_sp')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">次元商店购买月光宝匣</view>
-				    <switch :checked="!!configInfo.is_buy_ygbx" @change="changeSwitchBoolean('is_buy_ygbx')"/>
-				</view>
-				
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">仙缘商店买命元精华(每日500仙缘)</view>
-				    <switch :checked="!!configInfo.is_buy_myjh" @change="changeSwitchBoolean('is_buy_myjh')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">仙盟买聚魂石(每日5000贡献)</view>
-				    <switch :checked="!!configInfo.is_buy_jhs" @change="changeSwitchBoolean('is_buy_jhs')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">仙盟买造化石(每日8000贡献)</view>
-				    <switch :checked="!!configInfo.is_buy_zhs" @change="changeSwitchBoolean('is_buy_zhs')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">仙盟二层买天衍玉(每周500仙贝)</view>
-				    <switch :checked="!!configInfo.is_buy_tyy" @change="changeSwitchBoolean('is_buy_tyy')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">荣誉商店买锻造精铁(每日500荣誉)</view>
-				    <switch :checked="!!configInfo.is_buy_dzjt" @change="changeSwitchBoolean('is_buy_dzjt')"/>
-				</view> -->
 		</view>
 
 		<view v-show="currentTab === 1" class="uni-list-no-border">
@@ -644,34 +538,6 @@
 		        <switch :checked="!!configInfo.moyuleixing" @change="changePickerSwitch($event,'moyuleixing')"/>
 					</view>
 		    </view>
-
-				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changePickerConfig($event, 'boss_id1')" :value="configInfo.boss_id1" class="background-picker" range-key="text" :range="options.boss_id1">
-											<view class="uni-input">{{options.boss_id1[configInfo.boss_id1].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">魔族入侵1</view>
-		        <switch :checked="!!configInfo.boss_id1" @change="changePickerSwitch($event,'boss_id1')"/>
-					</view>
-		    </view>
-
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changePickerConfig($event, 'boss_id2')" :value="configInfo.boss_id2" class="background-picker" range-key="text" :range="options.boss_id2">
-											<view class="uni-input">{{options.boss_id2[configInfo.boss_id2].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">魔族入侵2</view>
-		        <switch :checked="!!configInfo.boss_id2" @change="changePickerSwitch($event,'boss_id2')"/>
-					</view>
-		    </view> -->
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
@@ -852,6 +718,34 @@
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">法身法宝炼制分解</view>
 		        <switch :checked="!!configInfo.index_llcl_lz_fj" @change="changePickerSwitch($event,'index_llcl_lz_fj')"/>
+					</view>
+		    </view>
+
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerConfig($event, 'index_feed_lingshou')" :value="configInfo.index_feed_lingshou" class="background-picker" range-key="text" :range="options.index_feed_lingshou">
+											<view class="uni-input">{{options.index_feed_lingshou[configInfo.index_feed_lingshou].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">自动喂养灵兽</view>
+		        <switch :checked="!!configInfo.index_feed_lingshou" @change="changePickerSwitch($event,'index_feed_lingshou')"/>
+					</view>
+		    </view>
+
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerConfig($event, 'index_hundun_moxu')" :value="configInfo.index_hundun_moxu" class="background-picker" range-key="text" :range="options.index_hundun_moxu">
+											<view class="uni-input">{{options.index_hundun_moxu[configInfo.index_hundun_moxu].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">自动混沌魔墟</view>
+		        <switch :checked="!!configInfo.index_hundun_moxu" @change="changePickerSwitch($event,'index_hundun_moxu')"/>
 					</view>
 		    </view>
 
@@ -1072,7 +966,11 @@ const configInfoDefault = {
 	is_buy_jhs: 0, // 仙盟买聚魂石(每日5000贡献)
 	is_buy_zhs: 0, // 仙盟买造化石(每日8000贡献)
 	is_buy_tyy: 0, // 仙盟二层买天衍玉(每周500仙贝)
-	is_buy_dzjt: 0, // 荣誉商店买锻造精铁(每日500荣誉)
+	is_buy_dzjt: 0, // 荣誉商店买锻造精铁(每日500荣誉),
+	is_weimian_attack: 0, // 位面自动清人
+	is_fenjie_lvxianhun: 0, // 自动分解绿色仙魂
+	index_feed_lingshou: 0, // 自动喂养灵兽
+	index_hundun_moxu: 0 // 自动混沌魔墟
 }
 
 const gongfaObjDefault = {

@@ -269,6 +269,19 @@
     {"value":5, "text":"自动炼制蓝色法宝不分解"},
     {"value":6, "text":"自动炼制蓝色法身不分解"}
   ],
+  "index_feed_lingshou": [
+    {"value":0, "text":"关闭喂养灵兽"},
+    {"value":1, "text":"自动喂养[雪灵鹿]"},
+    {"value":2, "text":"自动喂养[冰焰虎]"},
+    {"value":3, "text":"自动喂养[天澜鸟]"},
+    {"value":4, "text":"自动喂养[青鸾]"},
+    {"value":5, "text":"自动喂养[血麒麟]"}
+  ],
+  "index_hundun_moxu": [
+    {"value":0, "text":"关闭自动混沌魔墟"},
+    {"value":1, "text":"混沌魔墟打红色和金色"},
+    {"value":2, "text":"混沌魔墟只打金色"}
+  ],
   "shop": [
     {"value":"xianyuan_shop", "text":"仙缘商店"},
     {"value":"rongyu_shop", "text":"荣誉商店"},
