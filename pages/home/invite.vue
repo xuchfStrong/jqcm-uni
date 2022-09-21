@@ -2,7 +2,7 @@
 <template>
   <view class="content">
 		<view class="section-title" style="padding-top:10px;">邀请码说明</view>
-    <view class="desc">1. 邀请新用户使用辅助可以得到奖励，被邀请的玩家输入你的邀请码领取奖励时候，他和你都能免费获得 {{days}} 天的辅助时间。</view>
+    <view class="desc">1. 邀请新用户使用辅助可以得到奖励,每邀请一个新用户都可以获得一次奖励，被邀请的玩家输入你的邀请码领取奖励时候，他和你都能免费获得 {{days}} 天的辅助时间。</view>
     <view class="desc">2. 同一个账号不同的区服的邀请码不一样，新用户使用那个邀请码就会将时间赠送给对应的区服。</view>
 		<view class="desc">3. 新用户只有充值之后才能领取奖励。</view>
     <view class="invite-wrap">
@@ -16,7 +16,7 @@
     <input class="input-border" style="height: 70upx; border-radius: 10upx;" placeholder-class="placeholder" @input="handleInput" v-model="inviteCode" placeholder="请输入别人的邀请码" />
   
     <view class="save-btn">
-			<button type="primary" size="mini" @tap="handleSubmit">提交</button>
+			<button type="primary" size="mini" :loading="statusLoading" :disabled="statusLoading" @tap="handleSubmit">提交</button>
 		</view>
 		
 <!-- 		<view class="uni-divider">
@@ -55,6 +55,7 @@ export default {
 	},
   data() {
     return {
+			statusLoading: false,
       userInfo: {},
       inviteCode: '',
 			myInviteCode: '',
@@ -97,9 +98,12 @@ export default {
         server_id: this.userInfo.server,
         invite_code: this.inviteCode
       }
+			this.statusLoading = true
       invite(params).then(res => {
         this.$toast(res.message)
-      })
+      }).finally(() => {
+				this.statusLoading = false
+			})
     },
 
     loadLoginInfo() {
