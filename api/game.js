@@ -1,10 +1,34 @@
-// import { http, httpForm } from '@/utils/request.js'
+import { http as httpNoProxy, httpForm as httpFromNoProxy } from '@/utils/request.js'
 import {requestProxy, http, httpForm} from './request.js'
 
 // 获取远端选项信息
 export function getRemoteOptions(params) {
   return http.get(
     '/jqcm/options.php',
+    {params}
+  )
+}
+
+// 获取邀请码
+export function getInviteCode(params) {
+  return http.get(
+    '/jqcm/invite/invitecode.py',
+    {params}
+  )
+}
+
+// 使用邀请码
+export function invite(params) {
+  return http.get(
+    '/jqcm/invite/invite.py',
+    {params}
+  )
+}
+
+// 获取邀请记录
+export function getInviteLog(params) {
+  return http.get(
+    '/jqcm/invite/invitelog.py',
     {params}
   )
 }

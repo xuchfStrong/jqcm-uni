@@ -7,6 +7,12 @@
 			}
 		},
 		{
+			"path": "pages/home/invite",
+			"style": {
+				"navigationBarTitleText": "邀请码"
+			}
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录"

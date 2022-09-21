@@ -39,28 +39,24 @@
 		<view v-else>
 			<view class="btn-center btn-center-margin">
 				<view>
-					<button type="primary" plain="true" size="mini" @tap="transferTime">转移辅助</button>
-					<text style="width: 10upx; display: inline-block;"></text>
-					<button type="primary" plain="true" size="mini" @tap="loginSwitch">切换账号</button>
-					<text style="width: 10upx; display: inline-block;"></text>
-					<button type="primary" plain="true" size="mini" @tap="handleGetServerList">更新服务器</button>
-					<text style="width: 10upx; display: inline-block;"></text>
+					<button type="primary" plain="true" size="mini" @tap="transferTime" style="margin-right: 10upx;">转移辅助</button>
+					<button type="primary" plain="true" size="mini" @tap="loginSwitch" style="margin-right: 10upx;">切换账号</button>
+					<!-- <button type="primary" plain="true" size="mini" @tap="handleGetServerList">更新服务器</button> -->
+					<button type="primary" plain="true" size="mini" @tap="handleInvite">邀请有奖</button>
 				</view>
 			</view>
 			<view  class="btn-center">
 				<view>
-					<button type="primary" plain="true" size="mini" @tap="handleSaveRole">收藏角色</button>
-					<text style="width: 10upx; display: inline-block;"></text>
-					<button type="primary" plain="true" size="mini" @tap="handleRemoveRole">移除收藏</button>
-					<text style="width: 10upx; display: inline-block;"></text>
+					<button type="primary" plain="true" size="mini" @tap="handleSaveRole" style="margin-right: 10upx;">收藏角色</button>
+					<button type="primary" plain="true" size="mini" @tap="handleRemoveRole" style="margin-right: 10upx;">移除收藏</button>
 					<button type="primary" plain="true" size="mini" @tap="handleClearSaveRole">清空收藏</button>
 				</view>
 			</view>
 
 			<view  class="btn-center">
 				<view>
-					<button type="primary" plain="true" size="mini" @tap="handleOpenServerTime">开区时间</button>
-					<button v-if="utils.showFeedback" type="primary" plain="true" style="margin-left:10upx" size="mini" @tap="handleFeedback">有需要辅助的游戏点此反馈</button>
+					<button type="primary" plain="true" size="mini" @tap="handleOpenServerTime" style="margin-right: 10upx;">开区时间</button>
+					<button v-if="utils.showFeedback" type="primary" plain="true" size="mini" @tap="handleFeedback">有需要辅助的游戏点此反馈</button>
 				</view>
 			</view>
 		</view>
@@ -1214,6 +1210,12 @@ export default {
 		loginSwitch() {
 			uni.navigateTo({
 			    url: '/pages/login/login'
+			})
+		},
+		
+		handleInvite() {
+			uni.navigateTo({
+			    url: '/pages/home/invite'
 			})
 		},
 
