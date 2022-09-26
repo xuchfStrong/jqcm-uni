@@ -311,3 +311,11 @@ export function getServerConfigFeixianjueGYY(params) {
 }
 
 
+// 获取补天志服务器列表
+export function getServerConfigBTZ(params) {
+  return httpNoProxy.get(
+    'https://admin.xz2bt.jyjunyou.com/www/api/server_config.php',
+    {params}
+  )
+}
+

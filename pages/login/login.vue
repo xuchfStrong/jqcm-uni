@@ -92,7 +92,9 @@ import { loginFirstStepBinghuyouxi,
 				 loginFirstStepBatu,
 				 loginFirstStepMilu,
 				 loginWgzz,
-				 loginFirstStepWyqk } from '@/api/game'
+				 loginFirstStepWyqk,
+				 loginFirstStepBTZKepan,
+				 loginFirstStepBTZBinghuo } from '@/api/game'
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig,
 		handleGetServerConfigTapTap,
@@ -103,7 +105,8 @@ import { handleGetServerConfig,
 		handleGetServerConfigDJJHWJXL,
 		handleGetServerConfigXianfanzhuan,
 		handleGetServerConfigZuiqiangxiuxian,
-		handleGetServerConfigFeixianjueGYY
+		handleGetServerConfigFeixianjueGYY,
+		handleGetServerBTZ
 		} from '@/utils/server'
 import { genRandomNumber, randomString, genUUID, genMac, getValueByIndex, getIndexByValue, parseSearchArgs, genMultipartFormData } from '@/utils/index'
 import { encryptByDESModeCBC, decryptByDESModeCBC } from '@/utils/encrypt'
@@ -702,6 +705,18 @@ export default {
 							duration: 2000,
 							icon: 'none'
 						})
+					} else if ([48,49].includes(this.userInfo.loginType)) { // 补天志
+						handleGetServerBTZ(2,'jwbt', this.loginInfo.userId, 3).then(serverInfo => {
+							this.serverInfo = serverInfo
+							this.flag.showServer = true
+							this.saveLoginInfo()
+							this.toMain()
+						})
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -786,6 +801,10 @@ export default {
 						this.handleLoginFirstStepWGZZ()
 					} else if (this.userInfo.loginType === 47) { // 五岳乾坤
 						this.handleLoginFirstStepWYQK()
+					} else if (this.userInfo.loginType === 48) { // 补天志-可盘
+						this.handleLoginFirstStepBTZKepan()
+					} else if (this.userInfo.loginType === 49) { // 补天志-冰火
+						this.handleLoginFirstStepBTZBinghuo()
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1917,6 +1936,61 @@ export default {
 				}
 			})
 		},
+
+		// 补天志-可盘登录第一步
+		handleLoginFirstStepBTZKepan() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepBTZKepan(params).then(res => {
+				if (res.result == true) {
+					this.loginInfo.userId = res.data.uid
+					this.loginInfo.token = res.data.token
+					handleGetServerBTZ(2,'jwbt', this.loginInfo.userId, 3).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 补天志-冰火登录第一步
+		handleLoginFirstStepBTZBinghuo() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			loginFirstStepBTZBinghuo(params).then(res => {
+				if (res.result == true) {
+					this.loginInfo.userId = res.data.uid
+					this.loginInfo.token = res.data.token
+					handleGetServerBTZ(2,'jwbt', this.loginInfo.userId, 3).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
 
 		// 冰湖游戏登录第一步
 		handleLoginFirstStepBinghuyouxi() {

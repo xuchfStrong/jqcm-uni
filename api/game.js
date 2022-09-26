@@ -288,6 +288,22 @@ export function loginFirstStepMilu(data) {
   )
 }
 
+// 补天志可盘-登录
+export function loginFirstStepBTZKepan(data) {
+  return httpForm.postGYY(
+    '/util/btzKepanLogin.py',
+    data
+  )
+}
+
+// 补天志可盘-冰火
+export function loginFirstStepBTZBinghuo(data) {
+  return httpForm.postGYY(
+    '/util/btzBinghuoLogin.py',
+    data
+  )
+}
+
 
 // 羔羊游剑气除魔文字修真登录
 export function loginFirstStepGyyJqcmWzxz(data) {
