@@ -48,6 +48,16 @@
 				<view v-for="(item,index) in loginDescription.description" :key="index" class="item-wrap">{{ item }}</view>
 			</view>
 		</view> -->
+
+		<uni-popup ref="popup" :mask-click="false">
+			<view class="pop-wrap">
+				<view style="padding-bottom: 10px;">请选择小号</view>
+				<uni-data-checkbox v-model="smallId" mode="list" :localdata="smallList" @change="changeSmallUser"></uni-data-checkbox>
+				<view style="display:flex;justify-content: center;">
+					<button type="primary" size="mini" class="primary" @tap="chooseSmallUser">确定</button>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -64,6 +74,7 @@ import { loginFirstStep, loginSecondStepByProxy, loginFirstStepWJXL2, loginFirst
 // #ifdef APP-PLUS
 import { loginFirstStep, loginFirstStepWJXL2, loginFirstStepShendao, loginFirstStepDYDJB, loginSecondStepDYDJB } from '@/api/loginApp'
 // #endif
+import { getAction, postAction, postFormAction } from '@/api/manage'
 import { loginSecondStep } from '@/api/login'
 import { getUtils,getIntUserid,getStrUserid } from '@/api/game'
 import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThirdStepShendao, loginThirdStepDYDJB, loginFirstStepXianfanzhuan, loginThirdStepXianfanzhuan, loginFirstStepRenzhafanpai, loginSedondStepRenzhafanpai } from '@/api/login'
@@ -134,6 +145,8 @@ export default {
 			configInfo: '',
 			utils: '',
 			autocompleteStringList: [],
+			smallId: '',
+			smallList: [{"value": 0,"text": "篮球"	},{"value": 1,"text": "足球"},{"value": 2,"text": "游泳"}],
 			flag: {
 			    loginFlag: false,
 			    logoutFlag: false,
@@ -186,6 +199,29 @@ export default {
     selectItemD(data) {
 				this.userInfo.passwordPlatForm = data.password
     },
+
+		openPop() {
+			this.smallId = undefined
+			this.$refs.popup.open()
+		},
+
+		closePop() {
+			this.$refs.popup.close()
+		},
+
+		changeSmallUser(e){
+			this.loginInfo.userId = this.smallId
+		},
+
+		chooseSmallUser() {
+			this.closePop()
+			if ([48,49,51].includes(this.userInfo.loginType)) {
+				handleGetServerBTZ(2,'jwbt', this.loginInfo.userId, 3).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.handleAddUser()
+				})
+			}
+		},
 
 		// 获取远程选项
 		handleGetRemoteOptions() {
@@ -705,7 +741,11 @@ export default {
 							duration: 2000,
 							icon: 'none'
 						})
-					} else if ([48,49].includes(this.userInfo.loginType)) { // 补天志
+					} else if ([48].includes(this.userInfo.loginType)) { // 补天志可盘
+						this.handleLoginBTZKepanStep1()
+					} else if ([49].includes(this.userInfo.loginType)) { // 补天志冰火
+						this.handleLoginBTZBinghuoStep1()
+					} else if ([50].includes(this.userInfo.loginType)) { // 补天志游戏鸭
 						handleGetServerBTZ(2,'jwbt', this.loginInfo.userId, 3).then(serverInfo => {
 							this.serverInfo = serverInfo
 							this.flag.showServer = true
@@ -717,6 +757,8 @@ export default {
 							duration: 2000,
 							icon: 'none'
 						})
+					} else if ([51].includes(this.userInfo.loginType)) { // 补天志BTGO
+						this.handleLoginBTZBTGOStep1()
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -802,9 +844,13 @@ export default {
 					} else if (this.userInfo.loginType === 47) { // 五岳乾坤
 						this.handleLoginFirstStepWYQK()
 					} else if (this.userInfo.loginType === 48) { // 补天志-可盘
-						this.handleLoginFirstStepBTZKepan()
+						this.handleLoginBTZKepanStep1()
 					} else if (this.userInfo.loginType === 49) { // 补天志-冰火
-						this.handleLoginFirstStepBTZBinghuo()
+						this.handleLoginBTZBinghuoStep1()
+					} else if (this.userInfo.loginType === 50) { // 补天志-游戏鸭
+						this.handleLoginBTZYXYStep1()
+					} else if (this.userInfo.loginType === 51) { // 补天志-BTGO
+						this.handleLoginBTZBTGOStep1()
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1991,6 +2037,111 @@ export default {
 			})
 		},
 
+		// 补天志-游戏鸭登录第一步
+		handleLoginBTZYXYStep1() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			const url = '/login/btzYXY/btzYxyLogin.py'
+			postFormAction(url, params).then(res => {
+				if (res.userData) {
+					this.loginInfo.userId = res.userData.uid
+					this.loginInfo.token = res.userData.token
+					handleGetServerBTZ(2,'jwbt', this.loginInfo.userId, 3).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 补天志-冰火登录-获取小号
+		handleLoginBTZBinghuoStep1() {
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			const url = '/login/btzBinghuo/step1.py'
+			postFormAction(url, params).then(res => {
+				if (res.code == 200) {
+					this.smallList = []
+					res.data.small_list.forEach(item => {
+						const oneItem = {
+							text: item.nickname,
+							value: item.small_id
+						}
+						this.smallList.push(oneItem)
+						this.openPop()
+					})
+				} else {
+					this.$toast('获取小号失败')
+				}
+			})
+		},
+
+		// 补天志-可盘登录-获取小号
+		handleLoginBTZKepanStep1() {
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			const url = '/login/btzKepan/step1.py'
+			postFormAction(url, params).then(res => {
+				if (res.accounts) {
+					this.smallList = []
+					res.accounts.forEach(item => {
+						const oneItem = {
+							text: item.name,
+							value: item.id
+						}
+						this.smallList.push(oneItem)
+						this.openPop()
+					})
+				} else {
+					this.$toast('获取小号失败')
+				}
+			})
+		},
+
+		// 补天志-BT狗登录-获取小号
+		handleLoginBTZBTGOStep1() {
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			const url = '/login/btzBTGO/step1.py'
+			postFormAction(url, params).then(res => {
+				if (res.length > 0) {
+					const userdata = res.find(item => item.cmd == 102)
+					if (userdata && userdata.code == 1) {
+						this.smallList = []
+						userdata.data.altlist.forEach(item => {
+							const oneItem = {
+								text: item.nickname,
+								value: item.userid
+							}
+							this.smallList.push(oneItem)
+							this.openPop()
+						})
+					} else {
+						this.$toast('获取小号失败1')
+					}
+				} else {
+					this.$toast('获取小号失败2')
+				}
+			})
+		},
+
 
 		// 冰湖游戏登录第一步
 		handleLoginFirstStepBinghuyouxi() {
@@ -2977,5 +3128,12 @@ export default {
 	min-height: 50upx;
 	line-height: 50upx;
 	z-index: 1;
+}
+.pop-wrap {
+	background-color: #FFFFFF;
+	border-radius: 5px;
+	min-height: 150px;
+	min-width: 200px;
+	padding: 10px;
 }
 </style>

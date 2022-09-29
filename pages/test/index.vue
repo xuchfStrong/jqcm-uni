@@ -8,7 +8,7 @@
 </template>
 
 <script>
-	import { getRoleInfo, login } from '@/api/api.js'
+	import { getRoleInfo } from '@/api/manage.js'
 	export default {
 		data() {
 			return {
@@ -41,24 +41,6 @@
 					this.title = res
 				} catch (err) {
 					console.log(err)
-				}
-			},
-			
-			async handleLogin() {
-				try {
-					const params = {
-						"userid":35887505,
-						"last_server_id":28,
-						"login_type": 1,
-						"username":"hangyuhu01",
-						"password":"hyh147258",
-						"uname_md5":"41b30a4f9854dfb730b0d0d684e1ad03",
-						"pwd_md5":"ba3bc34e579bd7fb6ab4df4d8a8fd5cf"
-					}
-					const res = await login(params)
-					this.title = res
-				} catch (err) {
-					console.error(err)
 				}
 			}
 		}
