@@ -2128,7 +2128,7 @@ export default {
 						userdata.data.altlist.forEach(item => {
 							const oneItem = {
 								text: item.nickname,
-								value: item.userid
+								value: item.altid
 							}
 							this.smallList.push(oneItem)
 							this.openPop()
