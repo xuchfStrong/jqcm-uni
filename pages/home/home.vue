@@ -72,6 +72,7 @@
 		<text v-if="utils.showContact7&&jqcmSaleChannel === '7'" class="waring-wrap">{{ utils.contact7 }}</text>
 		<text v-if="utils.showContact8&&jqcmSaleChannel === '8'" class="waring-wrap">{{ utils.contact8 }}</text>
 		<text v-if="utils.showContact10&&jqcmSaleChannel === '10'" class="waring-wrap">{{ utils.contact10 }}</text>
+		<text v-if="utils.showContact12&&jqcmSaleChannel === '12'" class="waring-wrap">{{ utils.contact12 }}</text>
 		<text v-if="utils.showContact31&&jqcmSaleChannel === '31'" class="waring-wrap">{{ utils.contact31 }}</text>
 		
 		<uni-popup ref="openServerTimePopup" type="top">

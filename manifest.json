@@ -37,7 +37,9 @@
                 ],
                 "abiFilters" : [ "armeabi-v7a", "x86" ]
             },
-            "ios" : {},
+            "ios" : {
+                "dSYMs" : false
+            },
             "sdkConfigs" : {
                 "ad" : {}
             },
@@ -97,7 +99,7 @@
             "enable" : true
         },
         "router" : {
-            "base" : "/jqcm/"
+            "base" : "/"
         },
         "devServer" : {
             "https" : false
@@ -166,6 +168,10 @@
         {
             "id" : "10",
             "name" : "渠道10"
+        },
+        {
+            "id" : "12",
+            "name" : "渠道12"
         },
         {
             "id" : "31",

@@ -39,6 +39,9 @@
           <a v-if="jqcmSaleChannel==='10'" :href="update.pkgUrl10">
             <text>点击下载辅助APP</text>
           </a>
+					<a v-if="jqcmSaleChannel==='12'" :href="update.pkgUrl12">
+					  <text>点击下载辅助APP</text>
+					</a>
           <a v-if="jqcmSaleChannel==='31'" :href="update.pkgUrl31">
             <text>点击下载辅助APP</text>
           </a>
