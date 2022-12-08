@@ -450,6 +450,10 @@
 				    <view class="uni-list-cell-db">自动分解绿色仙魂</view>
 				    <switch :checked="!!configInfo.is_fenjie_lvxianhun" @change="changeSwitchBoolean('is_fenjie_lvxianhun')"/>
 				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">仙缘购买千机迷阵次数</view>
+				    <switch :checked="!!configInfo.is_buy_qjmz" @change="changeSwitchBoolean('is_buy_qjmz')"/>
+				</view>
 		</view>
 
 		<view v-show="currentTab === 1" class="uni-list-no-border">
@@ -968,7 +972,8 @@ const configInfoDefault = {
 	is_weimian_attack: 0, // 位面自动清人
 	is_fenjie_lvxianhun: 0, // 自动分解绿色仙魂
 	index_feed_lingshou: 0, // 自动喂养灵兽
-	index_hundun_moxu: 0 // 自动混沌魔墟
+	index_hundun_moxu: 0, // 自动混沌魔墟
+	is_buy_qjmz: 0 // 仙缘购买千机迷阵次数
 }
 
 const gongfaObjDefault = {
