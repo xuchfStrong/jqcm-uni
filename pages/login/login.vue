@@ -221,6 +221,12 @@ export default {
 					this.handleAddUser()
 				})
 			}
+			if ([36].includes(this.userInfo.loginType)) {
+				this.handleLoginCwzxz3011Step2()
+			}
+			if ([41].includes(this.userInfo.loginType)) {
+				this.handleLoginCwzxzBinghuoStep2()
+			}
 		},
 
 		// 获取远程选项
@@ -598,17 +604,7 @@ export default {
 							icon: 'none'
 						})
 					} else if ([36].includes(this.userInfo.loginType)) { // 3011剑气除魔文字修真)
-						handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
-							this.serverInfo = serverInfo
-							this.flag.showServer = true
-							this.saveLoginInfo()
-							this.toMain()
-						})
-						uni.showToast({
-							title: '登录成功，请选择服务器后，点击开始挂机。',
-							duration: 2000,
-							icon: 'none'
-						})
+						this.handleLoginCwzxz3011Step1()
 					} else if ([37].includes(this.userInfo.loginType)) { // 3011剑气除魔H5)
 						handleGetServerConfigTapTap(6201, this.loginInfo.userId).then(serverInfo => {
 							this.serverInfo = serverInfo
@@ -658,17 +654,13 @@ export default {
 							icon: 'none'
 						})
 					} else if ([41].includes(this.userInfo.loginType)) { // 冰火游戏
-						handleGetServerConfigWJXL(6215, this.loginInfo.userId,26).then(serverInfo => {
-							this.serverInfo = serverInfo
-							this.flag.showServer = true
-							this.saveLoginInfo()
-							this.toMain()
-						})
-						uni.showToast({
-							title: '登录成功，请选择服务器后，点击开始挂机。',
-							duration: 2000,
-							icon: 'none'
-						})
+						// handleGetServerConfigWJXL(6215, this.loginInfo.userId,26).then(serverInfo => {
+						// 	this.serverInfo = serverInfo
+						// 	this.flag.showServer = true
+						// 	this.saveLoginInfo()
+						// 	this.toMain()
+						// })
+						this.handleLoginCwzxzBinghuoStep1()
 					} else if ([42].includes(this.userInfo.loginType)) { // 傲剑苍穹
 						handleGetServerConfigWJXL(6194, this.loginInfo.userId, 12).then(serverInfo => {
 							this.serverInfo = serverInfo
@@ -820,7 +812,7 @@ export default {
 					} else if (this.userInfo.loginType === 35) {
 						this.handleLoginFirstStepYXYJqcmWzxz() // 游戏鸭剑气除魔文字修真
 					} else if (this.userInfo.loginType === 36) {
-						this.handleLoginFirstStep3011JqcmWzxz() // 3011剑气除魔文字修真
+						this.handleLoginCwzxz3011Step1() // 3011剑气除魔文字修真
 					} else if (this.userInfo.loginType === 37) {
 						this.handleLoginFirstStep3011JqcmH5() // 3011剑气除魔H5登录
 					} else if ([38].includes(this.userInfo.loginType)) { // 饺子手游-剑气除魔(纯文字修真)
@@ -830,7 +822,7 @@ export default {
 					} else if (this.userInfo.loginType === 40) { // 饺子手游修真归来
 						this.handleLoginFirstStepJiaozishouyouXzgl()
 					} else if (this.userInfo.loginType === 41) { // 冰火游戏
-						this.handleLoginFirstStepBingHuo()
+						this.handleLoginCwzxzBinghuoStep1()
 					} else if (this.userInfo.loginType === 42) { // 傲剑苍穹
 						this.handleLoginFirstStepAojianCangQiong()
 					} else if (this.userInfo.loginType === 43) { // 修仙霸业
@@ -1815,6 +1807,57 @@ export default {
 			})
 		},
 
+		// 纯文字修真-冰火登录-获取小号
+		handleLoginCwzxzBinghuoStep1() {
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			const url = '/login/cwzxzBh/step1.py'
+			postFormAction(url, params).then(res => {
+				if (res.code == 200) {
+					this.smallList = []
+					this.loginInfo.token = res.data.token
+					res.data.small_list.forEach(item => {
+						const oneItem = {
+							text: item.nickname,
+							value: item.small_id
+						}
+						this.smallList.push(oneItem)
+						this.openPop()
+					})
+				} else {
+					this.$toast('获取小号失败')
+				}
+			})
+		},
+
+		// 纯文字修真-冰火登录-第二步
+		handleLoginCwzxzBinghuoStep2() {
+			const params = {
+				user_id: this.loginInfo.userId,
+				token: this.loginInfo.token
+			}
+			const url = '/login/cwzxzBh/step2.py'
+			postFormAction(url, params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					handleGetServerConfigWJXL(6215, this.loginInfo.userId,26).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
 		// 傲剑苍穹登录第一步
 		handleLoginFirstStepAojianCangQiong() {
 			this.loginInfo.PHPSESSID = randomString(26)
@@ -2332,6 +2375,60 @@ export default {
 			}
 			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
 			loginFirstStep3011JqcmWzxz(params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					this.loginInfo.channelId = res.data.channelId
+					handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleLoginThirdStep()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 纯文字修真-3011登录-获取小号
+		handleLoginCwzxz3011Step1() {
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			const url = '/login/cwzxz3011/step1.py'
+			postFormAction(url, params).then(res => {
+				if (res.code == 200) {
+					this.smallList = []
+					this.loginInfo.token = res.data.token
+					this.loginInfo.timeStamp = res.data.timeStamp
+					res.data.subList.forEach(item => {
+						const oneItem = {
+							text: item.nickname,
+							value: item.uid
+						}
+						this.smallList.push(oneItem)
+						this.openPop()
+					})
+				} else {
+					this.$toast('获取小号失败')
+				}
+			})
+		},
+
+		// 纯文字修真-3011登录-第二步
+		handleLoginCwzxz3011Step2() {
+			const params = {
+				uid: this.loginInfo.userId,
+				token: this.loginInfo.token,
+				timestamp: this.loginInfo.timestamp,
+			}
+			const url = '/login/cwzxz3011/step2.py'
+			postFormAction(url, params).then(res => {
 				if (res.code === 1) {
 					this.loginInfo.userId = res.data.userId
 					this.loginInfo.token = res.data.token
