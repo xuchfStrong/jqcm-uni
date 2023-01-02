@@ -870,7 +870,8 @@ import { handleGetServerConfig,
 		handleGetServerConfigDJJHWJXL,
 		handleGetServerConfigXianfanzhuan,
 		handleGetServerConfigZuiqiangxiuxian,
-		handleGetServerConfigFeixianjueGYY
+		handleGetServerConfigFeixianjueGYY,
+		handleGetServerBTZ
 		} from '@/utils/server'
 import options from '@/utils/options.json'
 import { jingjieMap, weimianMap, vipMap } from './mapData.js'
@@ -1651,6 +1652,12 @@ export default {
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
+      } else if ([48,49,50,51].includes(this.userInfo.loginType)) { // 补天志
+        handleGetServerBTZ(2,'jwbt', this.loginInfo.userId, 3).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
       } else { // 其他平台
         handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo
@@ -1925,6 +1932,8 @@ export default {
 			this.options.shop.forEach(item => {
 				if (this.configInfo[item.value]) {
 					this.configShop[item.value] = this.configInfo[item.value].split('|')
+				} else {
+					this.configShop[item.value] = []
 				}
 			})
 		},
