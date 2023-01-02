@@ -145,7 +145,7 @@ export default {
 			configInfo: '',
 			utils: '',
 			autocompleteStringList: [],
-			smallId: '',
+			smallId: undefined,
 			smallList: [{"value": 0,"text": "篮球"	},{"value": 1,"text": "足球"},{"value": 2,"text": "游泳"}],
 			flag: {
 			    loginFlag: false,
@@ -1835,7 +1835,7 @@ export default {
 		// 纯文字修真-冰火登录-第二步
 		handleLoginCwzxzBinghuoStep2() {
 			const params = {
-				user_id: this.loginInfo.userId,
+				user_id: this.smallId,
 				token: this.loginInfo.token
 			}
 			const url = '/login/cwzxzBh/step2.py'
@@ -2423,7 +2423,7 @@ export default {
 		// 纯文字修真-3011登录-第二步
 		handleLoginCwzxz3011Step2() {
 			const params = {
-				uid: this.loginInfo.userId,
+				uid: this.smallId,
 				token: this.loginInfo.token,
 				timestamp: this.loginInfo.timestamp,
 			}
@@ -3029,6 +3029,7 @@ export default {
       }
       const param = {
         userid: this.loginInfo.userId,
+				small_id: this.smallId,
         last_server_id: serverId,
         login_type: this.userInfo.loginType,
         username: this.userInfo.usernamePlatForm,
