@@ -227,6 +227,9 @@ export default {
 			if ([41].includes(this.userInfo.loginType)) {
 				this.handleLoginCwzxzBinghuoStep2()
 			}
+			if ([52].includes(this.userInfo.loginType)) {
+				this.handleLoginXzmnqBinghuoStep2()
+			}
 		},
 
 		// 获取远程选项
@@ -751,6 +754,8 @@ export default {
 						})
 					} else if ([51].includes(this.userInfo.loginType)) { // 补天志BTGO
 						this.handleLoginBTZBTGOStep1()
+					} else if ([52].includes(this.userInfo.loginType)) { // 冰火-修真模拟器
+						this.handleLoginXzmnqBinghuoStep1()
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -843,6 +848,8 @@ export default {
 						this.handleLoginBTZYXYStep1()
 					} else if (this.userInfo.loginType === 51) { // 补天志-BTGO
 						this.handleLoginBTZBTGOStep1()
+					} else if (this.userInfo.loginType === 52) { // 冰火修真模拟器
+						this.handleLoginXzmnqBinghuoStep1()
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1844,6 +1851,58 @@ export default {
 					this.loginInfo.userId = res.data.userId
 					this.loginInfo.token = res.data.token
 					handleGetServerConfigWJXL(6215, this.loginInfo.userId,26).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+
+		// 纯文字修真-冰火登录-获取小号
+		handleLoginXzmnqBinghuoStep1() {
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			const url = '/login/bhXzmnq/step1.py'
+			postFormAction(url, params).then(res => {
+				if (res.code == 200) {
+					this.smallList = []
+					this.loginInfo.token = res.data.token
+					res.data.small_list.forEach(item => {
+						const oneItem = {
+							text: item.nickname,
+							value: item.small_id
+						}
+						this.smallList.push(oneItem)
+						this.openPop()
+					})
+				} else {
+					this.$toast('获取小号失败')
+				}
+			})
+		},
+
+		// 修真模拟器-冰火登录-第二步
+		handleLoginXzmnqBinghuoStep2() {
+			const params = {
+				user_id: this.smallId,
+				token: this.loginInfo.token
+			}
+			const url = '/login/bhXzmnq/step2.py'
+			postFormAction(url, params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					handleGetServerConfigWJXL(6246, this.loginInfo.userId,35).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleAddUser()
 					})
