@@ -1664,6 +1664,18 @@ export default {
 					this.initSaveData()
 					this.$toast("服务器更新成功")
 				})
+      } else if (this.userInfo.loginType === 53) { // 28纯文字修真
+        handleGetServerConfigWJXL(6215, this.loginInfo.userId,26).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
+      } else if (this.userInfo.loginType === 54) { // 游戏鸭-天子令-修真模拟器
+        handleGetServerConfigWJXL(6246, this.loginInfo.userId,35).then(serverInfo => {
+					this.serverInfo = serverInfo
+					this.initSaveData()
+					this.$toast("服务器更新成功")
+				})
       } else { // 其他平台
         handleGetServerConfigOther(this.loginInfo.channelId, this.loginInfo.userId).then(serverInfo => {
 					this.serverInfo = serverInfo

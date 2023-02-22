@@ -756,6 +756,10 @@ export default {
 						this.handleLoginBTZBTGOStep1()
 					} else if ([52].includes(this.userInfo.loginType)) { // 冰火-修真模拟器
 						this.handleLoginXzmnqBinghuoStep1()
+					} else if ([53].includes(this.userInfo.loginType)) { // 28纯文字修真
+						this.handleLogin28CwzxzStep1()
+					} else if ([54].includes(this.userInfo.loginType)) { // 游戏鸭-天子令-修真模拟器
+						this.handleLoginYxyTzlXzmnqStep1()
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -850,6 +854,10 @@ export default {
 						this.handleLoginBTZBTGOStep1()
 					} else if (this.userInfo.loginType === 52) { // 冰火修真模拟器
 						this.handleLoginXzmnqBinghuoStep1()
+					} else if (this.userInfo.loginType === 53) { // 28手游纯文字修真
+						this.handleLogin28CwzxzStep1()
+					} else if (this.userInfo.loginType === 54) { // 游戏鸭-天子令-修真模拟器
+						this.handleLoginYxyTzlXzmnqStep1()
 					} else {
 						uni.showToast({
 							title: '登录失败。',
@@ -1800,6 +1808,64 @@ export default {
 					this.loginInfo.userId = res.data.userId
 					this.loginInfo.token = res.data.token
 					handleGetServerConfigWJXL(6215, this.loginInfo.userId,26).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 28纯文字修真
+		handleLogin28CwzxzStep1() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			const url = '/login/28cwzxz/step1.py'
+			postFormAction(url,params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					this.smallId = res.data.channelUserId
+					handleGetServerConfigWJXL(6215, this.loginInfo.userId,26).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 游戏鸭-天子令-修真模拟器
+		handleLoginYxyTzlXzmnqStep1() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			const url = '/login/yxyTzlXzmnq/step1.py'
+			postFormAction(url,params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					this.smallId = res.data.channelUserId
+					handleGetServerConfigWJXL(6246, this.loginInfo.userId,35).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleAddUser()
 					})
