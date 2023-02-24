@@ -230,6 +230,9 @@ export default {
 			if ([52].includes(this.userInfo.loginType)) {
 				this.handleLoginXzmnqBinghuoStep2()
 			}
+			if ([54].includes(this.userInfo.loginType)) {
+				this.handleLoginYxyTzlXzmnqStep2()
+			}
 		},
 
 		// 获取远程选项
@@ -1860,6 +1863,38 @@ export default {
 			}
 			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
 			const url = '/login/yxyTzlXzmnq/step1.py'
+			postFormAction(url,params).then(res => {
+				if (res.code === 1) {
+					this.smallList = []
+					res.data.forEach(item => {
+						const oneItem = {
+							text: item.nickname,
+							value: item.id
+						}
+						this.smallList.push(oneItem)
+						this.openPop()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 游戏鸭-天子令-修真模拟器
+		handleLoginYxyTzlXzmnqStep2() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm,
+				smallId: this.smallId
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			const url = '/login/yxyTzlXzmnq/step2.py'
 			postFormAction(url,params).then(res => {
 				if (res.code === 1) {
 					this.loginInfo.userId = res.data.userId
