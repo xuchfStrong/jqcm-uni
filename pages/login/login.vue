@@ -233,6 +233,9 @@ export default {
 			if ([54].includes(this.userInfo.loginType)) {
 				this.handleLoginYxyTzlXzmnqStep2()
 			}
+			if ([55].includes(this.userInfo.loginType)) {
+				this.handleLoginJzsyTzlStep2()
+			}
 		},
 
 		// 获取远程选项
@@ -763,6 +766,8 @@ export default {
 						this.handleLogin28CwzxzStep1()
 					} else if ([54].includes(this.userInfo.loginType)) { // 游戏鸭-天子令-修真模拟器
 						this.handleLoginYxyTzlXzmnqStep1()
+					} else if ([55].includes(this.userInfo.loginType)) { // 饺子手游-天子令
+						this.handleLoginJzsyTzlStep1()
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -861,7 +866,9 @@ export default {
 						this.handleLogin28CwzxzStep1()
 					} else if (this.userInfo.loginType === 54) { // 游戏鸭-天子令-修真模拟器
 						this.handleLoginYxyTzlXzmnqStep1()
-					} else {
+					} else if (this.userInfo.loginType === 55) { // 饺子手游-天子令
+						this.handleLoginJzsyTzlStep1()
+					}else {
 						uni.showToast({
 							title: '登录失败。',
 							duration: 2000,
@@ -1901,6 +1908,67 @@ export default {
 					this.loginInfo.token = res.data.token
 					this.smallId = res.data.channelUserId
 					handleGetServerConfigWJXL(6246, this.loginInfo.userId,35).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 饺子手游-天子令-step1
+		handleLoginJzsyTzlStep1() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			const url = '/login/jzsyTzl/step1.py'
+			postFormAction(url,params).then(res => {
+				if (res.code === 200) {
+					this.smallList = []
+					res.data.forEach(item => {
+						const oneItem = {
+							text: item.small_name,
+							value: item.small_id
+						}
+						this.smallList.push(oneItem)
+						this.openPop()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 饺子手游-天子令-step2
+		handleLoginJzsyTzlStep2() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm,
+				smallId: this.smallId
+			}
+			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
+			const url = '/login/jzsyTzl/step2.py'
+			postFormAction(url,params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					this.smallId = res.data.channelUserId
+					handleGetServerConfigWJXL(5215, this.loginInfo.userId,26).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleAddUser()
 					})
