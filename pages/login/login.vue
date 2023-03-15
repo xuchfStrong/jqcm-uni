@@ -1967,7 +1967,7 @@ export default {
 				if (res.code === 1) {
 					this.loginInfo.userId = res.data.userId
 					this.loginInfo.token = res.data.token
-					this.smallId = res.data.channelUserId
+					// this.smallId = res.data.channelUserId
 					handleGetServerConfigWJXL(5215, this.loginInfo.userId,26).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleAddUser()
