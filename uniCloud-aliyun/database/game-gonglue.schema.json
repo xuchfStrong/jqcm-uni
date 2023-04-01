@@ -1,0 +1,57 @@
+{
+	"bsonType": "object",
+	"permission": {
+		"create": false,
+		"delete": false,
+		"read": false,
+		"update": false
+	},
+	"properties": {
+		"_id": {
+			"description": "记录id,自动生成"
+		},
+		"game": {
+			"bsonType": "string",
+			"componentForEdit": {
+				"name": "uni-easyinput",
+				"props": {
+					"disabled": false
+				}
+			},
+			"description": "所属游戏",
+			"label": "游戏",
+			"trim": "both"
+		},
+		"action": {
+			"bsonType": "string",
+			"componentForEdit": {
+				"name": "uni-easyinput",
+				"props": {
+					"disabled": false
+				}
+			},
+			"description": "对应的功能",
+			"label": "功能",
+			"trim": "both"
+		},
+		"contents": {
+			"bsonType": "string",
+			"componentForEdit": {
+				"name": "textarea"
+			},
+			"description": "攻略内容",
+			"label": "攻略内容"
+		},
+		"create_date": {
+			"bsonType": "timestamp",
+			"componentForEdit": {
+				"name": "uni-dateformat"
+			},
+			"forceDefaultValue": {
+				"$env": "now"
+			},
+			"label": "创建时间"
+		}
+	},
+	"required": ["game", "action", "contents"]
+}

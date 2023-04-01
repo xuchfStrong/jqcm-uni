@@ -1,0 +1,69 @@
+{
+	"bsonType": "object",
+	"permission": {
+		"create": false,
+		"delete": false,
+		"read": false,
+		"update": false
+	},
+	"properties": {
+		"_id": {
+			"description": "记录id,自动生成"
+		},
+		"dict_id": {
+			"bsonType": "string",
+			"description": "字典id，参考opendb-dict-list`表",
+			"label": "字典ID",
+			"foreignKey": "opendb-dict-list.schema"
+		},
+		"dict_key": {
+			"bsonType": "string",
+			"trim": "both",
+			"description": "字典key",
+			"label": "字典key",
+			"componentForEdit": {
+				"name": "uni-easyinput",
+				"props": {
+					"disabled": true
+				}
+			}
+		},
+		"label": {
+			"bsonType": "string",
+			"trim": "both",
+			"description": "数据项名称",
+			"label": "数据项名称",
+			"componentForEdit": {
+				"name": "uni-easyinput",
+				"props": {
+					"disabled": true
+				}
+			}
+		},
+		"value": {
+			"bsonType": "string",
+			"trim": "both",
+			"description": "数据项值",
+			"label": "数据项名称",
+			"componentForEdit": {
+				"name": "uni-easyinput",
+				"props": {
+					"disabled": true
+				}
+			}
+		},
+		"order": {
+			"bsonType": "int",
+			"trim": "both",
+			"description": "排序",
+			"label": "排序",
+			"componentForEdit": {
+				"name": "uni-easyinput",
+				"props": {
+					"disabled": true
+				}
+			}
+		}
+	},
+	"required": ["dict_id", "dict_key", "label", "value"]
+}

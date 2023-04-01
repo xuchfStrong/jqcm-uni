@@ -1,0 +1,15 @@
+{
+    "name": "jhproxyurl",
+    "dependencies": [],
+    "extensions": {
+        "uni-cloud-jql": []
+    },
+    "cloudfunction-config": {
+        "memorySize": 128,
+        "timeout": 5,
+        "triggers": [],
+        "path": "/jhproxyurl",
+        "runtime": "Nodejs8",
+        "concurrency": 100
+    }
+}
