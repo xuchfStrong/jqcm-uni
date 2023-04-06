@@ -1522,7 +1522,7 @@ export default {
 					this.$toast("服务器更新成功")
 				})
       } else if (this.userInfo.loginType === 26) { // 飞仙诀(羔羊游)
-        handleGetServerConfigFeixianjueGYY(270, 'changwei2', this.loginInfo.userId, 2).then(serverInfo => {
+        handleGetServerConfigWJXL(6201, this.loginInfo.userId,6).then(serverInfo => {
 					this.serverInfo = serverInfo
 					// this.saveLoginInfo()
 					this.initSaveData()

@@ -57,7 +57,8 @@ const http = new Request()
 http.setConfig((config) => { /* 设置全局配置 */
   config.baseUrl = '' /* 根域名不同 */
   config.header = {
-    ...config.header
+    ...config.header,
+    "Content-Type":'application/json',
   }
   return config
 })

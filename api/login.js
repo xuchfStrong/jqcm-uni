@@ -264,7 +264,7 @@ export function aojiancangqiongLogin(data) {
 }
 
 export function getServerConfig(params) {
-  return httpNoProxy.get(
+  return http.get(
     'https://dzztest.dzz.begindcc.com/www/api/server_config.php',
     {params}
   )
@@ -272,7 +272,7 @@ export function getServerConfig(params) {
 
 // 获取渠道服务器列表
 export function getServerConfigQudao(params) {
-  return httpNoProxy.get(
+  return http.get(
     'https://dzztest.dzz.begindcc.com/www/api/server_config_qudao.php',
     {params}
   )
@@ -280,7 +280,7 @@ export function getServerConfigQudao(params) {
 
 // 获取无尽修炼服务器列表
 export function getServerConfigWJXL(params) {
-  return httpNoProxy.get(
+  return http.get(
     'https://dzztest.dzz.begindcc.com/www/api/server_config_ml.php',
     {params}
   )
@@ -288,7 +288,7 @@ export function getServerConfigWJXL(params) {
 
 // 获取仙凡传服务器列表
 export function getServerConfigXianfanzhuan(params) {
-  return httpNoProxy.get(
+  return http.get(
     'https://dzztest.dzz.begindcc.com/www/api/server_config_xcx.php',
     {params}
   )
@@ -296,7 +296,7 @@ export function getServerConfigXianfanzhuan(params) {
 
 // 获取最强修仙编辑器服务器列表
 export function getServerConfigZuiqiangxiuxian(params) {
-  return httpNoProxy.get(
+  return http.get(
     'https://jq.8866net.com/www/api/server_config.php',
     {params}
   )
@@ -304,7 +304,7 @@ export function getServerConfigZuiqiangxiuxian(params) {
 
 // 获取飞仙诀(羔羊游)服务器列表
 export function getServerConfigFeixianjueGYY(params) {
-  return httpNoProxy.get(
+  return http.get(
     'https://admin-fxj.zhijiangames.com/www/api/server_config.php',
     {params}
   )
@@ -313,7 +313,7 @@ export function getServerConfigFeixianjueGYY(params) {
 
 // 获取补天志服务器列表
 export function getServerConfigBTZ(params) {
-  return httpNoProxy.get(
+  return http.get(
     'https://admin.xz2bt.jyjunyou.com/www/api/server_config.php',
     {params}
   )

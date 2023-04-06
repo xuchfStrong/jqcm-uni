@@ -12,7 +12,10 @@ function combineURLs(baseURL, relativeURL) {
 exports.main = async (event, context) => {
 	//event为客户端上传的参数
 	console.log('event : ', event)
-	const baseURL = 'http://49.232.69.137:23554/asdljSDGG546461ajlGH/'
+	let baseURL = 'http://49.232.69.137:23554/asdljSDGG546461ajlGH/'
+	if (event.dest === 'flask') {
+		baseURL = 'http://49.232.69.137:24873/'
+	}
 	const apiUrl = combineURLs(baseURL, event.url)
 	try {
 		const res = await uniCloud.httpclient.request(apiUrl, {
@@ -23,6 +26,7 @@ exports.main = async (event, context) => {
 		    dataType: 'json' // 指定返回值为json格式，自动进行parse
 		  })
 		//返回数据给客户端
+		res.data.headers = res.headers
 		return res.data
 	} catch(err) {
 		return "have error!!"

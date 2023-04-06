@@ -37,7 +37,8 @@ export default class RequestCloud {
 				"method": options.method,
 				"header": options.header || {},
 				"contentType": options.contentType || this.config.contentType,
-				"data": options.data || {}
+				"data": options.data || {},
+				"dest": options.dest || undefined
 			}
 		}).then(res => {
 			return Promise.resolve(res.result)

@@ -14,7 +14,7 @@
 			</view>
 		</view>
 		
-		<view class="input-group">
+		<view v-show="!isQR" class="input-group">
 		    <view class="input-row border">
 		        <text class="title">账号：</text>
 		        <!-- <m-input class="m-input" type="text" :disabled="false"  clearable focus v-model="userInfo.usernamePlatForm" placeholder="请输入账号"></m-input> -->
@@ -33,7 +33,7 @@
 		</view>
 
 		<view class="btn-row">
-		    <button type="primary" class="primary" :loading="statusLoading" :disabled="statusLoading" @tap="handleCheckUserStatus">登录</button>
+		    <button type="primary" class="primary" :loading="statusLoading" :disabled="statusLoading" @tap="handleCheckUserStatus">{{ loginBtnText }}</button>
 		</view>
 
 		<!-- <view style="margin-top:10px; color:#1989fa; text-align: center;">
@@ -48,7 +48,7 @@
 				<view v-for="(item,index) in loginDescription.description" :key="index" class="item-wrap">{{ item }}</view>
 			</view>
 		</view> -->
-
+		
 		<uni-popup ref="popup" :mask-click="false">
 			<view class="pop-wrap">
 				<view style="padding-bottom: 10px;">请选择小号</view>
@@ -56,6 +56,32 @@
 				<view style="display:flex;justify-content: center;">
 					<button type="primary" size="mini" class="primary" @tap="chooseSmallUser">确定</button>
 				</view>
+			</view>
+		</uni-popup>
+
+		<uni-popup ref="QRpopup" :mask-click="false">
+			<view class="pop-wrap flex-center">
+				<view style="text-align:right; width:100%;">
+					<img style="width:30px;" @tap="closeQRPop" src="@/static/img/close.png"/>
+				</view>
+				<view style="width:250px;">
+					<view style="font-size: 12px;line-height:12px;white-space: pre-line;">
+						如玩家一台手机不方便扫码，可采用以下方式登录：
+						1、截图此二维码
+						2、打开华为应用市场
+						3、点击右下角我的
+						4、点左上角头像
+						5、点右上角扫码
+						6、点右上角图片图标
+						7、选择刚才的二维码截图
+					</view>
+				</view>
+				<uqrcode ref="uqrcode" canvas-id="qrcode" :auto="false" :value="QRUrl" :options="{ margin: 10 }"></uqrcode>
+				<view style="width:250px;text-align:center; font-size:12px;">请用{{QRDesc}}扫描登录后，点击“扫码完成后点此按钮”，辅助才会开始登录</view>
+				<view style="padding:10px 0;">
+					<button type="primary" size="mini" @tap="handleScanQR" :loading="QRLoading" :disabled="QRLoading">扫码完成后点此按钮</button>
+				</view>
+				<view>{{ QRScanResult }}</view>
 			</view>
 		</uni-popup>
 	</view>
@@ -74,7 +100,7 @@ import { loginFirstStep, loginSecondStepByProxy, loginFirstStepWJXL2, loginFirst
 // #ifdef APP-PLUS
 import { loginFirstStep, loginFirstStepWJXL2, loginFirstStepShendao, loginFirstStepDYDJB, loginSecondStepDYDJB } from '@/api/loginApp'
 // #endif
-import { getAction, postAction, postFormAction } from '@/api/manage'
+import { getAction, postAction, postFormAction, getActionNoProxy, postActionNoProxy, postFormActionNoProxy } from '@/api/manage'
 import { loginSecondStep } from '@/api/login'
 import { getUtils,getIntUserid,getStrUserid } from '@/api/game'
 import { loginThirdStep, loginThirdStepDDJHWJXL1, loginThirdStepWJXL2, loginThirdStepShendao, loginThirdStepDYDJB, loginFirstStepXianfanzhuan, loginThirdStepXianfanzhuan, loginFirstStepRenzhafanpai, loginSedondStepRenzhafanpai } from '@/api/login'
@@ -144,6 +170,12 @@ export default {
 			platformList: [], // 平台信息
 			configInfo: '',
 			utils: '',
+			QRUrl: '',
+			QRDesc: '华为游戏中心',
+			QRRes: {},
+			QRScanResult: '',
+			QRLoading: false,
+			headers: {},
 			autocompleteStringList: [],
 			smallId: undefined,
 			smallList: [{"value": 0,"text": "篮球"	},{"value": 1,"text": "足球"},{"value": 2,"text": "游泳"}],
@@ -190,10 +222,21 @@ export default {
       }		
 		}
 	},
+
+	computed: {
+		isQR() {
+			const QRLoginType = [56]
+			return QRLoginType.includes(this.userInfo.loginType)
+		},
+		loginBtnText() {
+			return this.isQR? '点击获取二维码' : '登录'
+		}
+	},
 	onLoad() {
 		this.handleGetRemoteOptions()
 		this.handleGetUtils()
 	},
+
 	methods: {
 		//响应选择事件，接收选中的数据
     selectItemD(data) {
@@ -209,6 +252,22 @@ export default {
 			this.$refs.popup.close()
 		},
 
+		openQRPop(text) {
+			this.QRUrl = text
+			this.QRScanResult = ''
+			this.$refs.QRpopup.open()
+		},
+		
+		closeQRPop() {
+			this.$refs.QRpopup.close()
+		},
+
+		handleScanQR() {
+			if (this.userInfo.loginType === 56) {
+				this.checkQRHuawei()
+			}
+		},
+
 		changeSmallUser(e){
 			this.loginInfo.userId = this.smallId
 		},
@@ -220,6 +279,9 @@ export default {
 					this.serverInfo = serverInfo
 					this.handleAddUser()
 				})
+			}
+			if ([26].includes(this.userInfo.loginType)) {
+				this.handleLoginGYYMudStep2()
 			}
 			if ([36].includes(this.userInfo.loginType)) {
 				this.handleLoginCwzxz3011Step2()
@@ -482,23 +544,8 @@ export default {
 							icon: 'none'
 						})
 						// #endif
-					}  else if ([26].includes(this.userInfo.loginType)) { // 飞仙诀(羔羊游)
-						// #ifdef APP-PLUS
-						this.handleLoginFirstStepFeixianjueGYY()
-						// #endif
-						// #ifdef H5
-						handleGetServerConfigFeixianjueGYY(270,'changwei2', this.loginInfo.userId, 2).then(serverInfo => {
-							this.serverInfo = serverInfo
-							this.flag.showServer = true
-							this.saveLoginInfo()
-							this.toMain()
-						})
-						uni.showToast({
-							title: '登录成功，请选择服务器后，点击开始挂机。',
-							duration: 2000,
-							icon: 'none'
-						})
-						// #endif
+					}  else if ([26].includes(this.userInfo.loginType)) { // 羔羊游-剑气除魔(mud)
+						this.handleLoginGYYMudStep1()
 					} else if ([27].includes(this.userInfo.loginType)) { // 江湖传说
 						// #ifdef APP-PLUS
 						this.handleLoginFirstStepJHCS()
@@ -768,6 +815,8 @@ export default {
 						this.handleLoginYxyTzlXzmnqStep1()
 					} else if ([55].includes(this.userInfo.loginType)) { // 饺子手游-天子令
 						this.handleLoginJzsyTzlStep1()
+					} else if ([56].includes(this.userInfo.loginType)) { // 不朽仙途-华为
+						this.handleGetQRHuawei()
 					} else {
 						this.loginInfo.userId = this.userInfo.usernamePlatForm
 						handleGetServerConfigOther(this.userInfo.channelid, this.loginInfo.userId).then(serverInfo => {  // 其他平台只需要在后端检查是否存在，如果不存在就需要提取用户名密码
@@ -807,7 +856,7 @@ export default {
 					}	else if (this.userInfo.loginType === 25) {
 						this.handleLoginFirstStepRenzhafanpai() // 人渣反派 
 					}	else if (this.userInfo.loginType === 26) {
-						this.handleLoginFirstStepFeixianjueGYY() // 飞仙诀(羔羊游)
+						this.handleLoginGYYMudStep1()// 羔羊游-剑气除魔(mud)
 					}	else if (this.userInfo.loginType === 27) {
 						this.handleLoginFirstStepJHCS() // 江湖传说
 					} else if (this.userInfo.loginType === 28) {
@@ -868,7 +917,9 @@ export default {
 						this.handleLoginYxyTzlXzmnqStep1()
 					} else if (this.userInfo.loginType === 55) { // 饺子手游-天子令
 						this.handleLoginJzsyTzlStep1()
-					}else {
+					} else if (this.userInfo.loginType === 56) { // 不朽仙途-华为
+						this.handleGetQRHuawei()
+					} else {
 						uni.showToast({
 							title: '登录失败。',
 							duration: 2000,
@@ -1695,6 +1746,58 @@ export default {
 			})
 		},
 
+
+		// 羔羊游-剑气除魔(mud)登录第一步
+		handleLoginGYYMudStep1() {
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm
+			}
+			const url = '/login/gyyMud/step1.py'
+			postFormAction(url, params).then(res => {
+				if (res.code == 1) {
+					this.smallList = []
+					res.data.forEach(item => {
+						const oneItem = {
+							text: item.nickname,
+							value: item.id
+						}
+						this.smallList.push(oneItem)
+						this.openPop()
+					})
+				} else {
+					this.$toast(res.message)
+				}
+			})
+		},
+
+		// 羔羊游-剑气除魔(mud)登录第二步
+		handleLoginGYYMudStep2() {
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm,
+				smallId: this.smallId
+			}
+			const url = '/login/gyyMud/step2.py'
+			postFormAction(url, params).then(res => {
+				if (res.code === 1) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					handleGetServerConfigWJXL(6201, this.loginInfo.userId,6).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					this.flag.showServer = false
+					uni.showToast({
+							title: '登录失败',
+							duration: 2000,
+							icon: 'none'
+					})
+				}
+			})
+		},
+
 		// 飞仙诀(羔羊游)登录第一步
 		handleLoginFirstStepFeixianjueGYY() {
 			this.loginInfo.PHPSESSID = randomString(26)
@@ -1983,6 +2086,98 @@ export default {
 			})
 		},
 
+
+		// 华为获取二维码
+		handleGetQRHuawei() {
+			const params = {
+				version: '69000',
+				appID: 'com.huawei.hwid',
+				loginChannel: '7000700',
+				reqClientType: '701',
+				confirmFlag: 1,
+				lang: 'zh-CN',
+				supportCancelNotice: 1
+			}
+			const url = 'https://id.cloud.huawei.com/DimensionalCode/getqrInfo?Version=69000&cVersion=HwID_6.9.0.300&blackScreen=0&appBrand=HUAWEI&osBrand=ANDROID&deviceBrand=SMARTISAN&ctrID=16787179211448076474207817742794'
+			this.headers = {
+				'authorization': String(Date.now()),
+				'User-Agent':'com.huawei.hms.commonkit/6.9.0.300 (Linux; Android 10; Royole FlexPai 2) RestClient/6.0.9.300'
+			}
+			postFormAction(url, params).then(res => {
+				const cookies = res.headers['set-cookie']
+				this.headers.Cookie = ''
+				cookies.forEach(item => {
+					this.headers.Cookie += item.split(' Path')[0]
+				})
+				this.QRRes = res
+				if (res.qrToken && res.content) {
+					this.openQRPop(res.content)
+				}
+			})
+		},
+
+		// 华为检查二维码状态
+		checkQRHuawei() {
+			const params = {
+				qrToken: this.QRRes.qrToken
+			}
+			const url = 'https://id1.cloud.huawei.com/DimensionalCode/async?Version=69000&cVersion=HwID_6.9.0.300&blackScreen=0&appBrand=HUAWEI&osBrand=ANDROID&deviceBrand=ROYOLE&ctrID=16771768501518007294904593866762'
+			const that = this
+			this.QRLoading = true
+			postFormAction(url, params, this.headers).then(res => {
+				console.log('checkQRHuawei', res)
+				if (res.resultCode == 103000200) {
+					this.QRScanResult = '等待扫码'
+					this.QRLoading = false
+				} else if (res.resultCode == 103000202) {
+					this.QRScanResult = '已扫码等待确认'
+					setTimeout(function() {
+						that.checkQRHuawei()
+					}, 1000)
+				} else if (res.resultCode == 0) {
+					this.QRScanResult = '扫码登录成功'
+					this.QRHuaweiStep3(res)
+				} else {
+					this.QRScanResult = '二维码过期，请重新获取'
+					this.QRLoading = false
+				}
+			}).catch(() => {
+				this.QRLoading = false
+			})
+		},
+
+		// 华为二维码登录Step3
+		QRHuaweiStep3(req) {
+			const params = {
+				...req
+			}
+			params.qRCode = this.QRRes.content.split('qRCode=')[1].split('&qrSiteID')[0]
+			params.headers = this.headers
+			const url = '/hwlogin'
+			postAction(url, params, {}, 'flask').then(res => {
+				console.log('QRHuaweiStep3', res)
+				if (res.code == 200) {
+					this.loginInfo.userId = res.data.userId
+					this.loginInfo.token = res.data.token
+					this.userInfo.usernamePlatForm =  res.data.channelUserName
+					this.userInfo.passwordPlatForm =  res.data.channelUserName
+					this.userInfo.aid = res.data.deviceId
+					this.userInfo.pfId = res.data.uid
+					this.userInfo.sessionid = res.data.serviceToken
+					this.userInfo.channel_userid = res.data.channelUserId
+					handleGetServerConfigWJXL(6193, this.loginInfo.userId, 12).then(serverInfo => {
+						this.serverInfo = serverInfo
+						this.handleAddUser()
+					})
+				} else {
+					this.$toast(res.msg)
+				}
+			}).finally(() => {
+				this.QRLoading = false
+				this.closeQRPop()
+			})
+		},
+
 		// 纯文字修真-冰火登录-获取小号
 		handleLoginCwzxzBinghuoStep1() {
 			const params = {
@@ -2019,7 +2214,7 @@ export default {
 				if (res.code === 1) {
 					this.loginInfo.userId = res.data.userId
 					this.loginInfo.token = res.data.token
-					handleGetServerConfigWJXL(6215, this.loginInfo.userId,26).then(serverInfo => {
+					handleGetServerConfigWJXL(6201, this.loginInfo.userId,6).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleAddUser()
 					})
@@ -3266,10 +3461,12 @@ export default {
         phone_num: '',
         sms_code: '',
         wx_qq_account: '',
-        channel_userid: '',
+        channel_userid: this.userInfo.channel_userid || '',
+				uid: this.userInfo.uid || '',
         session_id: '',
         mac: this.userInfo.mac || '',
         device_id: this.userInfo.aid || '',
+				sessionid: this.userInfo.sessionid || '',
         imei: this.userInfo.udid || '',
         pfid: this.loginInfo.pfId || '',
         timestamp: this.loginInfo.time || '',
@@ -3461,5 +3658,10 @@ export default {
 	min-height: 150px;
 	min-width: 200px;
 	padding: 10px;
+}
+.flex-center {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
 }
 </style>
