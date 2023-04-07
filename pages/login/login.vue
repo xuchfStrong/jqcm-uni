@@ -152,6 +152,25 @@ import {mapState,mapMutations} from 'vuex'
 import options from '@/utils/options.json'
 import mInput from '../../components/m-input.vue'
 
+const defaultUserInfo = {
+  usernamePlatForm: '', // 平台的用户名
+  passwordPlatForm: '', // 平台的密码
+  platform: 1, // 这个platform用在像辅助添加用户的时候
+  server: '',
+  endTime: '', // 辅助到期时间
+  deviceType: 'vivo+x5s+l',
+  site: 'jqcm_android',
+  mac: '',
+  uid: '',
+  sessionid: '',
+  adid: '',
+  udid: '',
+  aid: '',
+  openuidi: '',
+  nickname: '',
+  loginType: 1 // 官方平台：1，taptap：2
+}
+
 export default {
 	components:{
 		mInput
@@ -185,24 +204,7 @@ export default {
 			    newUserFlag: false,
 			    showServer: false
 			},
-			userInfo: {
-			  usernamePlatForm: '', // 平台的用户名
-			  passwordPlatForm: '', // 平台的密码
-			  platform: 1, // 这个platform用在像辅助添加用户的时候
-			  server: '',
-			  endTime: '', // 辅助到期时间
-			  deviceType: 'vivo+x5s+l',
-			  site: 'jqcm_android',
-			  mac: '',
-			  uid: '',
-			  sessionid: '',
-			  adid: '',
-			  udid: '',
-			  aid: '',
-			  openuidi: '',
-			  nickname: '',
-			  loginType: 1 // 官方平台：1，taptap：2
-			},
+			userInfo: Object.assign({}, defaultUserInfo),
 			loginInfo: { // 登录过程中需要的数据
 				sessionid: '',
 				userId: '',
@@ -283,6 +285,9 @@ export default {
 			if ([26].includes(this.userInfo.loginType)) {
 				this.handleLoginGYYMudStep2()
 			}
+			if ([35].includes(this.userInfo.loginType)) {
+				this.handleLoginYXYJqcmCwzxzStep2()
+			}
 			if ([36].includes(this.userInfo.loginType)) {
 				this.handleLoginCwzxz3011Step2()
 			}
@@ -291,6 +296,9 @@ export default {
 			}
 			if ([52].includes(this.userInfo.loginType)) {
 				this.handleLoginXzmnqBinghuoStep2()
+			}
+			if ([53].includes(this.userInfo.loginType)) {
+				this.handleLogin28CwzxzStep2()
 			}
 			if ([54].includes(this.userInfo.loginType)) {
 				this.handleLoginYxyTzlXzmnqStep2()
@@ -648,17 +656,7 @@ export default {
 							icon: 'none'
 						})
 					} else if ([35].includes(this.userInfo.loginType)) { // 游戏鸭剑气除魔文字修真)
-						handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
-							this.serverInfo = serverInfo
-							this.flag.showServer = true
-							this.saveLoginInfo()
-							this.toMain()
-						})
-						uni.showToast({
-							title: '登录成功，请选择服务器后，点击开始挂机。',
-							duration: 2000,
-							icon: 'none'
-						})
+						this.handleLoginYXYJqcmCwzxzStep1()
 					} else if ([36].includes(this.userInfo.loginType)) { // 3011剑气除魔文字修真)
 						this.handleLoginCwzxz3011Step1()
 					} else if ([37].includes(this.userInfo.loginType)) { // 3011剑气除魔H5)
@@ -876,7 +874,7 @@ export default {
 					} else if (this.userInfo.loginType === 34) {
 						this.handleLoginFirstStepYXYSzlm() // 游戏鸭神之六面
 					} else if (this.userInfo.loginType === 35) {
-						this.handleLoginFirstStepYXYJqcmWzxz() // 游戏鸭剑气除魔文字修真
+						this.handleLoginYXYJqcmCwzxzStep1() // 游戏鸭剑气除魔文字修真
 					} else if (this.userInfo.loginType === 36) {
 						this.handleLoginCwzxz3011Step1() // 3011剑气除魔文字修真
 					} else if (this.userInfo.loginType === 37) {
@@ -1945,10 +1943,34 @@ export default {
 			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
 			const url = '/login/28cwzxz/step1.py'
 			postFormAction(url,params).then(res => {
+				if (res.code == 0) {
+					this.smallList = []
+					res.data.account.forEach(item => {
+						const oneItem = {
+							text: item.name,
+							value: item.id
+						}
+						this.smallList.push(oneItem)
+						this.openPop()
+					})
+				} else {
+					this.$toast(res.message)
+				}
+			})
+		},
+
+		// 28纯文字修真第二步
+		handleLogin28CwzxzStep2() {
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm,
+				smallId: this.smallId
+			}
+			const url = '/login/28cwzxz/step2.py'
+			postFormAction(url, params).then(res => {
 				if (res.code === 1) {
 					this.loginInfo.userId = res.data.userId
 					this.loginInfo.token = res.data.token
-					this.smallId = res.data.channelUserId
 					handleGetServerConfigWJXL(6215, this.loginInfo.userId,26).then(serverInfo => {
 						this.serverInfo = serverInfo
 						this.handleAddUser()
@@ -2762,21 +2784,50 @@ export default {
 		},
 
 		// 游戏鸭剑气除魔文字修真登录第一步
-		handleLoginFirstStepYXYJqcmWzxz() {
+		handleLoginYXYJqcmCwzxzStep1() {
 			this.loginInfo.PHPSESSID = randomString(26)
 			const params = {
 				username: this.userInfo.usernamePlatForm,
-				password: this.userInfo.passwordPlatForm
+				password: this.userInfo.passwordPlatForm,
+				gameId: '2602'
 			}
 			if (!this.userInfo.aid ) this.userInfo.aid = genUUID()
-			loginFirstStepYXYJqcmWzxz(params).then(res => {
+			const url = '/login/yxy/smallList.py'
+			postFormAction(url,params).then(res => {
+				if (res.code == 1) {
+					this.smallList = []
+					res.data.forEach(item => {
+						const oneItem = {
+							text: item.nickname,
+							value: item.id
+						}
+						this.smallList.push(oneItem)
+						this.openPop()
+					})
+				} else {
+					this.$toast(res.msg)
+				}
+			})
+		},
+
+		// 游戏鸭剑气除魔文字修真登录第二步
+		handleLoginYXYJqcmCwzxzStep2() {
+			this.loginInfo.PHPSESSID = randomString(26)
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm,
+				gameId: '2602',
+				smallId: this.smallId
+			}
+			const url = '/login/yxy/yxyJqcmCwzxz.py'
+			postFormAction(url,params).then(res => {
 				if (res.code === 1) {
 					this.loginInfo.userId = res.data.userId
 					this.loginInfo.token = res.data.token
 					this.loginInfo.channelId = res.data.channelId
 					handleGetServerConfigWJXL(6215, this.loginInfo.userId, 26).then(serverInfo => {
 						this.serverInfo = serverInfo
-						this.handleLoginThirdStep()
+						this.handleAddUser()
 					})
 				} else {
 					this.flag.showServer = false
@@ -3578,6 +3629,7 @@ export default {
 			} else {
 				this.platformIndex = 0
 			}
+			this.userInfo = Object.assign({}, defaultUserInfo)
 			this.platformName = this.platformList[this.platformIndex].text
 			this.userInfo.loginType = getValueByIndex(this.platformList, this.platformIndex)
 		},

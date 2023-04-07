@@ -2,8 +2,8 @@
     "name" : "剑气除魔火箭辅助",
     "appid" : "__UNI__5AE1708",
     "description" : "",
-    "versionName" : "2.4.0",
-    "versionCode" : 240,
+    "versionName" : "2.4.1",
+    "versionCode" : 241,
     "transformPx" : false,
     "app-plus" : {
         "nvueCompiler" : "uni-app",
@@ -99,7 +99,7 @@
             "enable" : true
         },
         "router" : {
-            "base" : "/jqcm/"
+            "base" : "/"
         },
         "devServer" : {
             "https" : false
