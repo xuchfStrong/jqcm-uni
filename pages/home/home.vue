@@ -837,12 +837,12 @@
 
 		<view v-show="currentTab === 2" class="uni-list-no-border">
 			<uni-collapse accordion="true">
-        <uni-collapse-item v-for="(item, index) in options.shop" :key="index" :title="item.text" :open="index === 0">
+				<uni-collapse-item v-for="(item, index) in options.shop" :key="index" :title="item.text" :open="index === 0">
 					<view style="padding:10px 0 10px 10px;">
 						<uni-data-checkbox v-model="configShop[item.value]" :localdata="options[item.value]" :multiple="true"></uni-data-checkbox>
 					</view>
 				</uni-collapse-item>
-    </uni-collapse>
+			</uni-collapse>
 		</view>
 
 		
