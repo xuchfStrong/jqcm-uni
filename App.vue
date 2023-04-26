@@ -4,7 +4,7 @@
 		onLaunch: function() {
 			// #ifdef APP-PLUS  
 			const that = this
-			plus.runtime.getProperty(plus.runtime.appid, function() {  
+			plus.runtime.getProperty(plus.runtime.appid, function(widgetInfo) {  
 					const jqcmSaleChannel = plus.runtime.channel
 					getUpdate().then(data => {
 						var wgtUrl = ''
