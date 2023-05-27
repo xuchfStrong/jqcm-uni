@@ -12,7 +12,7 @@ function combineURLs(baseURL, relativeURL) {
 exports.main = async (event, context) => {
 	//event为客户端上传的参数
 	console.log('event : ', event)
-	const baseURL = 'http://wdsz2.huojiangame.com:11658/'
+	const baseURL = 'http://81.70.228.171:11658/'
 	const apiUrl = combineURLs(baseURL, event.url)
 	try {
 		const res = await uniCloud.httpclient.request(apiUrl, {
